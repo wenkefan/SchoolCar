@@ -39,6 +39,7 @@ public class ChildRecyAdapter extends BaseRecyclerAdapter {
         if (holder instanceof ChildViewHolde) {
             ChildViewHolde holde = (ChildViewHolde) holder;
             holde.tv.setText(list.get(position).getChildName());
+            holde.claNa.setText(list.get(position).getClassName());
             switch (list.get(position).getSelectid()) {
                 case 0:
                     holde.iv.setBackgroundResource(R.mipmap.bianji);
@@ -70,13 +71,14 @@ public class ChildRecyAdapter extends BaseRecyclerAdapter {
 
     public class ChildViewHolde extends ClickableViewHolder {
 
-        private TextView tv;
+        private TextView tv,claNa;
         private ImageView iv;
 
         public ChildViewHolde(View itemView) {
             super(itemView);
             tv = $(R.id.tv_child_name);
             iv = $(R.id.iv_type_select);
+            claNa = $(R.id.tv_child_class_name);
         }
     }
 }

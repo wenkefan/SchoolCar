@@ -312,6 +312,7 @@ public class ChildData {
         valueBean1.setSendStation(valueBean.getSendStation());
         valueBean1.setTeacherName(valueBean.getTeacherName());
         valueBean1.setTeacherphone(valueBean.getTeacherphone());
+        valueBean1.setClassName(valueBean.getClassName());
         return valueBean1;
     }
 }

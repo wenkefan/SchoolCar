@@ -15,12 +15,16 @@ import com.fwk.school4.listener.DaoZhanListener;
 import com.fwk.school4.listener.NetWorkListener;
 import com.fwk.school4.model.BanciBean;
 import com.fwk.school4.model.ChildBean;
+import com.fwk.school4.model.FristFaChe;
+import com.fwk.school4.model.StaBean;
 import com.fwk.school4.model.StateStationBean;
 import com.fwk.school4.model.StationBean;
 import com.fwk.school4.model.StationFADAOBean;
 import com.fwk.school4.network.HTTPURL;
+import com.fwk.school4.network.api.CarDZNetWork;
 import com.fwk.school4.network.api.CarFCNetWork;
 import com.fwk.school4.network.api.ChildNetWork;
+import com.fwk.school4.network.api.EndNetWork;
 import com.fwk.school4.network.api.StaionNetWork;
 import com.fwk.school4.ui.BasaActivity;
 import com.fwk.school4.ui.Jie.JieChildListActivity2;
@@ -32,9 +36,11 @@ import com.fwk.school4.utils.LogUtils;
 import com.fwk.school4.utils.SharedPreferencesUtils;
 import com.fwk.school4.utils.SharedPreferencesUtils2;
 import com.fwk.school4.utils.Stationutil;
+import com.fwk.school4.utils.ToastUtil;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.InjectView;
 
@@ -169,6 +175,15 @@ public class SongStationMapActivity extends BasaActivity implements NetWorkListe
             case Keyword.FLAGFACHE:
                 handler.sendEmptyMessage(Keyword.FLAGFACHE);
                 break;
+            case Keyword.FLAGFACHE1:
+                handler.sendEmptyMessage(Keyword.FLAGFACHE1);
+                break;
+            case Keyword.FLAGDAOZHAN:
+                handler.sendEmptyMessage(Keyword.FLAGDAOZHAN);
+                break;
+            case Keyword.FLAGENDDAOZHAN:
+                handler.sendEmptyMessage(Keyword.FLAGENDDAOZHAN);
+                break;
         }
     }
 
@@ -207,6 +222,30 @@ public class SongStationMapActivity extends BasaActivity implements NetWorkListe
                     startActivity(intent);
 
                     break;
+                case Keyword.FLAGFACHE1:
+                    setSJTime();
+                    List<StationBean.RerurnValueBean> stationList = (List<StationBean.RerurnValueBean>) spData.queryForSharedToObject(Keyword.SP_STATION_LIST);
+                    String url1 = String.format(HTTPURL.API_PROCESS, SpLogin.getKgId(), stationList.get(stationPosition).getStationId(), spData.getInt(Keyword.SP_PAICHEDANHAO), 2, GetDateTime.getdatetime());
+                    LogUtils.d("--发车URL：" + url1);
+                    CarDZNetWork carDZNetWork = CarDZNetWork.newInstance(SongStationMapActivity.this);
+                    carDZNetWork.setNetWorkListener(SongStationMapActivity.this);
+                    carDZNetWork.setUrl(Keyword.FLAGDAOZHAN, url1, StationFADAOBean.class);
+                    break;
+                case Keyword.FLAGDAOZHAN:
+                    closeDialog();
+                    stationPosition++;
+                    sp.setInt(Keyword.THISSATION, stationPosition);
+                    setTitleNemaTime();
+                    adapter.setPostion(stationPosition);
+                    adapter.setNumberSX();
+                    adapter.notifyDataSetChanged();
+                    ToastUtil.show("本站无上下车学生，已直接过站...");
+                    break;
+                case Keyword.FLAGENDDAOZHAN:
+                    ToastUtil.show("结束了");
+                    sp.removData();
+                    finish();
+                    break;
             }
         }
     };
@@ -241,7 +280,20 @@ public class SongStationMapActivity extends BasaActivity implements NetWorkListe
         LogUtils.d("到站URL：" + url);
         CarFCNetWork carFCNetWork = CarFCNetWork.newInstance(this);
         carFCNetWork.setNetWorkListener(this);
-        carFCNetWork.setUrl(Keyword.FLAGFACHE, url, StationFADAOBean.class);
+        if (getShangChenumber(stationSelId) + getXiaCheNumber(stationSelId) > 0) {
+            carFCNetWork.setUrl(Keyword.FLAGFACHE, url, StationFADAOBean.class);
+        } else {
+            showDialog();
+            if (position != stationList.size() - 1) {
+                carFCNetWork.setUrl(Keyword.FLAGFACHE1, url, StationFADAOBean.class);
+            } else {
+                String url1 = String.format(HTTPURL.API_OPEN, spData.getInt(Keyword.SP_PAICHEDANHAO), SpLogin.getKgId(), GetDateTime.getdatetime(), 2, SpLogin.getWorkerExtensionId());
+                LogUtils.d("结束URL：" + url1);
+                EndNetWork endNetWork = EndNetWork.newInstance(this);
+                endNetWork.setNetWorkListener(this);
+                endNetWork.setUrl(Keyword.FLAGENDDAOZHAN, url1, FristFaChe.class);
+            }
+        }
     }
 
     /**
@@ -266,5 +318,25 @@ public class SongStationMapActivity extends BasaActivity implements NetWorkListe
         String time = Hh + ":" + Mm;
         times.add(time);
         sp.saveToShared(Keyword.GETSJTIME, times);
+    }
+
+    private Map<String, List<StaBean>> map;
+
+    private int getShangChenumber(int stationId) {
+        map = (Map<String, List<StaBean>>) spData.queryForSharedToObject(Keyword.MAPLIST);
+        List<StaBean> list1 = map.get(stationId + "01");
+        if (list1 != null) {
+            return list1.size();
+        }
+        return 0;
+    }
+
+    private int getXiaCheNumber(int stationId) {
+        map = (Map<String, List<StaBean>>) spData.queryForSharedToObject(Keyword.MAPLIST);
+        List<StaBean> list1 = map.get(stationId + "02");
+        if (list1 != null) {
+            return list1.size();
+        }
+        return 0;
     }
 }

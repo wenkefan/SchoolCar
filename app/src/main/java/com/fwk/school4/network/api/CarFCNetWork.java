@@ -40,6 +40,20 @@ public class CarFCNetWork extends BaseNetWork {
                     }
                 });
             }
+        } else if (flag == Keyword.FLAGFACHE1){
+            if (cla != null){
+
+                StationFADAOBean fadaoBean = (StationFADAOBean) cla;
+
+                listener.NetWorkSuccess(Keyword.FLAGFACHE1);
+            } else {
+                mActivity.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        ToastUtil.show(message);
+                    }
+                });
+            }
         }
     }
 

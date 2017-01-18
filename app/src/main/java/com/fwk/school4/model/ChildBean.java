@@ -82,6 +82,15 @@ public class ChildBean implements Serializable {
         private int Selectid;//症状
         private boolean isOperation;//是否以操作
         private int isDU;//是上／下车
+        private String ClassName;//班级名称
+
+        public String getClassName() {
+            return ClassName;
+        }
+
+        public void setClassName(String className) {
+            ClassName = className;
+        }
 
         public int getIsDU() {
             return isDU;

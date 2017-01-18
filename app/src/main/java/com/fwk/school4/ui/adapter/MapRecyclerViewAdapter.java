@@ -203,6 +203,7 @@ public class MapRecyclerViewAdapter extends BaseRecyclerAdapter implements View.
         map = (Map<String, List<StaBean>>) spData.queryForSharedToObject(Keyword.MAPLIST);
         shangche = (Map<Integer, Integer>) sp.queryForSharedToObject(Keyword.SHANGCHENUMBER);
         xiache = (Map<Integer, Integer>) sp.queryForSharedToObject(Keyword.XIACHENUMBER);
+        times = (List<String>) sp.queryForSharedToObject(Keyword.GETSJTIME);
         notifyDataSetChanged();
     }
 }
