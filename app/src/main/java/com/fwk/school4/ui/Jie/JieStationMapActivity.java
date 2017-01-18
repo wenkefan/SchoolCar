@@ -100,6 +100,7 @@ public class JieStationMapActivity extends BasaActivity implements NetWorkListen
             adapter.setPostion(stationPosition);
             adapter.setNumberSX();
             adapter.notifyDataSetChanged();
+            LogUtils.d("aaa");
         } else {
             try {
                 StateStationBean stateStationBean = (StateStationBean) sp.queryForSharedToObject(Keyword.STATESTATIONBEAN);
