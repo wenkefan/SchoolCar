@@ -37,7 +37,7 @@ import butterknife.InjectView;
  * Created by fanwenke on 16/12/5.
  */
 
-public class MainActivity extends BasaActivity implements NetWorkListener, BaseRecyclerAdapter.OnItemListener, FacheListener {
+public class MainActivity extends BaseActivity implements NetWorkListener, BaseRecyclerAdapter.OnItemListener, FacheListener {
 
     private MainRecyclerViewAdapter adapter;
     private LinearLayoutManager linearLayoutManager;
@@ -64,7 +64,7 @@ public class MainActivity extends BasaActivity implements NetWorkListener, BaseR
             sp.removData();
             spData.removData();
         }
-        title.setText(getResources().getString(R.string.main_tltile));
+        title.setText(SpLogin.getKgName());
         if (sp.getBoolean(Keyword.BEGIN)) {
             MainDialog.Beagin(this, (BanciBean.RerurnValueBean) sp.queryForSharedToObject(Keyword.SELECTBANCI));
         } else {

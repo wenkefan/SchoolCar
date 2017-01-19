@@ -11,7 +11,7 @@ import com.fwk.school4.constant.Keyword;
 import com.fwk.school4.listener.OnItemClickListener;
 import com.fwk.school4.model.ChildBean;
 import com.fwk.school4.model.StationBean;
-import com.fwk.school4.ui.BasaActivity;
+import com.fwk.school4.ui.BaseActivity;
 import com.fwk.school4.ui.ShangcheActivity;
 import com.fwk.school4.ui.adapter.JieChildListAdapter;
 import com.fwk.school4.utils.SharedPreferencesUtils;
@@ -28,7 +28,7 @@ import se.emilsjolander.stickylistheaders.StickyListHeadersListView.OnHeaderClic
  * Created by fanwenke on 16/12/8.
  */
 
-public class JieChildListActivity extends BasaActivity implements OnHeaderClickListener,OnItemClickListener {
+public class JieChildListActivity extends BaseActivity implements OnHeaderClickListener,OnItemClickListener {
 
     @InjectView(R.id.title_tv)
     TextView title;

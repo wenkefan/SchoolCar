@@ -26,14 +26,13 @@ import com.fwk.school4.network.api.CarFCNetWork;
 import com.fwk.school4.network.api.ChildNetWork;
 import com.fwk.school4.network.api.EndNetWork;
 import com.fwk.school4.network.api.StaionNetWork;
-import com.fwk.school4.ui.BasaActivity;
+import com.fwk.school4.ui.BaseActivity;
 import com.fwk.school4.ui.adapter.BaseRecyclerAdapter;
 import com.fwk.school4.ui.adapter.MapRecyclerViewAdapter;
 import com.fwk.school4.utils.GetDateTime;
 import com.fwk.school4.utils.LogUtils;
 import com.fwk.school4.utils.SharedPreferencesUtils;
 import com.fwk.school4.utils.SharedPreferencesUtils2;
-import com.fwk.school4.utils.Stationutil;
 import com.fwk.school4.utils.ToastUtil;
 
 import java.util.ArrayList;
@@ -46,7 +45,7 @@ import butterknife.InjectView;
  * Created by fanwenke on 16/12/7.
  */
 
-public class JieStationMapActivity extends BasaActivity implements NetWorkListener, BaseRecyclerAdapter.OnItemListener, DaoZhanListener {
+public class JieStationMapActivity extends BaseActivity implements NetWorkListener, BaseRecyclerAdapter.OnItemListener, DaoZhanListener {
 
     @InjectView(R.id.station_map_recycler)
     RecyclerView mRecyclerView;

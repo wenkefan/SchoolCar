@@ -25,7 +25,7 @@ import butterknife.OnClick;
  * Created by fanwenke on 16/12/19.
  */
 
-public class ShangcheActivity extends BasaActivity implements View.OnClickListener, CenterItemDialog.OnItemClickListener, BaseRecyclerAdapter.OnItemListener {
+public class ShangcheActivity extends BaseActivity implements View.OnClickListener, CenterItemDialog.OnItemClickListener, BaseRecyclerAdapter.OnItemListener {
     @InjectView(R.id.title_tv)
     TextView title;
     @InjectView(R.id.tv_name)

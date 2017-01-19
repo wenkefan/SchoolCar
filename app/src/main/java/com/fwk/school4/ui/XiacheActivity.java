@@ -11,7 +11,6 @@ import com.fwk.school4.constant.Keyword;
 import com.fwk.school4.model.ChildBean;
 import com.fwk.school4.model.StationModeBean;
 import com.fwk.school4.ui.adapter.BaseRecyclerAdapter;
-import com.fwk.school4.ui.adapter.ShangCheRecyclerAdapter;
 import com.fwk.school4.ui.adapter.XiaCheRecyclerAdapter;
 import com.fwk.school4.utils.SharedPreferencesUtils;
 import com.fwk.school4.weight.CenterItemDialog;
@@ -25,7 +24,7 @@ import butterknife.OnClick;
  * Created by fanwenke on 16/12/19.
  */
 
-public class XiacheActivity extends BasaActivity implements View.OnClickListener, CenterItemDialog.OnItemClickListener, BaseRecyclerAdapter.OnItemListener {
+public class XiacheActivity extends BaseActivity implements View.OnClickListener, CenterItemDialog.OnItemClickListener, BaseRecyclerAdapter.OnItemListener {
     @InjectView(R.id.title_tv)
     TextView title;
     @InjectView(R.id.tv_name)

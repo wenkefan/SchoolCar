@@ -20,6 +20,7 @@ import static android.icu.lang.UCharacter.GraphemeClusterBreak.T;
 
 /**
  * Created by fanwenke on 16/11/21.
+ * 请求班次接口
  */
 
 public class BanCinetwork extends BaseNetWork {

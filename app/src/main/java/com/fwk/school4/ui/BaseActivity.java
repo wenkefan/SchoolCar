@@ -11,7 +11,7 @@ import butterknife.ButterKnife;
  * Created by fanwenke on 16/12/5.
  */
 
-public abstract class BasaActivity extends AppCompatActivity {
+public abstract class BaseActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {

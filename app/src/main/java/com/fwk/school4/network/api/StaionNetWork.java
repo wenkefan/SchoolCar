@@ -16,10 +16,10 @@ import java.util.List;
 
 /**
  * Created by fanwenke on 16/11/21.
+ * 站点接口
  */
 
 public class StaionNetWork extends BaseNetWork {
-
 
 
     private static Activity mActivity;
@@ -49,7 +49,7 @@ public class StaionNetWork extends BaseNetWork {
                 StationBean bean = (StationBean) cla;
                 try {
 
-                    for (StationBean.RerurnValueBean bean1 : bean.getRerurnValue()){
+                    for (StationBean.RerurnValueBean bean1 : bean.getRerurnValue()) {
                         StationBean.RerurnValueBean valueBean = bean1;
                         String modeDown = StationMode.setDown(bean1.getStationName());
                         String modeUp = StationMode.setUp(bean1.getStationName());
@@ -70,32 +70,23 @@ public class StaionNetWork extends BaseNetWork {
 
                 }
                 List<StaBean> staBeen = new ArrayList<>();
-//                List<StationModeBean> listId = new ArrayList<>();
-                for (StationBean.RerurnValueBean bean1 : bean.getRerurnValue()){
-//                    StationModeBean modeBean = new StationModeBean();
-//                    modeBean.setId(bean1.getStationId());
-//                    modeBean.setNameDown(bean1.getStationiddown());
-//                    modeBean.setNameUp(bean1.getStationidup());
-//                    modeBean.setStationiddown(StationMode.setDown(bean1.getStationName()));
-//                    modeBean.setStationidup(StationMode.setUp(bean1.getStationName()));
-//                    listId.add(modeBean);
+                for (StationBean.RerurnValueBean bean1 : bean.getRerurnValue()) {
                     StaBean staBean1 = new StaBean();
                     staBean1.setId(bean1.getStationId());
                     staBean1.setName(StationMode.setDown(bean1.getStationName()));
-                    staBean1.setStrid(bean1.getStationId()+"01");
+                    staBean1.setStrid(bean1.getStationId() + "01");
                     staBean1.setType(1);
                     staBeen.add(staBean1);
                     StaBean staBean2 = new StaBean();
                     staBean2.setId(bean1.getStationId());
                     staBean2.setName(StationMode.setUp(bean1.getStationName()));
-                    staBean2.setStrid(bean1.getStationId()+"02");
+                    staBean2.setStrid(bean1.getStationId() + "02");
                     staBean2.setType(2);
                     staBeen.add(staBean2);
                 }
 
-                spData.saveToShared(Keyword.SP_STATION_LIST,list);
-//                sp.saveToShared(Keyword.STATIONIDLIST,listId);
-                spData.saveToShared(Keyword.STAIDLIST,staBeen);
+                spData.saveToShared(Keyword.SP_STATION_LIST, list);
+                spData.saveToShared(Keyword.STAIDLIST, staBeen);
                 listener.NetWorkSuccess(Keyword.FLAGSTATION);
                 bean = null;
 

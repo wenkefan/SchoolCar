@@ -103,7 +103,7 @@ public class MainDialog {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setCancelable(false);
         builder.setTitle("警告").setMessage(name + "正在运行中...");
-        builder.setNegativeButton("重新", new DialogInterface.OnClickListener() {
+        builder.setNegativeButton("返回列表", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 SharedPreferencesUtils sp = new SharedPreferencesUtils();

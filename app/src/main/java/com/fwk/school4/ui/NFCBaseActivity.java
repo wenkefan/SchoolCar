@@ -10,7 +10,7 @@ import android.widget.Toast;
 import com.fwk.school4.utils.DataConversionUtils;
 
 
-public abstract class NFCBaseActivity extends BasaActivity {
+public abstract class NFCBaseActivity extends BaseActivity {
 	private NfcAdapter nfcAdapter = null;
 	private PendingIntent pendingIntent = null;
 	private IntentFilter[] intentFilters = null;

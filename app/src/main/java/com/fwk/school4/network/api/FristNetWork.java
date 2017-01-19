@@ -10,6 +10,7 @@ import com.fwk.school4.utils.ToastUtil;
 
 /**
  * Created by fanwenke on 16/11/22.
+ * 发送班次
  */
 
 public class FristNetWork extends BaseNetWork {
