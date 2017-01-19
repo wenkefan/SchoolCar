@@ -241,6 +241,7 @@ public class SongChildListActivity2 extends NFCBaseActivity implements JieChildL
                 case Keyword.FLAGENDDAOZHAN:
                     ToastUtil.show("结束了");
                     sp.removData();
+                    spData.removData();
                     finish();
                     break;
                 case Keyword.FLAGDOWNCAR:

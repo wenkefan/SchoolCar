@@ -37,6 +37,13 @@ import butterknife.InjectView;
  * Created by fanwenke on 16/12/5.
  */
 
+/**
+ * 主页逻辑
+ * 1.判断用户之前是否有未到站班次，如果有，弹出继续或者返回列表对话框，如果没有，请求班次列表
+ *          （未实现）保存所有的发送的班次缓存
+ * 2.判断选择的班次是否为用户班次
+ * 3.判断班次的状态：1.未发车；2已发车；3已结束。未发车的班次随时可发车，已发车的班次只有发送这个班次用户进入，已结束的都不能进入
+ */
 public class MainActivity extends BaseActivity implements NetWorkListener, BaseRecyclerAdapter.OnItemListener, FacheListener {
 
     private MainRecyclerViewAdapter adapter;
@@ -44,6 +51,7 @@ public class MainActivity extends BaseActivity implements NetWorkListener, BaseR
     private SharedPreferencesUtils sp;
     private SharedPreferencesUtils2 spData;
     private String FristURL;
+    private List<BanciBean.RerurnValueBean> banciData;
 
     @InjectView(R.id.man_recyclerView)
     RecyclerView mRecyclerView;
@@ -58,24 +66,24 @@ public class MainActivity extends BaseActivity implements NetWorkListener, BaseR
 
     @Override
     public void init() {
+        title.setText(SpLogin.getKgName());
         sp = new SharedPreferencesUtils();
         spData = new SharedPreferencesUtils2();
-        if (!sp.getBoolean(Keyword.BEGIN)){
-            sp.removData();
-            spData.removData();
-        }
-        title.setText(SpLogin.getKgName());
+        //判断是否在运行中
         if (sp.getBoolean(Keyword.BEGIN)) {
+            //在运行中，弹出对话框
             MainDialog.Beagin(this, (BanciBean.RerurnValueBean) sp.queryForSharedToObject(Keyword.SELECTBANCI));
         } else {
-            //请求班次
+            //请求班次接口
             requestBanci();
         }
 
     }
 
+    /**
+     * 配置RecyclerView
+     */
     private void recyclerView() {
-        //配置RecyclerView
         linearLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setLayoutManager(linearLayoutManager);
@@ -84,8 +92,10 @@ public class MainActivity extends BaseActivity implements NetWorkListener, BaseR
         adapter.setOnItemListener(this);
     }
 
+    /**
+     * 请求班次接口
+     */
     public void requestBanci() {
-        //请求班次接口
         BanCinetwork banCinetwork = BanCinetwork.newInstance(this);
         banCinetwork.setNetWorkListener(this);
         String url = String.format(HTTPURL.API_BANCI, SpLogin.getKgId());
@@ -110,8 +120,9 @@ public class MainActivity extends BaseActivity implements NetWorkListener, BaseR
         public void handleMessage(Message msg) {
             switch (msg.what) {
                 case Keyword.FLAGBANCI:
-
+                    //请求成功加载班次列表
                     recyclerView();
+                    banciData = (List<BanciBean.RerurnValueBean>) spData.queryForSharedToObject(Keyword.SP_BANCI_LIST);
                     break;
                 case Keyword.FLAGFIRSTFACHE:
                     sp.removData();
@@ -140,16 +151,16 @@ public class MainActivity extends BaseActivity implements NetWorkListener, BaseR
     @Override
     public void setOnItemListener(int position, BaseRecyclerAdapter.ClickableViewHolder holder) {
 
-        BanciBean.RerurnValueBean bean =
-                ((List<BanciBean.RerurnValueBean>) (spData.queryForSharedToObject(Keyword.SP_BANCI_LIST))).get(position);
+        BanciBean.RerurnValueBean bean = banciData.get(position);
         SpBanci.save(bean.getBusScheduleId(), bean.getLineId(), bean.getAttendanceDirections());
         this.bean = bean;
         switch (bean.getStatus()) {
             case 0:
                 spData.setInt(Keyword.SP_ATTENDANCEDIRECTIONS, bean.getAttendanceDirections());
+                //判断是否为用户的班次，弹出不同对话框
                 if (bean.getOriginal()) {
-
-                    MainDialog.ShowJRBanci(this, bean.getBusScheduleName(), bean.getAttendanceDirections(), position);
+                    MainDialog.ShowJRBanci(this, bean.getBusScheduleName(),
+                            bean.getAttendanceDirections(), position);
                 } else {
                     MainDialog.ShowDLBanci(this, bean.getBusScheduleName(), bean.getTeacherName(),
                             bean.getAttendanceDirections(), position);

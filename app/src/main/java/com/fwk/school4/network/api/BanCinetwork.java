@@ -64,13 +64,14 @@ public class BanCinetwork extends BaseNetWork {
                     for (BanciBean.RerurnValueBean valueBean : bean.getRerurnValue()) {
 
                         if (valueBean.getTeacherId() == SpLogin.getWorkerExtensionId()) {
+                            //表示为用户的班次
                             valueBean.setOriginal(true);
                             list1.add(0, valueBean);
                         } else {
+                            //表示为非用户的班次
                             valueBean.setOriginal(false);
                             list.add(valueBean);
                         }
-
                     }
 
                 } catch (Exception o) {
@@ -91,8 +92,7 @@ public class BanCinetwork extends BaseNetWork {
                 for (int i = 0; i < list1.size(); i++){
                     list.add(i,list1.get(i));
                 }
-
-                spData.saveToShared(Keyword.SP_BANCI, bean);
+//                spData.saveToShared(Keyword.SP_BANCI, bean);
                 spData.saveToShared(Keyword.SP_BANCI_LIST, list);
                 bean = null;
                 list = null;
