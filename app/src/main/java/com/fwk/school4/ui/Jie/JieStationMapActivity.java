@@ -43,6 +43,17 @@ import butterknife.InjectView;
 
 /**
  * Created by fanwenke on 16/12/7.
+ * 接幼儿页面
+ * 1.显示下一站点名称、预计到站时间、车上剩余人数
+ * 2.recyclerView展示站点 加载数据。
+ * <p>
+ * 业务逻辑
+ * 1.第一次进入此页面，加载站点数据，存储缓存。
+ * 2.由外而内：
+ * 2.1.正在行驶中，读取缓存数据，加载站点信息
+ * 2.2.等着上车，跳转到上下车页面
+ * 3.由内而外
+ * 3.1.读取缓存数据，站点指针为下一站。
  */
 
 public class JieStationMapActivity extends BaseActivity implements NetWorkListener, BaseRecyclerAdapter.OnItemListener, DaoZhanListener {
@@ -68,9 +79,6 @@ public class JieStationMapActivity extends BaseActivity implements NetWorkListen
     private SharedPreferencesUtils sp;
     private SharedPreferencesUtils2 spData;
 
-    private List<BanciBean.RerurnValueBean> list;
-
-//    private List<StationBean.RerurnValueBean> stationList;
 
     private DisplayMetrics display;
 
@@ -89,17 +97,7 @@ public class JieStationMapActivity extends BaseActivity implements NetWorkListen
     protected void onResume() {
         super.onResume();
         boolean is = sp.getBoolean(Keyword.ISDAOZHAN);
-        if (!sp.getBoolean(Keyword.BEGIN)) {
-            this.finish();
-            return;
-        }
         if (is) {
-            stationPosition = sp.getInt(Keyword.THISSATION);
-            setTitleNemaTime();
-            adapter.setPostion(stationPosition);
-            adapter.setNumberSX();
-            adapter.notifyDataSetChanged();
-        } else {
             try {
                 StateStationBean stateStationBean = (StateStationBean) sp.queryForSharedToObject(Keyword.STATESTATIONBEAN);
                 Intent intent = new Intent(JieStationMapActivity.this, JieChildListActivity2.class);
@@ -115,23 +113,23 @@ public class JieStationMapActivity extends BaseActivity implements NetWorkListen
 
     @Override
     public void init() {
-        title.setText(getResources().getString(R.string.map_tltile));
         sp = new SharedPreferencesUtils();
         spData = new SharedPreferencesUtils2();
-        display = new DisplayMetrics();
-        getWindowManager().getDefaultDisplay().getMetrics(display);
         Intent intent = getIntent();
-        int position = intent.getIntExtra(Keyword.POTIONIT, 0);
-        if (position == -1) {
+        if (bean == null) {
+            bean = (BanciBean.RerurnValueBean) sp.queryForSharedToObject(Keyword.SELECTBANCI);
+        }
+        if (intent.getIntExtra(Keyword.POTIONIT,0) == -1) {
             setData();
         } else {
-            initData(position);
+            initData();
         }
+
+        title.setText(bean.getBusScheduleName());
+
     }
 
-    private void initData(int position) {//初始化数据
-        list = (List<BanciBean.RerurnValueBean>) spData.queryForSharedToObject(Keyword.SP_BANCI_LIST);
-        bean = list.get(position);
+    private void initData() {//初始化数据
         //站点url
         String url = String.format(HTTPURL.API_ZHANDIAN, SpLogin.getKgId(),
                 bean.getAttendanceDirections(), bean.getLineId());
@@ -150,6 +148,8 @@ public class JieStationMapActivity extends BaseActivity implements NetWorkListen
     }
 
     private void recyclerInit() {
+        display = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(display);
         times = (List<String>) sp.queryForSharedToObject(Keyword.GETSJTIME);
         if (times == null) {
             times = new ArrayList<>();
@@ -217,13 +217,14 @@ public class JieStationMapActivity extends BaseActivity implements NetWorkListen
                     stateStationBean.setStationSelId(stationSelId);
                     stateStationBean.setPosition(Position);
                     sp.saveToShared(Keyword.STATESTATIONBEAN, stateStationBean);
-                    sp.setboolean(Keyword.ISDAOZHAN, false);
+                    sp.setboolean(Keyword.ISDAOZHAN, true);
                     setSJTime();
                     Intent intent = new Intent(JieStationMapActivity.this, JieChildListActivity2.class);
                     intent.putExtra(Keyword.JUMPPOSITION, true);
                     intent.putExtra(Keyword.STATIONPOSITION, Position);
                     intent.putExtra(Keyword.SELECTSTATIONID, stationSelId);
                     startActivity(intent);
+                    finish();
                     break;
                 case Keyword.FLAGFACHE1:
                     setSJTime();

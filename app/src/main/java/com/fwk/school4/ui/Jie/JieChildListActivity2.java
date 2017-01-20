@@ -234,7 +234,10 @@ public class JieChildListActivity2 extends NFCBaseActivity implements JieChildLi
                 case Keyword.FLAGDAOZHAN:
                     stationPosition++;
                     sp.setInt(Keyword.THISSATION, stationPosition);
-                    sp.setboolean(Keyword.ISDAOZHAN, true);
+                    sp.setboolean(Keyword.ISDAOZHAN, false);
+                    Intent intent = new Intent(JieChildListActivity2.this, JieStationMapActivity.class);
+                    intent.putExtra(Keyword.POTIONIT, -1);
+                    startActivity(intent);
                     finish();
                     break;
                 case Keyword.FLAGENDDAOZHAN:

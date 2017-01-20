@@ -45,12 +45,10 @@ public class MainDialog {
                 if (fangxiang == 1) {
                     //接幼儿
                     intent = new Intent(context, JieStationMapActivity.class);
-                    intent.putExtra(Keyword.POTIONIT, position);
 
                 } else {
                     //送幼儿
                     intent = new Intent(context, SongStationMapActivity.class);
-                    intent.putExtra(Keyword.POTIONIT, position);
 
                 }
                 listener.BackListener(intent);
@@ -78,12 +76,10 @@ public class MainDialog {
                 if (fangxiang == 1) {
                     //接幼儿
                     intent = new Intent(context, JieStationMapActivity.class);
-                    intent.putExtra(Keyword.POTIONIT, position);
 
                 } else {
                     //送幼儿
                     intent = new Intent(context, SongStationMapActivity.class);
-                    intent.putExtra(Keyword.POTIONIT, position);
 
                 }
 

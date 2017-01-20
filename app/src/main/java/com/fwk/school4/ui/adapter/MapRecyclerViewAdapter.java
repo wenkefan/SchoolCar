@@ -26,6 +26,10 @@ import java.util.Map;
 
 /**
  * Created by fanwenke on 16/12/7.
+ * 加载站点adapter
+ * 1.提示标识呼吸灯模式
+ * 2.加载每个站点已上下车人数和总上下车人数
+ * 3.显示到站的实际时间
  */
 
 public class MapRecyclerViewAdapter extends BaseRecyclerAdapter implements View.OnClickListener {

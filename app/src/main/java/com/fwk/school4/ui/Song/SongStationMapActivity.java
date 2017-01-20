@@ -83,35 +83,26 @@ public class SongStationMapActivity extends BaseActivity implements NetWorkListe
 
     @Override
     public void init() {
-        title.setText(getResources().getString(R.string.map_tltile));
         sp = new SharedPreferencesUtils();
         spData = new SharedPreferencesUtils2();
-        display = new DisplayMetrics();
-        getWindowManager().getDefaultDisplay().getMetrics(display);
         Intent intent = getIntent();
-        int position = intent.getIntExtra(Keyword.POTIONIT, 0);
-        if (position == -1) {
+        if (bean == null){
+            bean = (BanciBean.RerurnValueBean) sp.queryForSharedToObject(Keyword.SELECTBANCI);
+        }
+        if (intent.getIntExtra(Keyword.POTIONIT,0) == -1) {
             setData();
         } else {
-            initData(position);
+            initData();
         }
+
+        title.setText(bean.getBusScheduleName());
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         boolean is = sp.getBoolean(Keyword.ISDAOZHAN);
-        if (!sp.getBoolean(Keyword.BEGIN)) {
-            this.finish();
-            return;
-        }
         if (is) {
-            stationPosition = sp.getInt(Keyword.THISSATION);
-            setTitleNemaTime();
-            adapter.setPostion(stationPosition);
-            adapter.setNumberSX();
-            adapter.notifyDataSetChanged();
-        } else {
             try {
                 StateStationBean stateStationBean = (StateStationBean) sp.queryForSharedToObject(Keyword.STATESTATIONBEAN);
                 Intent intent = new Intent(SongStationMapActivity.this, SongChildListActivity2.class);
@@ -125,9 +116,7 @@ public class SongStationMapActivity extends BaseActivity implements NetWorkListe
         }
     }
 
-    private void initData(int position) {//初始化数据
-        list = (List<BanciBean.RerurnValueBean>) spData.queryForSharedToObject(Keyword.SP_BANCI_LIST);
-        bean = list.get(position);
+    private void initData() {//初始化数据
         //站点url
         String url = String.format(HTTPURL.API_ZHANDIAN, SpLogin.getKgId(),
                 bean.getAttendanceDirections(), bean.getLineId());
@@ -150,6 +139,8 @@ public class SongStationMapActivity extends BaseActivity implements NetWorkListe
         if (times == null) {
             times = new ArrayList<>();
         }
+        display = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(display);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(layoutManager);
         adapter = new MapRecyclerViewAdapter(display, stationPosition, times);
@@ -210,7 +201,7 @@ public class SongStationMapActivity extends BaseActivity implements NetWorkListe
                     stateStationBean.setStationSelId(stationSelId);
                     stateStationBean.setPosition(Position);
                     sp.saveToShared(Keyword.STATESTATIONBEAN, stateStationBean);
-                    sp.setboolean(Keyword.ISDAOZHAN, false);
+                    sp.setboolean(Keyword.ISDAOZHAN, true);
                     setSJTime();
                     Intent intent = new Intent(SongStationMapActivity.this, SongChildListActivity2.class);
                     intent.putExtra(Keyword.JUMPPOSITION, true);

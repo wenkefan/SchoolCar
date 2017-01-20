@@ -235,7 +235,10 @@ public class SongChildListActivity2 extends NFCBaseActivity implements JieChildL
                 case Keyword.FLAGDAOZHAN:
                     position++;
                     sp.setInt(Keyword.THISSATION, position);
-                    sp.setboolean(Keyword.ISDAOZHAN, true);
+                    sp.setboolean(Keyword.ISDAOZHAN, false);
+                    Intent intent = new Intent(SongChildListActivity2.this,SongStationMapActivity.class);
+                    intent.putExtra(Keyword.POTIONIT, -1);
+                    startActivity(intent);
                     finish();
                     break;
                 case Keyword.FLAGENDDAOZHAN:
