@@ -4,7 +4,9 @@
     android:layout_height="match_parent"
     android:background="@color/page_bg_color"
     android:orientation="vertical">
+
     <include layout="@layout/titile" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -162,6 +164,7 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/ll_zhuangtai"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/white"
@@ -188,13 +191,15 @@
                 android:paddingBottom="5dp"
                 android:paddingTop="5dp"
                 android:textSize="@dimen/font_size_small"
-                android:visibility="gone"/>
+                android:visibility="gone" />
+
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/rv_select_type"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="0.7"/>
+                android:layout_weight="0.7" />
         </LinearLayout>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -243,18 +248,40 @@
             android:layout_height="0.5dp"
             android:background="@color/divider" />
 
-        <Button
-            android:id="@+id/btn_confirm"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
-            android:layout_marginTop="30dp"
-            android:background="@drawable/schoolcar_selectstart"
-            android:text="确定"
-            android:textColor="@color/white"
-            android:textSize="@dimen/font_size_small"
-            android:textStyle="bold" />
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/btn_fanhui"
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginTop="30dp"
+                android:layout_weight="1"
+                android:background="@drawable/schoolcar_selectstart"
+                android:text="取消"
+                android:textColor="@color/white"
+                android:textSize="@dimen/font_size_small"
+                android:textStyle="bold" />
+
+            <Button
+                android:id="@+id/btn_confirm"
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginTop="30dp"
+                android:layout_weight="1"
+                android:background="@drawable/schoolcar_selectstart"
+                android:text="确定"
+                android:textColor="@color/white"
+                android:textSize="@dimen/font_size_small"
+                android:textStyle="bold" />
+
+        </LinearLayout>
     </LinearLayout>
 
 </LinearLayout>

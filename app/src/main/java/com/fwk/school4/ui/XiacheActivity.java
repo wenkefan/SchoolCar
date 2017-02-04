@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.fwk.school4.R;
@@ -43,6 +45,10 @@ public class XiacheActivity extends BaseActivity implements View.OnClickListener
     TextView tvSelectStation;
     @InjectView(R.id.rv_select_type)
     RecyclerView rv;
+    @InjectView(R.id.ll_zhuangtai)
+    LinearLayout zhuangtai;
+    @InjectView(R.id.btn_confirm)
+    Button quding;
 
     private ChildBean.RerurnValueBean bean;
     private SharedPreferencesUtils sp = new SharedPreferencesUtils();
@@ -52,6 +58,7 @@ public class XiacheActivity extends BaseActivity implements View.OnClickListener
     private List<StationModeBean> stationModeBeen;
     private LinearLayoutManager manager;
     private XiaCheRecyclerAdapter adapter;
+    private boolean jumpPosition;
 
     public XiacheActivity() {
 
@@ -66,6 +73,7 @@ public class XiacheActivity extends BaseActivity implements View.OnClickListener
     @Override
     public void init() {
         Intent intent = getIntent();
+        jumpPosition = intent.getBooleanExtra(Keyword.JUMPPOSITION,false );
         bean = (ChildBean.RerurnValueBean) intent.getSerializableExtra("bean");
         manager = new LinearLayoutManager(this);
         initView();
@@ -84,9 +92,13 @@ public class XiacheActivity extends BaseActivity implements View.OnClickListener
         adapter = new XiaCheRecyclerAdapter();
         rv.setAdapter(adapter);
         adapter.setOnItemListener(this);
+        if (!jumpPosition){
+            zhuangtai.setVisibility(View.GONE);
+            quding.setVisibility(View.GONE);
+        }
     }
 
-    @OnClick({R.id.btn_confirm, R.id.tv_ask_for_leave_status, R.id.tv_select_station})
+    @OnClick({R.id.btn_confirm, R.id.tv_ask_for_leave_status, R.id.tv_select_station, R.id.btn_fanhui})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.btn_confirm:
@@ -94,6 +106,9 @@ public class XiacheActivity extends BaseActivity implements View.OnClickListener
                     intent.putExtra(Keyword.SP_SELECT_ID, 5);
                     setResult(RESULT_OK, intent);
                     finish();
+                break;
+            case R.id.btn_fanhui:
+                finish();
                 break;
             case R.id.tv_ask_for_leave_status:
                 dialog.show();

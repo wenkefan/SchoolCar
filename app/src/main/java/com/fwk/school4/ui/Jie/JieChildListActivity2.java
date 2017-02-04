@@ -115,11 +115,13 @@ public class JieChildListActivity2 extends NFCBaseActivity implements JieChildLi
         bundle.putSerializable("bean", bean);
         if (staid.getType() == 1) {
             Intent intent = new Intent(this, ShangcheActivity.class);
+            intent.putExtra(Keyword.JUMPPOSITION, jumpPosition);
             intent.putExtras(bundle);
             startActivityForResult(intent, 1);
         }
         if (staid.getType() == 2) {
             Intent intent = new Intent(this, XiacheActivity.class);
+            intent.putExtra(Keyword.JUMPPOSITION, jumpPosition);
             intent.putExtras(bundle);
             startActivityForResult(intent, 2);
         }
