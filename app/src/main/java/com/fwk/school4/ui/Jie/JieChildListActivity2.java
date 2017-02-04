@@ -82,6 +82,10 @@ public class JieChildListActivity2 extends NFCBaseActivity implements JieChildLi
     @Override
     public void init() {
         title.setText(R.string.jie);
+        if (!jumpPosition){
+            title.setText(R.string.chakan);
+            btn.setVisibility(View.GONE);
+        }
 
         Intent intent = getIntent();
         stationPosition = intent.getIntExtra(Keyword.STATIONPOSITION, 0);
@@ -97,9 +101,6 @@ public class JieChildListActivity2 extends NFCBaseActivity implements JieChildLi
         if (stationPosition == stationlist.size() - 1) {
             btn.setText("结束");
             isJieShu = true;
-        }
-        if (!jumpPosition){
-            btn.setVisibility(View.GONE);
         }
     }
 

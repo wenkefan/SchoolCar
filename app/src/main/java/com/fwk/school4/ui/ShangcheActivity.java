@@ -1,6 +1,7 @@
 package com.fwk.school4.ui;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -50,6 +51,10 @@ public class ShangcheActivity extends BaseActivity implements View.OnClickListen
     LinearLayout zhuangtai;
     @InjectView(R.id.btn_confirm)
     Button quding;
+    @InjectView(R.id.tv_mother_phone)
+    TextView mother_phone;
+    @InjectView(R.id.tv_father_phone)
+    TextView father_phone;
     private ChildBean.RerurnValueBean bean;
     private SharedPreferencesUtils sp = new SharedPreferencesUtils();
     private SharedPreferencesUtils2 spData = new SharedPreferencesUtils2();
@@ -98,7 +103,7 @@ public class ShangcheActivity extends BaseActivity implements View.OnClickListen
         }
     }
 
-    @OnClick({R.id.btn_confirm, R.id.tv_ask_for_leave_status, R.id.tv_select_station, R.id.btn_fanhui})
+    @OnClick({R.id.btn_confirm, R.id.tv_ask_for_leave_status, R.id.tv_select_station, R.id.btn_fanhui, R.id.tv_father_phone, R.id.tv_mother_phone})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.btn_confirm:
@@ -114,6 +119,17 @@ public class ShangcheActivity extends BaseActivity implements View.OnClickListen
                 dialog.show();
                 break;
             case R.id.tv_select_station:
+                break;
+            case R.id.tv_father_phone:
+                //"android.intent.action.CALL"为隐式Intent跳转到拨打电话的activity
+                String num1 = (String) father_phone.getText();
+                Intent photoIntent1 =new Intent("android.intent.action.CALL", Uri.parse("tel:"+num1));
+                startActivity(photoIntent1);
+                break;
+            case R.id.tv_mother_phone:
+                String num2 = (String) mother_phone.getText();
+                Intent photoIntent2 =new Intent("android.intent.action.CALL", Uri.parse("tel:"+num2));
+                startActivity(photoIntent2);
                 break;
         }
     }
