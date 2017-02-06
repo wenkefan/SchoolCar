@@ -70,18 +70,21 @@ public class StaionNetWork extends BaseNetWork {
 
                 }
                 List<StaBean> staBeen = new ArrayList<>();
-                for (StationBean.RerurnValueBean bean1 : bean.getRerurnValue()) {
+                for (int i = 0; i < bean.getRerurnValue().size();i++) {
+                    StationBean.RerurnValueBean bean1 = bean.getRerurnValue().get(i);
                     StaBean staBean1 = new StaBean();
                     staBean1.setId(bean1.getStationId());
                     staBean1.setName(StationMode.setDown(bean1.getStationName()));
                     staBean1.setStrid(bean1.getStationId() + "01");
                     staBean1.setType(1);
+                    staBean1.setOrder(i * 2 + 1);
                     staBeen.add(staBean1);
                     StaBean staBean2 = new StaBean();
                     staBean2.setId(bean1.getStationId());
                     staBean2.setName(StationMode.setUp(bean1.getStationName()));
                     staBean2.setStrid(bean1.getStationId() + "02");
                     staBean2.setType(2);
+                    staBean2.setOrder(i * 2);
                     staBeen.add(staBean2);
                 }
 

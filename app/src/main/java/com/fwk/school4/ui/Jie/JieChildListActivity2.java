@@ -81,16 +81,16 @@ public class JieChildListActivity2 extends NFCBaseActivity implements JieChildLi
 
     @Override
     public void init() {
-        title.setText(R.string.jie);
-        if (!jumpPosition){
-            title.setText(R.string.chakan);
-            btn.setVisibility(View.GONE);
-        }
 
         Intent intent = getIntent();
         stationPosition = intent.getIntExtra(Keyword.STATIONPOSITION, 0);
         jumpPosition = intent.getBooleanExtra(Keyword.JUMPPOSITION,false );
         selStationID = intent.getIntExtra(Keyword.SELECTSTATIONID,-1);
+        title.setText(R.string.jie);
+        if (!jumpPosition){
+            title.setText(R.string.chakan);
+            btn.setVisibility(View.GONE);
+        }
         manager = new LinearLayoutManager(this);
         rv.setHasFixedSize(true);
         rv.setLayoutManager(manager);

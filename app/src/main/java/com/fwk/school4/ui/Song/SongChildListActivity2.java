@@ -102,6 +102,7 @@ public class SongChildListActivity2 extends NFCBaseActivity implements JieChildL
         }
         if (!jumpPosition){
             btn.setVisibility(View.GONE);
+            title.setText(R.string.chakan);
         }
     }
 

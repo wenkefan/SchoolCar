@@ -11,6 +11,15 @@ public class StaBean implements Serializable {
     private String strid;
     private String name;
     private int type;
+    private int order;
+
+    public int getOrder() {
+        return order;
+    }
+
+    public void setOrder(int order) {
+        this.order = order;
+    }
 
     public int getType() {
         return type;

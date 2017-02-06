@@ -33,17 +33,18 @@ public class Stationutil {
         list = (List<StaBean>) spData.queryForSharedToObject(Keyword.STAIDLIST);
     }
 
+    /**
+     * 筛选出要上车的幼儿，根据站点来进行分组。顺序和站点列表保持一致。
+     */
     public void setMaplist() {
 
         int attendanceDirections = spData.getInt(Keyword.SP_ATTENDANCEDIRECTIONS);
         switch (attendanceDirections) {
             case 1:
-//                jieList(bean, stationIdList);
                 Jiefenzu();
                 break;
 
             case 2:
-//                songList(bean, stationIdList);
                 Songfenzu();
                 break;
         }
@@ -60,7 +61,7 @@ public class Stationutil {
             boolean number = false;
             List<ChildBean.RerurnValueBean> child = new ArrayList<>();
             for (ChildBean.RerurnValueBean childBean : bean) {
-                if (childBean.getConnectStation() == staBean.getId() && !staBean.getStrid().equals(staBean.getId() + "02")) {
+                if (childBean.getConnectStation() == staBean.getId() && staBean.getStrid().equals(staBean.getId() + "01")) {
                     child.add(childBean);
                     number = true;
                 }
@@ -81,7 +82,7 @@ public class Stationutil {
             boolean number = false;
             List<ChildBean.RerurnValueBean> child = new ArrayList<>();
             for (ChildBean.RerurnValueBean childBean : bean) {
-                if (childBean.getSendStartStation() == staBean.getId() && !staBean.getStrid().equals(staBean.getId() + "02")) {
+                if (childBean.getSendStartStation() == staBean.getId() && staBean.getStrid().equals(staBean.getId() + "01")) {
                     child.add(childBean);
                     number = true;
                 }
@@ -94,6 +95,16 @@ public class Stationutil {
         spData.saveToShared(Keyword.MAPLIST, map);
         spData.saveToShared(Keyword.SELECTSTA, selectSta);
     }
+
+
+
+
+
+
+
+
+
+
 
     public int JumpPosition(int stationPosition) {
         int number = 0;

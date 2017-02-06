@@ -5,6 +5,8 @@ import com.fwk.school4.model.ChildBean;
 import com.fwk.school4.model.StaBean;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -36,6 +38,7 @@ public class ChildData {
         //第一步
         List<StaBean> stationlist = (List<StaBean>) spData.queryForSharedToObject(Keyword.STAIDLIST);
         List<StaBean> bean = (List<StaBean>) spData.queryForSharedToObject(Keyword.SELECTSTA);
+        StationComparator comparator = new StationComparator();
         boolean flag = false;
         if (position == 1) {
             int stationId = map.get(staBean.getStrid()).get(mItem).getSendStation();//下车站点ID
@@ -54,21 +57,12 @@ public class ChildData {
                 list = new ArrayList<>();
                 ChildBean.RerurnValueBean valueBean = map.get(staBean.getStrid()).get(mItem);
                 list.add(setNew(valueBean));
-                for (int i = 0; i < bean.size(); i++) {
-                    if (bean.get(i).getId() == station.getId()) {
-                        bean.add(i + 1, station);
-                        flag = true;
-                        break;
-                    }
-                }
-                if (!flag) {
-                    bean.add(station);
-                }
+                bean.add(station);
             } else {
                 ChildBean.RerurnValueBean valueBean = map.get(staBean.getStrid()).get(mItem);
                 list.add(setNew(valueBean));
             }
-
+            Collections.sort(bean, comparator);
             map.put(strId, list);
             Songshangche(map, staBean, mItem);
         } else {
@@ -79,8 +73,8 @@ public class ChildData {
                 List<ChildBean.RerurnValueBean> list = map.get(stationId + "02");
                 if (list.size() == 1) {
                     map.remove(stationId + "02");
-                    for (int i = 0; i < bean.size(); i++){
-                        if (bean.get(i).getStrid().equals(stationId+ "02")){
+                    for (int i = 0; i < bean.size(); i++) {
+                        if (bean.get(i).getStrid().equals(stationId + "02")) {
                             bean.remove(i);
                             break;
                         }
@@ -120,6 +114,7 @@ public class ChildData {
         //第一步
         List<StaBean> stationlist = (List<StaBean>) spData.queryForSharedToObject(Keyword.STAIDLIST);
         List<StaBean> bean = (List<StaBean>) spData.queryForSharedToObject(Keyword.SELECTSTA);
+        StationComparator comparator = new StationComparator();
         boolean flag = false;
         if (position == 1) {
 
@@ -139,20 +134,12 @@ public class ChildData {
                 list = new ArrayList<>();
                 ChildBean.RerurnValueBean valueBean = map.get(staBean.getStrid()).get(mItem);
                 list.add(setNew(valueBean));
-                for (int i = 0; i < bean.size(); i++) {
-                    if (bean.get(i).getId() == station.getId()) {
-                        bean.add(i + 1, station);
-                        flag = true;
-                        break;
-                    }
-                }
-                if (!flag) {
-                    bean.add(station);
-                }
+                bean.add(station);
             } else {
                 ChildBean.RerurnValueBean valueBean = map.get(staBean.getStrid()).get(mItem);
                 list.add(setNew(valueBean));
             }
+            Collections.sort(bean, comparator);
             map.put(strId, list);
             Jieshangche(map, staBean, mItem);
         } else {
@@ -163,8 +150,8 @@ public class ChildData {
                 List<ChildBean.RerurnValueBean> list = map.get(stationId + "02");
                 if (list.size() == 1) {
                     map.remove(stationId + "02");
-                    for (int i = 0; i < bean.size(); i++){
-                        if (bean.get(i).getStrid().equals(stationId+ "02")){
+                    for (int i = 0; i < bean.size(); i++) {
+                        if (bean.get(i).getStrid().equals(stationId + "02")) {
                             bean.remove(i);
                             break;
                         }
