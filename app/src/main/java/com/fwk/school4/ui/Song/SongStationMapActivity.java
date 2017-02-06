@@ -208,7 +208,7 @@ public class SongStationMapActivity extends BaseActivity implements NetWorkListe
                     intent.putExtra(Keyword.STATIONPOSITION, Position);
                     intent.putExtra(Keyword.SELECTSTATIONID, stationSelId);
                     startActivity(intent);
-
+                    finish();
                     break;
                 case Keyword.FLAGFACHE1:
                     setSJTime();

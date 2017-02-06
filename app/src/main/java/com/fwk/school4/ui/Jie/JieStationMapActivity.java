@@ -329,7 +329,7 @@ public class JieStationMapActivity extends BaseActivity implements NetWorkListen
 
     private Map<String, List<StaBean>> map;
 
-    private int getShangChenumber(int stationId) {
+    private int getShangChenumber(int stationId) {//上车站点总数
         map = (Map<String, List<StaBean>>) spData.queryForSharedToObject(Keyword.MAPLIST);
         List<StaBean> list1 = map.get(stationId + "01");
         if (list1 != null) {
@@ -338,7 +338,7 @@ public class JieStationMapActivity extends BaseActivity implements NetWorkListen
         return 0;
     }
 
-    private int getXiaCheNumber(int stationId) {
+    private int getXiaCheNumber(int stationId) {//下车站点总数
         map = (Map<String, List<StaBean>>) spData.queryForSharedToObject(Keyword.MAPLIST);
         List<StaBean> list1 = map.get(stationId + "02");
         if (list1 != null) {

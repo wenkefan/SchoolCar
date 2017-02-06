@@ -74,14 +74,19 @@ public class JieChildListAdapter2 extends BaseRecyclerAdapter {
                     }
                 });
             }
-            if (staBeen.get(position).getId() == selStationID)
-                if (staBeen.get(position).getId() == selStationID) {
-                    Drawable drawable = context.getResources().getDrawable(R.mipmap.station);
-                    drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight());
-                    viewHolde.tv.setCompoundDrawables(drawable, null, null, null);
-                    viewHolde.tv.setTextColor(context.getResources().getColor(R.color.black));
-                    viewHolde.tishi.setVisibility(View.VISIBLE);
-                }
+
+            Drawable drawable1 = context.getResources().getDrawable(R.mipmap.station_1);
+            drawable1.setBounds(0, 0, drawable1.getMinimumWidth(), drawable1.getMinimumHeight());
+            viewHolde.tv.setCompoundDrawables(drawable1, null, null, null);
+            viewHolde.tv.setTextColor(context.getResources().getColor(R.color.darker_gray));
+            viewHolde.tishi.setVisibility(View.GONE);
+            if (staBeen.get(position).getId() == selStationID) {
+                Drawable drawable = context.getResources().getDrawable(R.mipmap.station);
+                drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight());
+                viewHolde.tv.setCompoundDrawables(drawable, null, null, null);
+                viewHolde.tv.setTextColor(context.getResources().getColor(R.color.black));
+                viewHolde.tishi.setVisibility(View.VISIBLE);
+            }
         }
         super.onBindViewHolder(holder, position);
     }

@@ -119,11 +119,13 @@ public class SongChildListActivity2 extends NFCBaseActivity implements JieChildL
         if (staid.getType() == 1) {
             Intent intent = new Intent(this, ShangcheActivity.class);
             intent.putExtras(bundle);
+            intent.putExtra(Keyword.JUMPPOSITION, jumpPosition);
             startActivityForResult(intent, 3);
         }
         if (staid.getType() == 2) {
             Intent intent = new Intent(this, XiacheActivity.class);
             intent.putExtras(bundle);
+            intent.putExtra(Keyword.JUMPPOSITION, jumpPosition);
             startActivityForResult(intent, 4);
         }
     }

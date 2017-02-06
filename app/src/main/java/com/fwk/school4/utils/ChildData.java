@@ -275,7 +275,6 @@ public class ChildData {
         shengyu = sp.getInt(Keyword.CARNUMBER);
         sp.setInt(Keyword.CARNUMBER, shengyu - 1);
         sp.saveToShared(Keyword.XIACHENUMBER, Xiache);
-        LogUtils.d("调用了" + (shengyu - 1));
     }
 
     public static ChildBean.RerurnValueBean setNew(ChildBean.RerurnValueBean valueBean) {
