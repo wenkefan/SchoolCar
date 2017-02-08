@@ -105,6 +105,7 @@ public class JieStationMapActivity extends BaseActivity implements NetWorkListen
                 intent.putExtra(Keyword.JUMPPOSITION, stateStationBean.isJUMPPOSITION());
                 intent.putExtra(Keyword.STATIONPOSITION, stateStationBean.getPosition());
                 intent.putExtra(Keyword.SELECTSTATIONID, stateStationBean.getStationSelId());
+                intent.putExtra(Keyword.DINGWEI, stateStationBean.getDingwei());
                 startActivity(intent);
             } else {
                 mRecyclerView.scrollToPosition(stateStationBean.getPosition() + 1);
@@ -223,6 +224,7 @@ public class JieStationMapActivity extends BaseActivity implements NetWorkListen
                     stateStationBean.setJUMPPOSITION(true);
                     stateStationBean.setStationSelId(stationSelId);
                     stateStationBean.setPosition(Position);
+                    stateStationBean.setDingwei(getPoistion());
                     sp.saveToShared(Keyword.STATESTATIONBEAN, stateStationBean);
                     sp.setboolean(Keyword.ISDAOZHAN, true);
                     setSJTime();

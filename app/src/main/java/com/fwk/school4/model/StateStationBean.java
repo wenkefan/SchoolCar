@@ -10,6 +10,15 @@ public class StateStationBean implements Serializable {
     private boolean JUMPPOSITION;
     private int Position;
     private int stationSelId;
+    private int dingwei;
+
+    public int getDingwei() {
+        return dingwei;
+    }
+
+    public void setDingwei(int dingwei) {
+        this.dingwei = dingwei;
+    }
 
     public boolean isJUMPPOSITION() {
         return JUMPPOSITION;

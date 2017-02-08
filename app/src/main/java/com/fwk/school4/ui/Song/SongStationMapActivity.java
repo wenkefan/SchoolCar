@@ -77,6 +77,7 @@ public class SongStationMapActivity extends BaseActivity implements NetWorkListe
     private int stationPosition = 0;
     private List<String> times;
     private LinearLayoutManager layoutManager;
+
     @Override
     public int getLayoutId() {
         return R.layout.station_map_activity2;
@@ -87,10 +88,10 @@ public class SongStationMapActivity extends BaseActivity implements NetWorkListe
         sp = new SharedPreferencesUtils();
         spData = new SharedPreferencesUtils2();
         Intent intent = getIntent();
-        if (bean == null){
+        if (bean == null) {
             bean = (BanciBean.RerurnValueBean) sp.queryForSharedToObject(Keyword.SELECTBANCI);
         }
-        if (intent.getIntExtra(Keyword.POTIONIT,0) == -1) {
+        if (intent.getIntExtra(Keyword.POTIONIT, 0) == -1) {
             setData();
         } else {
             initData();
@@ -103,20 +104,21 @@ public class SongStationMapActivity extends BaseActivity implements NetWorkListe
     protected void onResume() {
         super.onResume();
         boolean is = sp.getBoolean(Keyword.ISDAOZHAN);
-            try {
-                StateStationBean stateStationBean = (StateStationBean) sp.queryForSharedToObject(Keyword.STATESTATIONBEAN);
-                if (is) {
+        try {
+            StateStationBean stateStationBean = (StateStationBean) sp.queryForSharedToObject(Keyword.STATESTATIONBEAN);
+            if (is) {
                 Intent intent = new Intent(SongStationMapActivity.this, SongChildListActivity2.class);
                 intent.putExtra(Keyword.JUMPPOSITION, stateStationBean.isJUMPPOSITION());
                 intent.putExtra(Keyword.STATIONPOSITION, stateStationBean.getPosition());
                 intent.putExtra(Keyword.SELECTSTATIONID, stateStationBean.getStationSelId());
+                intent.putExtra(Keyword.DINGWEI, stateStationBean.getDingwei());
                 startActivity(intent);
-                }else {
-                    mRecyclerView.scrollToPosition(stateStationBean.getPosition() + 1);
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
+            } else {
+                mRecyclerView.scrollToPosition(stateStationBean.getPosition() + 1);
             }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private void initData() {//初始化数据
@@ -203,6 +205,7 @@ public class SongStationMapActivity extends BaseActivity implements NetWorkListe
                     stateStationBean.setJUMPPOSITION(true);
                     stateStationBean.setStationSelId(stationSelId);
                     stateStationBean.setPosition(Position);
+                    stateStationBean.setDingwei(getPoistion());
                     sp.saveToShared(Keyword.STATESTATIONBEAN, stateStationBean);
                     sp.setboolean(Keyword.ISDAOZHAN, true);
                     setSJTime();
@@ -210,6 +213,7 @@ public class SongStationMapActivity extends BaseActivity implements NetWorkListe
                     intent.putExtra(Keyword.JUMPPOSITION, true);
                     intent.putExtra(Keyword.STATIONPOSITION, Position);
                     intent.putExtra(Keyword.SELECTSTATIONID, stationSelId);
+                    intent.putExtra(Keyword.DINGWEI, getPoistion());
                     startActivity(intent);
                     finish();
                     break;
@@ -327,6 +331,16 @@ public class SongStationMapActivity extends BaseActivity implements NetWorkListe
         List<StaBean> list1 = map.get(stationId + "02");
         if (list1 != null) {
             return list1.size();
+        }
+        return 0;
+    }
+
+    private int getPoistion() {
+        List<StaBean> staBeen = (List<StaBean>) spData.queryForSharedToObject(Keyword.SELECTSTA);
+        for (int i = 0; i < staBeen.size(); i++) {
+            if (staBeen.get(i).getId() == stationSelId) {
+                return i;
+            }
         }
         return 0;
     }
