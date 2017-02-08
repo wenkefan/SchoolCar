@@ -81,6 +81,7 @@ public class JieChildListAdapter2 extends BaseRecyclerAdapter {
             viewHolde.tv.setTextColor(context.getResources().getColor(R.color.darker_gray));
             viewHolde.tishi.setVisibility(View.GONE);
             if (staBeen.get(position).getId() == selStationID) {
+                adapter.setColorl(true);
                 Drawable drawable = context.getResources().getDrawable(R.mipmap.station);
                 drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight());
                 viewHolde.tv.setCompoundDrawables(drawable, null, null, null);

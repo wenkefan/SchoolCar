@@ -22,7 +22,7 @@ import java.util.List;
 public class ChildRecyAdapter extends BaseRecyclerAdapter {
     private Context context;
     private List<ChildBean.RerurnValueBean> list = new ArrayList<>();
-
+    private boolean color;
 
     public ChildRecyAdapter(List<ChildBean.RerurnValueBean> list) {
         this.list = list;
@@ -40,6 +40,8 @@ public class ChildRecyAdapter extends BaseRecyclerAdapter {
             ChildViewHolde holde = (ChildViewHolde) holder;
             holde.tv.setText(list.get(position).getChildName());
             holde.claNa.setText(list.get(position).getClassName());
+            holde.tv.setTextColor(context.getResources().getColor(R.color.darker_gray));
+            holde.claNa.setTextColor(context.getResources().getColor(R.color.darker_gray));
             switch (list.get(position).getSelectid()) {
                 case 0:
                     holde.iv.setBackgroundResource(R.mipmap.bianji);
@@ -60,6 +62,11 @@ public class ChildRecyAdapter extends BaseRecyclerAdapter {
                     holde.iv.setBackgroundResource(R.mipmap.xiache);
                     break;
             }
+
+            if (color){
+                holde.tv.setTextColor(context.getResources().getColor(R.color.black));
+                holde.claNa.setTextColor(context.getResources().getColor(R.color.black));
+            }
         }
         super.onBindViewHolder(holder, position);
     }
@@ -67,6 +74,10 @@ public class ChildRecyAdapter extends BaseRecyclerAdapter {
     @Override
     public int getItemCount() {
         return list.size();
+    }
+
+    public void setColorl(boolean b) {
+        color = b;
     }
 
     public class ChildViewHolde extends ClickableViewHolder {
