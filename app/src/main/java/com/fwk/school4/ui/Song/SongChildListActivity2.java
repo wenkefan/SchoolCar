@@ -96,6 +96,7 @@ public class SongChildListActivity2 extends NFCBaseActivity implements JieChildL
         adapter = new JieChildListAdapter2(selStationID);
         rv.setAdapter(adapter);
         adapter.setOnItemAdapterListener(this);
+        rv.scrollToPosition(position);
         if (position == stationlist.size() - 1) {
             btn.setText("结束");
             isJieShu = true;
@@ -211,6 +212,7 @@ public class SongChildListActivity2 extends NFCBaseActivity implements JieChildL
             carDZNetWork.setNetWorkListener(this);
             carDZNetWork.setUrl(Keyword.FLAGDAOZHAN,url, StationFADAOBean.class);
         }
+
     }
 
     @Override

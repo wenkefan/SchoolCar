@@ -131,4 +131,6 @@ public class Keyword {
     /**************************************业务逻辑关键字***********************************************************/
     //派车单号
     public static final String SP_PAICHEDANHAO = "SP_PAICHEDANHAO";
+    //幼儿列表定位
+    public static final String DINGWEI = "DINGWEI";
 }

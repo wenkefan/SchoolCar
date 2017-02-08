@@ -64,6 +64,7 @@ public class JieChildListActivity2 extends NFCBaseActivity implements JieChildLi
     private StaBean staBean;//选中幼儿所在的站点
     private int mItem;//站点中幼儿的位置数
     private int stationPosition;
+    private int dingwei;//定位
     private boolean jumpPosition;
     private List<StationBean.RerurnValueBean> stationlist;
     private boolean isJieShu = false;
@@ -86,6 +87,7 @@ public class JieChildListActivity2 extends NFCBaseActivity implements JieChildLi
         stationPosition = intent.getIntExtra(Keyword.STATIONPOSITION, 0);
         jumpPosition = intent.getBooleanExtra(Keyword.JUMPPOSITION,false );
         selStationID = intent.getIntExtra(Keyword.SELECTSTATIONID,-1);
+        dingwei = intent.getIntExtra(Keyword.DINGWEI,0);
         title.setText(R.string.jie);
         if (!jumpPosition){
             title.setText(R.string.chakan);
@@ -96,7 +98,8 @@ public class JieChildListActivity2 extends NFCBaseActivity implements JieChildLi
         rv.setLayoutManager(manager);
         adapter = new JieChildListAdapter2(selStationID);
         rv.setAdapter(adapter);
-        rv.smoothScrollToPosition(stationPosition);
+        rv.scrollToPosition(dingwei);
+        LogUtils.d("幼儿定位--" + dingwei);
         adapter.setOnItemAdapterListener(this);
         if (stationPosition == stationlist.size() - 1) {
             btn.setText("结束");

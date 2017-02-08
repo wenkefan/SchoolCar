@@ -13,6 +13,7 @@ import com.fwk.school4.constant.Keyword;
 import com.fwk.school4.constant.SpLogin;
 import com.fwk.school4.listener.DaoZhanListener;
 import com.fwk.school4.listener.NetWorkListener;
+import com.fwk.school4.listener.RecyclerViewListener;
 import com.fwk.school4.model.BanciBean;
 import com.fwk.school4.model.ChildBean;
 import com.fwk.school4.model.FristFaChe;
@@ -75,7 +76,7 @@ public class SongStationMapActivity extends BaseActivity implements NetWorkListe
     private BanciBean.RerurnValueBean bean;
     private int stationPosition = 0;
     private List<String> times;
-
+    private LinearLayoutManager layoutManager;
     @Override
     public int getLayoutId() {
         return R.layout.station_map_activity2;
@@ -102,18 +103,20 @@ public class SongStationMapActivity extends BaseActivity implements NetWorkListe
     protected void onResume() {
         super.onResume();
         boolean is = sp.getBoolean(Keyword.ISDAOZHAN);
-        if (is) {
             try {
                 StateStationBean stateStationBean = (StateStationBean) sp.queryForSharedToObject(Keyword.STATESTATIONBEAN);
+                if (is) {
                 Intent intent = new Intent(SongStationMapActivity.this, SongChildListActivity2.class);
                 intent.putExtra(Keyword.JUMPPOSITION, stateStationBean.isJUMPPOSITION());
                 intent.putExtra(Keyword.STATIONPOSITION, stateStationBean.getPosition());
                 intent.putExtra(Keyword.SELECTSTATIONID, stateStationBean.getStationSelId());
                 startActivity(intent);
+                }else {
+                    mRecyclerView.scrollToPosition(stateStationBean.getPosition() + 1);
+                }
             } catch (Exception e) {
                 e.printStackTrace();
             }
-        }
     }
 
     private void initData() {//初始化数据
@@ -141,7 +144,7 @@ public class SongStationMapActivity extends BaseActivity implements NetWorkListe
         }
         display = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(display);
-        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        layoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(layoutManager);
         adapter = new MapRecyclerViewAdapter(display, stationPosition, times);
         mRecyclerView.setAdapter(adapter);

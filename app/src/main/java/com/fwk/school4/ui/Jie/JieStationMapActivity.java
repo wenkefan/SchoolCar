@@ -13,6 +13,7 @@ import com.fwk.school4.constant.Keyword;
 import com.fwk.school4.constant.SpLogin;
 import com.fwk.school4.listener.DaoZhanListener;
 import com.fwk.school4.listener.NetWorkListener;
+import com.fwk.school4.listener.RecyclerViewListener;
 import com.fwk.school4.model.BanciBean;
 import com.fwk.school4.model.ChildBean;
 import com.fwk.school4.model.FristFaChe;
@@ -97,17 +98,19 @@ public class JieStationMapActivity extends BaseActivity implements NetWorkListen
     protected void onResume() {
         super.onResume();
         boolean is = sp.getBoolean(Keyword.ISDAOZHAN);
-        if (is) {
-            try {
-                StateStationBean stateStationBean = (StateStationBean) sp.queryForSharedToObject(Keyword.STATESTATIONBEAN);
+        try {
+            StateStationBean stateStationBean = (StateStationBean) sp.queryForSharedToObject(Keyword.STATESTATIONBEAN);
+            if (is) {
                 Intent intent = new Intent(JieStationMapActivity.this, JieChildListActivity2.class);
                 intent.putExtra(Keyword.JUMPPOSITION, stateStationBean.isJUMPPOSITION());
                 intent.putExtra(Keyword.STATIONPOSITION, stateStationBean.getPosition());
                 intent.putExtra(Keyword.SELECTSTATIONID, stateStationBean.getStationSelId());
                 startActivity(intent);
-            } catch (Exception e) {
-                e.printStackTrace();
+            } else {
+                mRecyclerView.scrollToPosition(stateStationBean.getPosition() + 1);
             }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
@@ -119,7 +122,7 @@ public class JieStationMapActivity extends BaseActivity implements NetWorkListen
         if (bean == null) {
             bean = (BanciBean.RerurnValueBean) sp.queryForSharedToObject(Keyword.SELECTBANCI);
         }
-        if (intent.getIntExtra(Keyword.POTIONIT,0) == -1) {
+        if (intent.getIntExtra(Keyword.POTIONIT, 0) == -1) {
             setData();
         } else {
             initData();
@@ -162,6 +165,10 @@ public class JieStationMapActivity extends BaseActivity implements NetWorkListen
         mRecyclerView.setAdapter(adapter);
         adapter.setOnItemListener(this);
         adapter.setOnClickListener(this);
+        RecyclerViewListener listener = new RecyclerViewListener(false, 0, layoutManager, mRecyclerView);
+        mRecyclerView.addOnScrollListener(listener);
+        listener.moveToPosition(stationPosition);
+        LogUtils.d("zouzhele--" + stationPosition);
     }
 
 
@@ -223,6 +230,7 @@ public class JieStationMapActivity extends BaseActivity implements NetWorkListen
                     intent.putExtra(Keyword.JUMPPOSITION, true);
                     intent.putExtra(Keyword.STATIONPOSITION, Position);
                     intent.putExtra(Keyword.SELECTSTATIONID, stationSelId);
+                    intent.putExtra(Keyword.DINGWEI,getPoistion());
                     startActivity(intent);
                     finish();
                     break;
@@ -343,6 +351,16 @@ public class JieStationMapActivity extends BaseActivity implements NetWorkListen
         List<StaBean> list1 = map.get(stationId + "02");
         if (list1 != null) {
             return list1.size();
+        }
+        return 0;
+    }
+
+    private int getPoistion(){
+        List<StaBean> staBeen = (List<StaBean>) spData.queryForSharedToObject(Keyword.SELECTSTA);
+        for (int i = 0; i < staBeen.size(); i++){
+            if (staBeen.get(i).getId() == stationSelId){
+                return i;
+            }
         }
         return 0;
     }
