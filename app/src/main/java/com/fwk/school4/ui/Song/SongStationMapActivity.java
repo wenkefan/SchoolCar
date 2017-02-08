@@ -113,6 +113,7 @@ public class SongStationMapActivity extends BaseActivity implements NetWorkListe
                 intent.putExtra(Keyword.SELECTSTATIONID, stateStationBean.getStationSelId());
                 intent.putExtra(Keyword.DINGWEI, stateStationBean.getDingwei());
                 startActivity(intent);
+                finish();
             } else {
                 mRecyclerView.scrollToPosition(stateStationBean.getPosition() + 1);
             }

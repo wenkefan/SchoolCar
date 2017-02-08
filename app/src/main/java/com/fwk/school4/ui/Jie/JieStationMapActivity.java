@@ -107,6 +107,7 @@ public class JieStationMapActivity extends BaseActivity implements NetWorkListen
                 intent.putExtra(Keyword.SELECTSTATIONID, stateStationBean.getStationSelId());
                 intent.putExtra(Keyword.DINGWEI, stateStationBean.getDingwei());
                 startActivity(intent);
+                finish();
             } else {
                 mRecyclerView.scrollToPosition(stateStationBean.getPosition() + 1);
             }
