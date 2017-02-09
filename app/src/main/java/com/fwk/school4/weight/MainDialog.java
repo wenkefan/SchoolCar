@@ -127,4 +127,29 @@ public class MainDialog {
         });
         builder.show();
     }
+    /**
+     * 未全部上车或者下车
+     */
+    static boolean jixu = false;
+    public static boolean Shangxiac(final Activity context){
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setCancelable(false);
+        builder.setTitle("警告").setMessage("还有学生没有上下车，是否发车？");
+        builder.setNegativeButton("否", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+
+                dialogInterface.dismiss();
+            }
+        });
+        builder.setPositiveButton("是", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                jixu = true;
+                dialogInterface.dismiss();
+            }
+        });
+        builder.show();
+        return jixu;
+    }
 }

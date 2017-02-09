@@ -25,6 +25,7 @@ import com.fwk.school4.network.api.CarDZNetWork;
 import com.fwk.school4.network.api.DownCarNetWork;
 import com.fwk.school4.network.api.EndNetWork;
 import com.fwk.school4.network.api.UpCarNetWork;
+import com.fwk.school4.ui.Jie.JieChildListActivity2;
 import com.fwk.school4.ui.NFCBaseActivity;
 import com.fwk.school4.ui.ShangcheActivity;
 import com.fwk.school4.ui.XiacheActivity;
@@ -35,6 +36,7 @@ import com.fwk.school4.utils.LogUtils;
 import com.fwk.school4.utils.SharedPreferencesUtils;
 import com.fwk.school4.utils.SharedPreferencesUtils2;
 import com.fwk.school4.utils.ToastUtil;
+import com.fwk.school4.weight.MainDialog;
 
 import java.util.List;
 import java.util.Map;
@@ -227,6 +229,12 @@ public class SongChildListActivity2 extends NFCBaseActivity implements JieChildL
                 ToastUtil.show("车上还有幼儿，请仔细检查");
             }
         } else {
+            if (SurplusShangcheName() + SurplusXiacheName() != 0){
+                //有未上车或者未下车
+                if (!MainDialog.Shangxiac(SongChildListActivity2.this)){
+                    return;
+                }
+            }
             showDialog();
             String url = String.format(HTTPURL.API_PROCESS, SpLogin.getKgId(), stationlist.get(position).getStationId(), spData.getInt(Keyword.SP_PAICHEDANHAO), 2, GetDateTime.getdatetime());
             LogUtils.d("发车URL：" + url);
@@ -339,5 +347,35 @@ public class SongChildListActivity2 extends NFCBaseActivity implements JieChildL
         if (!isCan) {
             ToastUtil.show("当前站没有此学生");
         }
+    }
+    private int SurplusShangcheName(){
+        if (map == null) {
+            map = (Map<String, List<ChildBean.RerurnValueBean>>) spData.queryForSharedToObject(Keyword.MAPLIST);
+        }
+        List<ChildBean.RerurnValueBean> shanglist = map.get(stationlist.get(position).getStationId() + "01");
+        int number = 0;
+        if (shanglist != null) {
+            for (ChildBean.RerurnValueBean bean : shanglist) {
+                if (bean.getSelectid() == 0) {
+                    number++;
+                }
+            }
+        }
+        return number;
+    }
+    private int SurplusXiacheName(){
+        if (map == null) {
+            map = (Map<String, List<ChildBean.RerurnValueBean>>) spData.queryForSharedToObject(Keyword.MAPLIST);
+        }
+        List<ChildBean.RerurnValueBean> xialist = map.get(stationlist.get(position).getStationId() + "02");
+        int number = 0;
+        if (xialist != null) {
+            for (ChildBean.RerurnValueBean bean : xialist) {
+                if (bean.getSelectid() != 5) {
+                    number++;
+                }
+            }
+        }
+        return number;
     }
 }
