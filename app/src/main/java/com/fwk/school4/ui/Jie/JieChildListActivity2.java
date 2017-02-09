@@ -36,7 +36,6 @@ import com.fwk.school4.utils.SharedPreferencesUtils;
 import com.fwk.school4.utils.SharedPreferencesUtils2;
 import com.fwk.school4.utils.ToastUtil;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -140,20 +139,24 @@ public class JieChildListActivity2 extends NFCBaseActivity implements JieChildLi
         if (resultCode == RESULT_OK) {
             if (requestCode == 1) {
                 //上车重新分组
-                shangchefenzu(false,data);
+                shangchefenzu(false,data, null);
             } else if (requestCode == 2) {
                 //下车重新分组
-                xiachefenzu(false,data);
+                xiachefenzu(false,data, null);
             }
         }
     }
 
-    private void xiachefenzu(boolean b, Intent data) {
+    private void xiachefenzu(boolean b, Intent data, ChildBean.RerurnValueBean valueBean) {
+        ChildBean.RerurnValueBean bean;
         if (!b) {
             childPosition = data.getIntExtra(Keyword.SP_SELECT_ID, 0);
+            bean = map.get(staBean.getStrid()).get(mItem);
+        } else {
+            bean = valueBean;
         }
-        if (ChildData.setXiache(map, staBean, mItem, childPosition, 0) == 0) {
-            ToastUtil.show(map.get(staBean.getStrid()).get(mItem).getChildName() + "已下车");
+        if (bean.getSelectid() == childPosition) {
+            ToastUtil.show(bean.getChildName() + "已下车");
             return;
         }
         /**
@@ -162,7 +165,7 @@ public class JieChildListActivity2 extends NFCBaseActivity implements JieChildLi
         String url = String.format(
                 HTTPURL.API_STUDENT_OPEN_DOWN,
                 spData.getInt(Keyword.SP_PAICHEDANHAO),
-                map.get(staBean.getStrid()).get(mItem).getChildId(),
+                bean.getChildId(),
                 staBean.getId(),
                 GetDateTime.getdatetime(),
                 childPosition,
@@ -174,12 +177,16 @@ public class JieChildListActivity2 extends NFCBaseActivity implements JieChildLi
         upCarNetWork.setUrl(Keyword.FLAGUPCAR, url, UpDownCar.class);
     }
 
-    private void shangchefenzu(boolean b, Intent data) {
+    private void shangchefenzu(boolean b, Intent data, ChildBean.RerurnValueBean valueBean) {
+        ChildBean.RerurnValueBean bean;
         if (!b) {
             childPosition = data.getIntExtra(Keyword.SP_SELECT_ID, 0);
+            bean = map.get(staBean.getStrid()).get(mItem);
+        } else {
+            bean = valueBean;
         }
-        if (map.get(staBean.getStrid()).get(mItem).getSelectid() == childPosition) {
-            ToastUtil.show(map.get(staBean.getStrid()).get(mItem).getChildName() + askForLeaveStatus[childPosition - 1]);
+        if (bean.getSelectid() == childPosition) {
+            ToastUtil.show(bean.getChildName() + askForLeaveStatus[childPosition - 1]);
             return;
         } else {
             showDialog();
@@ -189,7 +196,7 @@ public class JieChildListActivity2 extends NFCBaseActivity implements JieChildLi
             String url = String.format(
                     HTTPURL.API_STUDENT_OPEN_DOWN,
                     spData.getInt(Keyword.SP_PAICHEDANHAO),
-                    map.get(staBean.getStrid()).get(mItem).getChildId(),
+                    bean.getChildId(),
                     staBean.getId(),
                     GetDateTime.getdatetime(),
                     childPosition,
@@ -299,6 +306,10 @@ public class JieChildListActivity2 extends NFCBaseActivity implements JieChildLi
         super.onNewIntent(intent);
         String CarId = readICCardNo(intent);
         LogUtils.d("CarId:" + CarId);
+        staBean = ((List<StaBean>) spData.queryForSharedToObject(Keyword.SELECTSTA)).get(stationPosition);
+        if (map == null) {
+            map = (Map<String, List<ChildBean.RerurnValueBean>>) spData.queryForSharedToObject(Keyword.MAPLIST);
+        }
         List<ChildBean.RerurnValueBean> shanglist = map.get(stationlist.get(stationPosition).getStationId() + "01");
         List<ChildBean.RerurnValueBean> xialist = map.get(stationlist.get(stationPosition).getStationId() + "02");
         boolean isCan = false;
@@ -306,7 +317,7 @@ public class JieChildListActivity2 extends NFCBaseActivity implements JieChildLi
             if (CarId.equals(shanglist.get(i).getSACardNo())) {
                 //请求操作接口
                 childPosition = 1;
-                shangchefenzu(true,null);
+                shangchefenzu(true,null, shanglist.get(i));
                 isCan = true;
                 break;
             }
@@ -315,7 +326,7 @@ public class JieChildListActivity2 extends NFCBaseActivity implements JieChildLi
             if (CarId.equals(xialist.get(i).getSACardNo())) {
                 //请求操作接口
                 childPosition = 5;
-                xiachefenzu(true,null);
+                xiachefenzu(true,null, shanglist.get(i));
                 isCan = true;
                 break;
             }

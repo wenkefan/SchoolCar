@@ -36,7 +36,6 @@ import com.fwk.school4.utils.SharedPreferencesUtils;
 import com.fwk.school4.utils.SharedPreferencesUtils2;
 import com.fwk.school4.utils.ToastUtil;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -140,20 +139,24 @@ public class SongChildListActivity2 extends NFCBaseActivity implements JieChildL
         if (resultCode == RESULT_OK) {
             if (requestCode == 3) {
                 //上车重新分组
-                shangchefenzu(false, data);
+                shangchefenzu(true, data, null);
             } else if (requestCode == 4) {
                 //下车重新分组
-                xiachefenzu(false, data);
+                xiachefenzu(true, data, null);
             }
         }
     }
 
-    private void xiachefenzu(boolean b, Intent data) {
-        if (!b) {
+    private void xiachefenzu(boolean b, Intent data, ChildBean.RerurnValueBean valueBean) {
+        ChildBean.RerurnValueBean bean;
+        if (b) {
             childPosition = data.getIntExtra(Keyword.SP_SELECT_ID, 0);
+            bean = map.get(staBean.getStrid()).get(mItem);
+        } else {
+            bean = valueBean;
         }
-        if (ChildData.setXiache(map, staBean, mItem, childPosition, 0) == 0) {
-            ToastUtil.show(map.get(staBean.getStrid()).get(mItem).getChildName() + "已下车");
+        if (bean.getSelectid() == childPosition) {
+            ToastUtil.show(bean.getChildName() + "已下车");
             return;
         }
         /**
@@ -162,7 +165,7 @@ public class SongChildListActivity2 extends NFCBaseActivity implements JieChildL
         String url = String.format(
                 HTTPURL.API_STUDENT_OPEN_DOWN,
                 spData.getInt(Keyword.SP_PAICHEDANHAO),
-                map.get(staBean.getStrid()).get(mItem).getChildId(),
+                bean.getChildId(),
                 staBean.getId(),
                 GetDateTime.getdatetime(),
                 childPosition,
@@ -174,32 +177,36 @@ public class SongChildListActivity2 extends NFCBaseActivity implements JieChildL
         upCarNetWork.setUrl(Keyword.FLAGUPCAR, url, UpDownCar.class);
     }
 
-    private void shangchefenzu(boolean b, Intent data) {
-        if (!b) {
+    private void shangchefenzu(boolean b, Intent data, ChildBean.RerurnValueBean valueBean) {
+        ChildBean.RerurnValueBean bean;
+        if (b) {
             childPosition = data.getIntExtra(Keyword.SP_SELECT_ID, 0);
-        }
-        if (map.get(staBean.getStrid()).get(mItem).getSelectid() == childPosition) {
-            ToastUtil.show(map.get(staBean.getStrid()).get(mItem).getChildName() + askForLeaveStatus[childPosition - 1]);
-            return;
+            bean = map.get(staBean.getStrid()).get(mItem);
         } else {
-            showDialog();
-            /**
-             * 字段：派车单号、幼儿编号、站点、时间、状态、kgid、上下车类型（1、上车；2、下车）
-             */
-            String url = String.format(
-                    HTTPURL.API_STUDENT_OPEN_DOWN,
-                    spData.getInt(Keyword.SP_PAICHEDANHAO),
-                    map.get(staBean.getStrid()).get(mItem).getChildId(),
-                    staBean.getId(),
-                    GetDateTime.getdatetime(),
-                    childPosition,
-                    SpLogin.getKgId(),
-                    1);
-            LogUtils.d("上车接口-----：" + url);
-            DownCarNetWork downCarNetWork = DownCarNetWork.newInstance(this);
-            downCarNetWork.setNetWorkListener(this);
-            downCarNetWork.setUrl(Keyword.FLAGDOWNCAR, url, UpDownCar.class);
+            bean = valueBean;
         }
+        if (bean.getSelectid() == childPosition) {
+            ToastUtil.show(bean.getChildName() + askForLeaveStatus[childPosition - 1]);
+            return;
+        }
+        showDialog();
+        /**
+         * 字段：派车单号、幼儿编号、站点、时间、状态、kgid、上下车类型（1、上车；2、下车）
+         */
+        String url = String.format(
+                HTTPURL.API_STUDENT_OPEN_DOWN,
+                spData.getInt(Keyword.SP_PAICHEDANHAO),
+                bean.getChildId(),
+                staBean.getId(),
+                GetDateTime.getdatetime(),
+                childPosition,
+                SpLogin.getKgId(),
+                1);
+        LogUtils.d("上车接口-----：" + url);
+        DownCarNetWork downCarNetWork = DownCarNetWork.newInstance(this);
+        downCarNetWork.setNetWorkListener(this);
+        downCarNetWork.setUrl(Keyword.FLAGDOWNCAR, url, UpDownCar.class);
+
     }
 
     @OnClick(R.id.btn_fache)
@@ -300,25 +307,33 @@ public class SongChildListActivity2 extends NFCBaseActivity implements JieChildL
         super.onNewIntent(intent);
         String CarId = readICCardNo(intent);
         LogUtils.d("CarId:" + CarId);
+        staBean = ((List<StaBean>) spData.queryForSharedToObject(Keyword.SELECTSTA)).get(position);
+        if (map == null) {
+            map = (Map<String, List<ChildBean.RerurnValueBean>>) spData.queryForSharedToObject(Keyword.MAPLIST);
+        }
         List<ChildBean.RerurnValueBean> shanglist = map.get(stationlist.get(position).getStationId() + "01");
         List<ChildBean.RerurnValueBean> xialist = map.get(stationlist.get(position).getStationId() + "02");
         boolean isCan = false;
-        for (int i = 0; i < shanglist.size(); i++) {
-            if (CarId.equals(shanglist.get(i).getSACardNo())) {
-                //请求操作接口
-                childPosition = 1;
-                shangchefenzu(true, null);
-                isCan = true;
-                break;
+        if (shanglist != null) {
+            for (int i = 0; i < shanglist.size(); i++) {
+                if (CarId.equals(shanglist.get(i).getSACardNo())) {
+                    //请求操作接口
+                    childPosition = 1;
+                    shangchefenzu(false, null, shanglist.get(i));
+                    isCan = true;
+                    break;
+                }
             }
         }
-        for (int i = 0; i < xialist.size(); i++) {
-            if (CarId.equals(xialist.get(i).getSACardNo())) {
-                //请求操作接口
-                childPosition = 5;
-                xiachefenzu(true, null);
-                isCan = true;
-                break;
+        if (xialist != null) {
+            for (int i = 0; i < xialist.size(); i++) {
+                if (CarId.equals(xialist.get(i).getSACardNo())) {
+                    //请求操作接口
+                    childPosition = 5;
+                    xiachefenzu(false, null, xialist.get(i));
+                    isCan = true;
+                    break;
+                }
             }
         }
         if (!isCan) {
