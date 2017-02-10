@@ -64,8 +64,10 @@ public class ChildRecyAdapter extends BaseRecyclerAdapter {
             }
 
             if (color){
-                holde.tv.setTextColor(context.getResources().getColor(R.color.black));
-                holde.claNa.setTextColor(context.getResources().getColor(R.color.black));
+                if (list.get(position).getSelectid() == 0) {
+                    holde.claNa.setTextColor(context.getResources().getColor(R.color.black));
+                    holde.tv.setTextColor(context.getResources().getColor(R.color.black));
+                }
             }
         }
         super.onBindViewHolder(holder, position);

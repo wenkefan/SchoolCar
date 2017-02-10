@@ -130,8 +130,8 @@ public class MainDialog {
     /**
      * 未全部上车或者下车
      */
-    static boolean jixu = false;
-    public static boolean Shangxiac(final Activity context){
+    public static boolean jixu = false;
+    public static void Shangxiac(final Activity context){
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setCancelable(false);
         builder.setTitle("警告").setMessage("还有学生没有上下车，是否发车？");
@@ -150,6 +150,5 @@ public class MainDialog {
             }
         });
         builder.show();
-        return jixu;
     }
 }

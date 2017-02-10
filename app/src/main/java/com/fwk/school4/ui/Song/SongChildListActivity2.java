@@ -1,9 +1,11 @@
 package com.fwk.school4.ui.Song;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -231,16 +233,30 @@ public class SongChildListActivity2 extends NFCBaseActivity implements JieChildL
         } else {
             if (SurplusShangcheName() + SurplusXiacheName() != 0){
                 //有未上车或者未下车
-                if (!MainDialog.Shangxiac(SongChildListActivity2.this)){
-                    return;
-                }
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                builder.setCancelable(false);
+                builder.setTitle("警告").setMessage("还有学生没有上下车，是否发车？");
+                builder.setNegativeButton("否", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+
+                        dialogInterface.dismiss();
+                    }
+                });
+                builder.setPositiveButton("是", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        showDialog();
+                        String url = String.format(HTTPURL.API_PROCESS, SpLogin.getKgId(), stationlist.get(position).getStationId(),
+                                spData.getInt(Keyword.SP_PAICHEDANHAO), 2, GetDateTime.getdatetime());
+                        LogUtils.d("发车URL：" + url);
+                        CarDZNetWork carDZNetWork = CarDZNetWork.newInstance(SongChildListActivity2.this);
+                        carDZNetWork.setNetWorkListener(SongChildListActivity2.this);
+                        carDZNetWork.setUrl(Keyword.FLAGDAOZHAN, url, StationFADAOBean.class);
+                    }
+                });
+                builder.show();
             }
-            showDialog();
-            String url = String.format(HTTPURL.API_PROCESS, SpLogin.getKgId(), stationlist.get(position).getStationId(), spData.getInt(Keyword.SP_PAICHEDANHAO), 2, GetDateTime.getdatetime());
-            LogUtils.d("发车URL：" + url);
-            CarDZNetWork carDZNetWork = CarDZNetWork.newInstance(this);
-            carDZNetWork.setNetWorkListener(this);
-            carDZNetWork.setUrl(Keyword.FLAGDAOZHAN, url, StationFADAOBean.class);
         }
 
     }
