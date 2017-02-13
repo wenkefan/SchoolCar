@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <include
+        android:id="@+id/title"
+        layout="@layout/titile" />
+
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/residue_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/btn_jieshu"
+        android:layout_below="@+id/title" />
+
+    <Button
+        android:id="@+id/btn_jieshu"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_margin="20sp"
+        android:background="@drawable/facheshapeoff"
+        android:text="结 束"
+        android:textColor="@color/white"
+        android:textSize="18sp" />
+</RelativeLayout>

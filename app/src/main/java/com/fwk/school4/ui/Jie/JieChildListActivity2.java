@@ -241,19 +241,25 @@ public class JieChildListActivity2 extends NFCBaseActivity implements JieChildLi
                 builder.setPositiveButton("是", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        showDialog();
-                        String url = String.format(HTTPURL.API_PROCESS, SpLogin.getKgId(), stationlist.get(stationPosition).getStationId(),
-                                spData.getInt(Keyword.SP_PAICHEDANHAO), 2, GetDateTime.getdatetime());
-                        LogUtils.d("发车URL：" + url);
-                        CarDZNetWork carDZNetWork = CarDZNetWork.newInstance(JieChildListActivity2.this);
-                        carDZNetWork.setNetWorkListener(JieChildListActivity2.this);
-                        carDZNetWork.setUrl(Keyword.FLAGDAOZHAN, url, StationFADAOBean.class);
+                        facheUrl();
                         dialogInterface.dismiss();
                     }
                 });
                 builder.show();
+            } else {
+                facheUrl();
             }
         }
+    }
+
+    private void facheUrl(){
+        showDialog();
+        String url = String.format(HTTPURL.API_PROCESS, SpLogin.getKgId(), stationlist.get(stationPosition).getStationId(),
+                spData.getInt(Keyword.SP_PAICHEDANHAO), 2, GetDateTime.getdatetime());
+        LogUtils.d("发车URL：" + url);
+        CarDZNetWork carDZNetWork = CarDZNetWork.newInstance(JieChildListActivity2.this);
+        carDZNetWork.setNetWorkListener(JieChildListActivity2.this);
+        carDZNetWork.setUrl(Keyword.FLAGDAOZHAN, url, StationFADAOBean.class);
     }
 
     @Override

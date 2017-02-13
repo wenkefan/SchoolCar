@@ -28,6 +28,7 @@ import com.fwk.school4.network.api.ChildNetWork;
 import com.fwk.school4.network.api.EndNetWork;
 import com.fwk.school4.network.api.StaionNetWork;
 import com.fwk.school4.ui.BaseActivity;
+import com.fwk.school4.ui.ResidueActivity;
 import com.fwk.school4.ui.adapter.BaseRecyclerAdapter;
 import com.fwk.school4.ui.adapter.MapRecyclerViewAdapter;
 import com.fwk.school4.utils.GetDateTime;
@@ -283,11 +284,20 @@ public class SongStationMapActivity extends BaseActivity implements NetWorkListe
             if (position != stationList.size() - 1) {
                 carFCNetWork.setUrl(Keyword.FLAGFACHE1, url, StationFADAOBean.class);
             } else {
-                String url1 = String.format(HTTPURL.API_OPEN, spData.getInt(Keyword.SP_PAICHEDANHAO), SpLogin.getKgId(), GetDateTime.getdatetime(), 2, SpLogin.getWorkerExtensionId());
-                LogUtils.d("结束URL：" + url1);
-                EndNetWork endNetWork = EndNetWork.newInstance(this);
-                endNetWork.setNetWorkListener(this);
-                endNetWork.setUrl(Keyword.FLAGENDDAOZHAN, url1, FristFaChe.class);
+
+                int child = sp.getInt(Keyword.CARNUMBER);
+                if (child == 0) {
+                    String url1 = String.format(HTTPURL.API_OPEN, spData.getInt(Keyword.SP_PAICHEDANHAO), SpLogin.getKgId(), GetDateTime.getdatetime(), 2, SpLogin.getWorkerExtensionId());
+                    LogUtils.d("结束URL：" + url1);
+                    EndNetWork endNetWork = EndNetWork.newInstance(this);
+                    endNetWork.setNetWorkListener(this);
+                    endNetWork.setUrl(Keyword.FLAGENDDAOZHAN, url1, FristFaChe.class);
+                } else {
+                    Intent intent = new Intent(SongStationMapActivity.this, ResidueActivity.class);
+                    intent.putExtra(Keyword.SELECTITME, stationList.get(stationList.size() -1).getStationId());
+                    startActivity(intent);
+                    SongStationMapActivity.this.finish();
+                }
             }
         }
     }
@@ -305,7 +315,6 @@ public class SongStationMapActivity extends BaseActivity implements NetWorkListe
         } else {
             Hh = H + "";
         }
-
         if (M < 10) {
             Mm = "0" + M;
         } else {
@@ -345,4 +354,6 @@ public class SongStationMapActivity extends BaseActivity implements NetWorkListe
         }
         return 0;
     }
+
+
 }

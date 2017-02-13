@@ -133,4 +133,6 @@ public class Keyword {
     public static final String SP_PAICHEDANHAO = "SP_PAICHEDANHAO";
     //幼儿列表定位
     public static final String DINGWEI = "DINGWEI";
+
+    public static final String SELECTITME = "SELECTITME";
 }
