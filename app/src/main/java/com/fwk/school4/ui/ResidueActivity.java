@@ -25,7 +25,6 @@ import com.fwk.school4.ui.adapter.ResidueAdapter;
 import com.fwk.school4.utils.GetDateTime;
 import com.fwk.school4.utils.LogUtils;
 import com.fwk.school4.utils.SharedPreferencesUtils;
-import com.fwk.school4.utils.SharedPreferencesUtils2;
 import com.fwk.school4.utils.ToastUtil;
 
 import java.util.ArrayList;
@@ -57,7 +56,7 @@ public class ResidueActivity extends NFCBaseActivity implements BaseRecyclerAdap
 
     private SharedPreferencesUtils sp = new SharedPreferencesUtils();
 
-    private SharedPreferencesUtils2 spData = new SharedPreferencesUtils2();
+//    private SharedPreferencesUtils2 spData = new SharedPreferencesUtils2();
 
     private List<ChildBean.RerurnValueBean> residueList;
 
@@ -85,8 +84,8 @@ public class ResidueActivity extends NFCBaseActivity implements BaseRecyclerAdap
     }
 
     private void residueList() {
-        staBeanList = (List<StaBean>) spData.queryForSharedToObject(Keyword.SELECTSTA);
-        map = (Map<String, List<ChildBean.RerurnValueBean>>) spData.queryForSharedToObject(Keyword.MAPLIST);
+        staBeanList = (List<StaBean>) sp.queryForSharedToObject(Keyword.SELECTSTA);
+        map = (Map<String, List<ChildBean.RerurnValueBean>>) sp.queryForSharedToObject(Keyword.MAPLIST);
         residueList = new ArrayList<>();
         for (StaBean bean : staBeanList) {
             if (bean.getOrder() % 2 == 0) {
@@ -136,7 +135,7 @@ public class ResidueActivity extends NFCBaseActivity implements BaseRecyclerAdap
          */
         String url = String.format(
                 HTTPURL.API_STUDENT_OPEN_DOWN,
-                spData.getInt(Keyword.SP_PAICHEDANHAO),
+                sp.getInt(Keyword.SP_PAICHEDANHAO),
                 bean.getChildId(),
                 selectItme,
                 GetDateTime.getdatetime(),
@@ -161,6 +160,11 @@ public class ResidueActivity extends NFCBaseActivity implements BaseRecyclerAdap
         }
     }
 
+    @Override
+    public void NetWorkError(int Flag) {
+
+    }
+
     private Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -174,7 +178,7 @@ public class ResidueActivity extends NFCBaseActivity implements BaseRecyclerAdap
                 case Keyword.FLAGENDDAOZHAN:
                     ToastUtil.show("结束了");
                     sp.removData();
-                    spData.removData();
+                    sp.removData();
                     finish();
                     break;
             }
@@ -186,7 +190,7 @@ public class ResidueActivity extends NFCBaseActivity implements BaseRecyclerAdap
         if (residueNumber()){
             ToastUtil.show("还有学生未下车");
         } else {
-            String url1 = String.format(HTTPURL.API_OPEN, spData.getInt(Keyword.SP_PAICHEDANHAO), SpLogin.getKgId(), GetDateTime.getdatetime(), 2, SpLogin.getWorkerExtensionId());
+            String url1 = String.format(HTTPURL.API_OPEN, sp.getInt(Keyword.SP_PAICHEDANHAO), SpLogin.getKgId(), GetDateTime.getdatetime(), 2, SpLogin.getWorkerExtensionId());
             LogUtils.d("结束URL：" + url1);
             EndNetWork endNetWork = EndNetWork.newInstance(this);
             endNetWork.setNetWorkListener(this);
@@ -217,7 +221,7 @@ public class ResidueActivity extends NFCBaseActivity implements BaseRecyclerAdap
                 } else {
                     String url = String.format(
                             HTTPURL.API_STUDENT_OPEN_DOWN,
-                            spData.getInt(Keyword.SP_PAICHEDANHAO),
+                            sp.getInt(Keyword.SP_PAICHEDANHAO),
                             residueList.get(i).getChildId(),
                             selectItme,
                             GetDateTime.getdatetime(),

@@ -67,11 +67,13 @@ public class MainActivity extends BaseActivity implements NetWorkListener, BaseR
     @Override
     public void init() {
         title.setText(SpLogin.getKgName());
-        sp = new SharedPreferencesUtils();
         spData = new SharedPreferencesUtils2();
         //判断是否在运行中
-        if (sp.getBoolean(Keyword.BEGIN)) {
+        if (spData.getBoolean(Keyword.BEGIN)) {
             //在运行中，弹出对话框
+            if (sp == null){
+                sp = new SharedPreferencesUtils();
+            }
             MainDialog.Beagin(this, (BanciBean.RerurnValueBean) sp.queryForSharedToObject(Keyword.SELECTBANCI));
         } else {
             //请求班次接口
@@ -114,6 +116,16 @@ public class MainActivity extends BaseActivity implements NetWorkListener, BaseR
                 break;
         }
     }
+    //网络连接失败时
+    @Override
+    public void NetWorkError(int Flag) {
+        switch (Flag){
+            case Keyword.FLAGFIRSTFACHEError:
+                //第一次发车失败
+                mHandler.sendEmptyMessage(Keyword.FLAGFIRSTFACHE);
+                break;
+        }
+    }
 
     private Handler mHandler = new Handler() {
         @Override
@@ -125,19 +137,24 @@ public class MainActivity extends BaseActivity implements NetWorkListener, BaseR
                     banciData = (List<BanciBean.RerurnValueBean>) spData.queryForSharedToObject(Keyword.SP_BANCI_LIST);
                     break;
                 case Keyword.FLAGFIRSTFACHE:
-                    sp.removData();
+                    sp = new SharedPreferencesUtils();
                     sp.saveToShared(Keyword.SELECTBANCI, bean);
-                    sp.setboolean(Keyword.BEGIN, true);
+                    spData.setboolean(Keyword.BEGIN, true);
                     startActivity(intent);
                     finish();
                     break;
                 case 0x01:
+                    SpBanci.save(bean.getBusScheduleId(), bean.getLineId(), bean.getAttendanceDirections());
+                    sp = new SharedPreferencesUtils();
                     Intent intent1 = new Intent(MainActivity.this, JieStationMapActivity.class);
                     intent1.putExtra(Keyword.POTIONIT, -1);
                     startActivity(intent1);
                     finish();
                     break;
                 case 0x02:
+                    SpBanci.save(bean.getBusScheduleId(), bean.getLineId(), bean.getAttendanceDirections());
+                    if (sp == null)
+                        sp = new SharedPreferencesUtils();
                     Intent intent2 = new Intent(MainActivity.this, SongStationMapActivity.class);
                     intent2.putExtra(Keyword.POTIONIT, -1);
                     startActivity(intent2);
@@ -152,11 +169,9 @@ public class MainActivity extends BaseActivity implements NetWorkListener, BaseR
     public void setOnItemListener(int position, BaseRecyclerAdapter.ClickableViewHolder holder) {
 
         BanciBean.RerurnValueBean bean = banciData.get(position);
-        SpBanci.save(bean.getBusScheduleId(), bean.getLineId(), bean.getAttendanceDirections());
         this.bean = bean;
         switch (bean.getStatus()) {
             case 0:
-                spData.setInt(Keyword.SP_ATTENDANCEDIRECTIONS, bean.getAttendanceDirections());
                 //判断是否为用户的班次，弹出不同对话框
                 if (bean.getOriginal()) {
                     MainDialog.ShowJRBanci(this, bean.getBusScheduleName(),
@@ -197,6 +212,7 @@ public class MainActivity extends BaseActivity implements NetWorkListener, BaseR
 
     @Override
     public void BackListener(Intent intent) {
+        SpBanci.save(bean.getBusScheduleId(), bean.getLineId(), bean.getAttendanceDirections());
         LogUtils.d("发车接口:" + FristURL);
         FristNetWork fristNetWork = FristNetWork.newInstance(this);
         fristNetWork.setNetWorkListener(this);

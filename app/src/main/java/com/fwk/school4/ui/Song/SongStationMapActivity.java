@@ -34,7 +34,6 @@ import com.fwk.school4.ui.adapter.MapRecyclerViewAdapter;
 import com.fwk.school4.utils.GetDateTime;
 import com.fwk.school4.utils.LogUtils;
 import com.fwk.school4.utils.SharedPreferencesUtils;
-import com.fwk.school4.utils.SharedPreferencesUtils2;
 import com.fwk.school4.utils.ToastUtil;
 
 import java.util.ArrayList;
@@ -68,7 +67,7 @@ public class SongStationMapActivity extends BaseActivity implements NetWorkListe
     private MapRecyclerViewAdapter adapter;
 
     private SharedPreferencesUtils sp;
-    private SharedPreferencesUtils2 spData;
+//    private SharedPreferencesUtils2 sp;
 
     private List<BanciBean.RerurnValueBean> list;
 
@@ -87,7 +86,7 @@ public class SongStationMapActivity extends BaseActivity implements NetWorkListe
     @Override
     public void init() {
         sp = new SharedPreferencesUtils();
-        spData = new SharedPreferencesUtils2();
+//        sp = new SharedPreferencesUtils2();
         Intent intent = getIntent();
         if (bean == null) {
             bean = (BanciBean.RerurnValueBean) sp.queryForSharedToObject(Keyword.SELECTBANCI);
@@ -182,6 +181,11 @@ public class SongStationMapActivity extends BaseActivity implements NetWorkListe
         }
     }
 
+    @Override
+    public void NetWorkError(int Flag) {
+
+    }
+
     private Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -221,8 +225,8 @@ public class SongStationMapActivity extends BaseActivity implements NetWorkListe
                     break;
                 case Keyword.FLAGFACHE1:
                     setSJTime();
-                    List<StationBean.RerurnValueBean> stationList = (List<StationBean.RerurnValueBean>) spData.queryForSharedToObject(Keyword.SP_STATION_LIST);
-                    String url1 = String.format(HTTPURL.API_PROCESS, SpLogin.getKgId(), stationList.get(stationPosition).getStationId(), spData.getInt(Keyword.SP_PAICHEDANHAO), 2, GetDateTime.getdatetime());
+                    List<StationBean.RerurnValueBean> stationList = (List<StationBean.RerurnValueBean>) sp.queryForSharedToObject(Keyword.SP_STATION_LIST);
+                    String url1 = String.format(HTTPURL.API_PROCESS, SpLogin.getKgId(), stationList.get(stationPosition).getStationId(), sp.getInt(Keyword.SP_PAICHEDANHAO), 2, GetDateTime.getdatetime());
                     LogUtils.d("--发车URL：" + url1);
                     CarDZNetWork carDZNetWork = CarDZNetWork.newInstance(SongStationMapActivity.this);
                     carDZNetWork.setNetWorkListener(SongStationMapActivity.this);
@@ -257,7 +261,7 @@ public class SongStationMapActivity extends BaseActivity implements NetWorkListe
 
     private void setTitleNemaTime() {
         List<StationBean.RerurnValueBean> stationList =
-                (List<StationBean.RerurnValueBean>) spData.queryForSharedToObject(Keyword.SP_STATION_LIST);
+                (List<StationBean.RerurnValueBean>) sp.queryForSharedToObject(Keyword.SP_STATION_LIST);
         nextName.setText(stationList.get(stationPosition).getStationName());
         yjTime.setText(GetDateTime.getYJTime(stationList.get(stationPosition).getDuration()));
         mCount.setText(sp.getInt(Keyword.CARNUMBER) + "");
@@ -270,10 +274,10 @@ public class SongStationMapActivity extends BaseActivity implements NetWorkListe
 
     @Override
     public void OnClickListener(int position) {
-        List<StationBean.RerurnValueBean> stationList = (List<StationBean.RerurnValueBean>) spData.queryForSharedToObject(Keyword.SP_STATION_LIST);
+        List<StationBean.RerurnValueBean> stationList = (List<StationBean.RerurnValueBean>) sp.queryForSharedToObject(Keyword.SP_STATION_LIST);
         this.Position = position;
         this.stationSelId = stationList.get(position).getStationId();
-        String url = String.format(HTTPURL.API_PROCESS, SpLogin.getKgId(), stationList.get(position).getStationId(), spData.getInt(Keyword.SP_PAICHEDANHAO), 1, GetDateTime.getdatetime());
+        String url = String.format(HTTPURL.API_PROCESS, SpLogin.getKgId(), stationList.get(position).getStationId(), sp.getInt(Keyword.SP_PAICHEDANHAO), 1, GetDateTime.getdatetime());
         LogUtils.d("到站URL：" + url);
         CarFCNetWork carFCNetWork = CarFCNetWork.newInstance(this);
         carFCNetWork.setNetWorkListener(this);
@@ -287,7 +291,7 @@ public class SongStationMapActivity extends BaseActivity implements NetWorkListe
 
                 int child = sp.getInt(Keyword.CARNUMBER);
                 if (child == 0) {
-                    String url1 = String.format(HTTPURL.API_OPEN, spData.getInt(Keyword.SP_PAICHEDANHAO), SpLogin.getKgId(), GetDateTime.getdatetime(), 2, SpLogin.getWorkerExtensionId());
+                    String url1 = String.format(HTTPURL.API_OPEN, sp.getInt(Keyword.SP_PAICHEDANHAO), SpLogin.getKgId(), GetDateTime.getdatetime(), 2, SpLogin.getWorkerExtensionId());
                     LogUtils.d("结束URL：" + url1);
                     EndNetWork endNetWork = EndNetWork.newInstance(this);
                     endNetWork.setNetWorkListener(this);
@@ -328,7 +332,7 @@ public class SongStationMapActivity extends BaseActivity implements NetWorkListe
     private Map<String, List<StaBean>> map;
 
     private int getShangChenumber(int stationId) {
-        map = (Map<String, List<StaBean>>) spData.queryForSharedToObject(Keyword.MAPLIST);
+        map = (Map<String, List<StaBean>>) sp.queryForSharedToObject(Keyword.MAPLIST);
         List<StaBean> list1 = map.get(stationId + "01");
         if (list1 != null) {
             return list1.size();
@@ -337,7 +341,7 @@ public class SongStationMapActivity extends BaseActivity implements NetWorkListe
     }
 
     private int getXiaCheNumber(int stationId) {
-        map = (Map<String, List<StaBean>>) spData.queryForSharedToObject(Keyword.MAPLIST);
+        map = (Map<String, List<StaBean>>) sp.queryForSharedToObject(Keyword.MAPLIST);
         List<StaBean> list1 = map.get(stationId + "02");
         if (list1 != null) {
             return list1.size();
@@ -346,7 +350,7 @@ public class SongStationMapActivity extends BaseActivity implements NetWorkListe
     }
 
     private int getPoistion() {
-        List<StaBean> staBeen = (List<StaBean>) spData.queryForSharedToObject(Keyword.SELECTSTA);
+        List<StaBean> staBeen = (List<StaBean>) sp.queryForSharedToObject(Keyword.SELECTSTA);
         for (int i = 0; i < staBeen.size(); i++) {
             if (staBeen.get(i).getId() == stationSelId) {
                 return i;

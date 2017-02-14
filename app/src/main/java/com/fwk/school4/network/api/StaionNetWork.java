@@ -88,8 +88,8 @@ public class StaionNetWork extends BaseNetWork {
                     staBeen.add(staBean2);
                 }
 
-                spData.saveToShared(Keyword.SP_STATION_LIST, list);
-                spData.saveToShared(Keyword.STAIDLIST, staBeen);
+                sp.saveToShared(Keyword.SP_STATION_LIST, list);
+                sp.saveToShared(Keyword.STAIDLIST, staBeen);
                 listener.NetWorkSuccess(Keyword.FLAGSTATION);
                 bean = null;
 

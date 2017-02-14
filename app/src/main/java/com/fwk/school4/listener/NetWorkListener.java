@@ -8,4 +8,6 @@ public interface NetWorkListener {
 
     public void NetWorkSuccess(int Flag);
 
+    public void NetWorkError(int Flag);
+
 }

@@ -43,7 +43,7 @@ public class FristNetWork extends BaseNetWork {
 
                 try{
                     int paichedanhao = faChe.getRerurnValue();
-                    spData.setInt(Keyword.SP_PAICHEDANHAO,paichedanhao);
+                    sp.setInt(Keyword.SP_PAICHEDANHAO,paichedanhao);
                 } catch (Exception o){
                     mActivity.runOnUiThread(new Runnable() {
                         @Override
@@ -72,6 +72,7 @@ public class FristNetWork extends BaseNetWork {
 
     @Override
     public void Error() {
+        listener.NetWorkError(Keyword.FLAGFIRSTFACHEError);
         mActivity.runOnUiThread(new Runnable() {
             @Override
             public void run() {

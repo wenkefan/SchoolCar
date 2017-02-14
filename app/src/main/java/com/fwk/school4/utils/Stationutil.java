@@ -1,6 +1,7 @@
 package com.fwk.school4.utils;
 
 import com.fwk.school4.constant.Keyword;
+import com.fwk.school4.constant.SpBanci;
 import com.fwk.school4.model.ChildBean;
 import com.fwk.school4.model.StaBean;
 import com.fwk.school4.model.StationBean;
@@ -16,7 +17,7 @@ import java.util.Map;
  */
 
 public class Stationutil {
-    private SharedPreferencesUtils2 spData = new SharedPreferencesUtils2();
+    private SharedPreferencesUtils sp = new SharedPreferencesUtils();
 
     private List<ChildBean.RerurnValueBean> bean;
     private List<StationModeBean> stationIdList;
@@ -28,9 +29,9 @@ public class Stationutil {
 
     private Stationutil() {
 
-        bean = (List<ChildBean.RerurnValueBean>) spData.queryForSharedToObject(Keyword.SP_CHILD_LIST);
-        stationIdList = (List<StationModeBean>) spData.queryForSharedToObject(Keyword.STATIONIDLIST);
-        list = (List<StaBean>) spData.queryForSharedToObject(Keyword.STAIDLIST);
+        bean = (List<ChildBean.RerurnValueBean>) sp.queryForSharedToObject(Keyword.SP_CHILD_LIST);
+        stationIdList = (List<StationModeBean>) sp.queryForSharedToObject(Keyword.STATIONIDLIST);
+        list = (List<StaBean>) sp.queryForSharedToObject(Keyword.STAIDLIST);
     }
 
     /**
@@ -38,7 +39,7 @@ public class Stationutil {
      */
     public void setMaplist() {
 
-        int attendanceDirections = spData.getInt(Keyword.SP_ATTENDANCEDIRECTIONS);
+        int attendanceDirections = SpBanci.getAttendancedirections();
         switch (attendanceDirections) {
             case 1:
                 Jiefenzu();
@@ -71,8 +72,8 @@ public class Stationutil {
                 selectSta.add(staBean);
             }
         }
-        spData.saveToShared(Keyword.MAPLIST, map);
-        spData.saveToShared(Keyword.SELECTSTA, selectSta);
+        sp.saveToShared(Keyword.MAPLIST, map);
+        sp.saveToShared(Keyword.SELECTSTA, selectSta);
     }
 
     private void Songfenzu() {
@@ -92,8 +93,8 @@ public class Stationutil {
                 selectSta.add(staBean);
             }
         }
-        spData.saveToShared(Keyword.MAPLIST, map);
-        spData.saveToShared(Keyword.SELECTSTA, selectSta);
+        sp.saveToShared(Keyword.MAPLIST, map);
+        sp.saveToShared(Keyword.SELECTSTA, selectSta);
     }
 
 
@@ -170,10 +171,10 @@ public class Stationutil {
             childCount.add(counte1);
         }
 //        headerLocationList.remove(headerLocationList.size() - 1);
-        spData.saveToShared(Keyword.CHILDGROUP, list);
-        spData.saveToShared(Keyword.HEADERLOCATION, headerLocationList);
-        spData.saveToShared(Keyword.STATIONNAEM, stationName);
-        spData.saveToShared(Keyword.CHILDCOUNT, childCount);
+        sp.saveToShared(Keyword.CHILDGROUP, list);
+        sp.saveToShared(Keyword.HEADERLOCATION, headerLocationList);
+        sp.saveToShared(Keyword.STATIONNAEM, stationName);
+        sp.saveToShared(Keyword.CHILDCOUNT, childCount);
     }
 
     private void songList(List<ChildBean.RerurnValueBean> bean, List<StationModeBean> stationIdList) {
@@ -212,10 +213,10 @@ public class Stationutil {
             childCount.add(counte1);
         }
 //        headerLocationList.remove(headerLocationList.size() - 1);
-        spData.saveToShared(Keyword.CHILDGROUP, list);
-        spData.saveToShared(Keyword.HEADERLOCATION, headerLocationList);
-        spData.saveToShared(Keyword.STATIONNAEM, stationName);
-        spData.saveToShared(Keyword.CHILDCOUNT, childCount);
+        sp.saveToShared(Keyword.CHILDGROUP, list);
+        sp.saveToShared(Keyword.HEADERLOCATION, headerLocationList);
+        sp.saveToShared(Keyword.STATIONNAEM, stationName);
+        sp.saveToShared(Keyword.CHILDCOUNT, childCount);
     }
 
 

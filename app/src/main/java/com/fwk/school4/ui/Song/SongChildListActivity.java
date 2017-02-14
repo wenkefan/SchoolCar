@@ -15,6 +15,7 @@ import com.fwk.school4.ui.BaseActivity;
 import com.fwk.school4.ui.ShangcheActivity;
 import com.fwk.school4.ui.adapter.SongChildListAdapter;
 import com.fwk.school4.utils.SharedPreferencesUtils;
+import com.fwk.school4.utils.SharedPreferencesUtils2;
 import com.fwk.school4.utils.ToastUtil;
 
 import java.util.List;
@@ -38,6 +39,7 @@ public class SongChildListActivity extends BaseActivity implements OnHeaderClick
     Button fache;
 
     private SharedPreferencesUtils sp = new SharedPreferencesUtils();
+    private SharedPreferencesUtils2 spData = new SharedPreferencesUtils2();
     private SongChildListAdapter adapter;
     private int position;//站点位置
     private int jumpPosition;
@@ -83,7 +85,7 @@ public class SongChildListActivity extends BaseActivity implements OnHeaderClick
 
         if (isJieShu){
             ToastUtil.show("结束了");
-            sp.setboolean(Keyword.BEGIN,false);
+            spData.setboolean(Keyword.BEGIN,false);
             this.finish();
         } else {
             position++;

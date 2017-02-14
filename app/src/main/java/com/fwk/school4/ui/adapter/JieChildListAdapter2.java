@@ -16,7 +16,6 @@ import com.fwk.school4.model.ChildBean;
 import com.fwk.school4.model.StaBean;
 import com.fwk.school4.utils.LogUtils;
 import com.fwk.school4.utils.SharedPreferencesUtils;
-import com.fwk.school4.utils.SharedPreferencesUtils2;
 
 import java.util.List;
 import java.util.Map;
@@ -29,7 +28,7 @@ public class JieChildListAdapter2 extends BaseRecyclerAdapter {
     private Context context;
     private Map<String, List<ChildBean.RerurnValueBean>> map;
     private SharedPreferencesUtils sp = new SharedPreferencesUtils();
-    private SharedPreferencesUtils2 spData = new SharedPreferencesUtils2();
+//    private SharedPreferencesUtils2 spData = new SharedPreferencesUtils2();
     private List<StaBean> staBeen;
     private LinearLayoutManager manager;
     private ChildRecyAdapter adapter;
@@ -38,15 +37,15 @@ public class JieChildListAdapter2 extends BaseRecyclerAdapter {
 
     public void getData(int selStationID) {
         this.selStationID = selStationID;
-        map = (Map<String, List<ChildBean.RerurnValueBean>>) spData.queryForSharedToObject(Keyword.MAPLIST);
-        staBeen = (List<StaBean>) spData.queryForSharedToObject(Keyword.SELECTSTA);
+        map = (Map<String, List<ChildBean.RerurnValueBean>>) sp.queryForSharedToObject(Keyword.MAPLIST);
+        staBeen = (List<StaBean>) sp.queryForSharedToObject(Keyword.SELECTSTA);
     }
 
 
     public JieChildListAdapter2(int selStationID) {
         this.selStationID = selStationID;
-        map = (Map<String, List<ChildBean.RerurnValueBean>>) spData.queryForSharedToObject(Keyword.MAPLIST);
-        staBeen = (List<StaBean>) spData.queryForSharedToObject(Keyword.SELECTSTA);
+        map = (Map<String, List<ChildBean.RerurnValueBean>>) sp.queryForSharedToObject(Keyword.MAPLIST);
+        staBeen = (List<StaBean>) sp.queryForSharedToObject(Keyword.SELECTSTA);
     }
 
     @Override

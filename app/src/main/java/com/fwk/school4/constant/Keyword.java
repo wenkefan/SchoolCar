@@ -102,6 +102,7 @@ public class Keyword {
     public static final int FLAGSTATION = 200;//线路
     public static final int FLAGCHILD = 300;//幼儿
     public static final int FLAGFIRSTFACHE = 600;//第一次发车
+    public static final int FLAGFIRSTFACHEError = 6001;//第一次发车Error
     public static final int FLAGENDDAOZHAN = 602;//结束
 
     public static final int FLAGFACHE = 701;//发车
@@ -114,8 +115,6 @@ public class Keyword {
 
 
     /**************************************基础数据关键字**********************************************************/
-    //班次
-    public static final String SP_BANCI = "SP_BANCI";
     //班次List
     public static final String SP_BANCI_LIST = "SP_BANCI_LIST";
     //幼儿List

@@ -16,7 +16,6 @@ import com.fwk.school4.model.StationModeBean;
 import com.fwk.school4.ui.adapter.BaseRecyclerAdapter;
 import com.fwk.school4.ui.adapter.ShangCheRecyclerAdapter;
 import com.fwk.school4.utils.SharedPreferencesUtils;
-import com.fwk.school4.utils.SharedPreferencesUtils2;
 import com.fwk.school4.weight.CenterItemDialog;
 
 import java.util.List;
@@ -57,7 +56,7 @@ public class ShangcheActivity extends BaseActivity implements View.OnClickListen
     TextView father_phone;
     private ChildBean.RerurnValueBean bean;
     private SharedPreferencesUtils sp = new SharedPreferencesUtils();
-    private SharedPreferencesUtils2 spData = new SharedPreferencesUtils2();
+//    private SharedPreferencesUtils2 spData = new SharedPreferencesUtils2();
 //    private boolean isZhuangtai = false;
     private CenterItemDialog dialog = null;
     private List<StationModeBean> stationModeBeen;
@@ -67,7 +66,7 @@ public class ShangcheActivity extends BaseActivity implements View.OnClickListen
 
     public ShangcheActivity() {
 
-        stationModeBeen = (List<StationModeBean>) spData.queryForSharedToObject(Keyword.STATIONIDLIST);
+        stationModeBeen = (List<StationModeBean>) sp.queryForSharedToObject(Keyword.STATIONIDLIST);
     }
 
     @Override

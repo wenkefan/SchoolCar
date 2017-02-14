@@ -19,11 +19,13 @@ public abstract class BaseNetWork implements OnSucceedListener {
         this.listener = listener;
     };
     public OKHttp okHttp;
+    public SharedPreferencesUtils sp;
     public SharedPreferencesUtils2 spData;
 
     public void initURL(){
         okHttp = OKHttp.getInstance();
         okHttp.setListener(this);
+        sp = new SharedPreferencesUtils();
         spData = new SharedPreferencesUtils2();
     }
 

@@ -32,6 +32,7 @@ public class BanCinetwork extends BaseNetWork {
     private List<BanciBean.RerurnValueBean> list1 = new ArrayList<>();
 
     public static BanCinetwork newInstance(Activity activity) {
+
         mActivity = activity;
         return new BanCinetwork();
     }
@@ -92,7 +93,7 @@ public class BanCinetwork extends BaseNetWork {
                 for (int i = 0; i < list1.size(); i++){
                     list.add(i,list1.get(i));
                 }
-//                spData.saveToShared(Keyword.SP_BANCI, bean);
+//                sp.saveToShared(Keyword.SP_BANCI, bean);
                 spData.saveToShared(Keyword.SP_BANCI_LIST, list);
                 bean = null;
                 list = null;

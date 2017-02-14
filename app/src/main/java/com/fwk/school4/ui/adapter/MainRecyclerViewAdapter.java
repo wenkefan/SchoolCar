@@ -24,11 +24,13 @@ public class MainRecyclerViewAdapter extends BaseRecyclerAdapter {
 
 
 
+    private SharedPreferencesUtils sp;
     private SharedPreferencesUtils2 spData;
     private List<BanciBean.RerurnValueBean> list;
     private Context mContext;
 
     public MainRecyclerViewAdapter() {
+        sp = new SharedPreferencesUtils();
         spData = new SharedPreferencesUtils2();
         list = (List<BanciBean.RerurnValueBean>) spData.queryForSharedToObject(Keyword.SP_BANCI_LIST);
     }
