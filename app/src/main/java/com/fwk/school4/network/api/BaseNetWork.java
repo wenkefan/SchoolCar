@@ -7,35 +7,48 @@ import com.fwk.school4.listener.OnSucceedListener;
 import com.fwk.school4.utils.SharedPreferencesUtils;
 import com.fwk.school4.utils.SharedPreferencesUtils2;
 
+import java.io.IOException;
+
+import testlibrary.hylk.com.loginlibrary.okhttp.LK_OkHttpUtil;
+import testlibrary.hylk.com.loginlibrary.okhttp.OkHttpUtil;
+
 /**
  * Created by fanwenke on 16/11/21.
  */
 
-public abstract class BaseNetWork implements OnSucceedListener {
-    NetWorkListener listener;
+public abstract class BaseNetWork implements LK_OkHttpUtil.OnRequestListener {
+    public NetWorkListener listener;
 
 
     public void setNetWorkListener(NetWorkListener listener){
         this.listener = listener;
     };
-    public OKHttp okHttp;
+    public LK_OkHttpUtil okHttpUtil;
     public SharedPreferencesUtils sp;
     public SharedPreferencesUtils2 spData;
 
     public void initURL(){
-        okHttp = OKHttp.getInstance();
-        okHttp.setListener(this);
         sp = new SharedPreferencesUtils();
         spData = new SharedPreferencesUtils2();
+        okHttpUtil = LK_OkHttpUtil.getOkHttpUtil();
+
     }
 
     public void setUrl(int Flag, String url, Class cla){
-        okHttp.request(Flag,url,cla);
-    };
+
+        okHttpUtil.setOnRequestListener(this);
+        okHttpUtil.get(url,cla,Flag);
+
+    }
 
     @Override
-    public abstract  <T> void OnSucceed(int flag, T cla, String message);
+    public abstract void onSuccess(Object cla, int flag);
 
     @Override
-    public abstract void Error();
+    public void onError(int i, Exception e) {
+
+    }
+
+    @Override
+    public abstract void onFailure(IOException e);
 }

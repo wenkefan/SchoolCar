@@ -5,6 +5,8 @@ import android.content.Context;
 import android.content.pm.ApplicationInfo;
 import android.content.res.Resources;
 
+import testlibrary.hylk.com.loginlibrary.utils.LK_MyApplication;
+
 public class MyApp extends Application {
 	
 	private static MyApp mInstance ;

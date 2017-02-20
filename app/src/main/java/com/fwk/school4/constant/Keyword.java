@@ -106,8 +106,12 @@ public class Keyword {
     public static final int FLAGENDDAOZHAN = 602;//结束
 
     public static final int FLAGFACHE = 701;//发车
+    public static final int FLAGFACHEERROR = 70101;//发车error
+    public static final int FLAGFACHEERROR1 = 70102;//发车error
     public static final int FLAGFACHE1 = 7010;//发车
+    public static final int FLAGFACHE1ERROR = 701001;//发车1error
     public static final int FLAGDAOZHAN = 702;//到站
+    public static final int FLAGDAOZHANERROR = 70201;//到站error
 
 
     public static final int FLAGDOWNCAR = 1101;//上车
@@ -134,4 +138,13 @@ public class Keyword {
     public static final String DINGWEI = "DINGWEI";
 
     public static final String SELECTITME = "SELECTITME";
+
+    /**************************************业务逻辑关键字***********************************************************/
+
+    public static final String LIXIANFASONGCARURL = "LIXIANFASONGCARURL";
+    public static final int XiaURL = 100000;
+
+    public static final String LIXIANSHANGXIAURL = "LIXIANSHANGXIAURL";
+    public static final int ShangURL = 20000;
+
 }

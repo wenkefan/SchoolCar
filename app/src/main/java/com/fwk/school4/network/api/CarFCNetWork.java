@@ -6,6 +6,8 @@ import com.fwk.school4.constant.Keyword;
 import com.fwk.school4.model.StationFADAOBean;
 import com.fwk.school4.utils.ToastUtil;
 
+import java.io.IOException;
+
 
 /**
  * Created by fanwenke on 16/11/22.
@@ -15,6 +17,7 @@ import com.fwk.school4.utils.ToastUtil;
 public class CarFCNetWork extends BaseNetWork {
 
     private static Activity mActivity;
+    private static int mFlag;
 
     public static CarFCNetWork newInstance(Activity activity){
         mActivity = activity;
@@ -24,22 +27,17 @@ public class CarFCNetWork extends BaseNetWork {
     private CarFCNetWork(){
         initURL();
     }
-
+    public void getFlag(int flag){
+        mFlag = flag;
+    }
     @Override
-    public <T> void OnSucceed(int flag, T cla, final String message) {
+    public void onSuccess(Object cla, int flag) {
         if (flag == Keyword.FLAGFACHE){
             if (cla != null){
 
                 StationFADAOBean fadaoBean = (StationFADAOBean) cla;
 
                 listener.NetWorkSuccess(Keyword.FLAGFACHE);
-            } else {
-                mActivity.runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        ToastUtil.show(message);
-                    }
-                });
             }
         } else if (flag == Keyword.FLAGFACHE1){
             if (cla != null){
@@ -47,19 +45,16 @@ public class CarFCNetWork extends BaseNetWork {
                 StationFADAOBean fadaoBean = (StationFADAOBean) cla;
 
                 listener.NetWorkSuccess(Keyword.FLAGFACHE1);
-            } else {
-                mActivity.runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        ToastUtil.show(message);
-                    }
-                });
             }
         }
     }
 
     @Override
-    public void Error() {
-
+    public void onFailure(IOException e) {
+        if (mFlag == Keyword.FLAGFACHE) {
+            listener.NetWorkError(Keyword.FLAGFACHEERROR);
+        } else if (mFlag == Keyword.FLAGFACHE1){
+            listener.NetWorkError(Keyword.FLAGFACHEERROR1);
+        }
     }
 }

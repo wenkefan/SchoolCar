@@ -39,6 +39,7 @@ import com.fwk.school4.utils.SharedPreferencesUtils;
 import com.fwk.school4.utils.ToastUtil;
 import com.fwk.school4.weight.MainDialog;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -72,6 +73,10 @@ public class SongChildListActivity2 extends NFCBaseActivity implements JieChildL
     private List<StationBean.RerurnValueBean> stationlist;
     private boolean isJieShu = false;
     private int selStationID;
+
+    private String FacheUrl;
+    private String ShangcheUrl;
+    private String XiacheUrl;
 
     public SongChildListActivity2() {
 
@@ -165,7 +170,7 @@ public class SongChildListActivity2 extends NFCBaseActivity implements JieChildL
         /**
          * 字段：派车单号、幼儿编号、站点、时间、状态、kgid、上下车类型（1、上车；2、下车）
          */
-        String url = String.format(
+        XiacheUrl = String.format(
                 HTTPURL.API_STUDENT_OPEN_DOWN,
                 sp.getInt(Keyword.SP_PAICHEDANHAO),
                 bean.getChildId(),
@@ -174,10 +179,10 @@ public class SongChildListActivity2 extends NFCBaseActivity implements JieChildL
                 childPosition,
                 SpLogin.getKgId(),
                 2);
-        LogUtils.d("下车接口：" + url);
+        LogUtils.d("下车接口：" + XiacheUrl);
         UpCarNetWork upCarNetWork = UpCarNetWork.newInstance(this);
         upCarNetWork.setNetWorkListener(this);
-        upCarNetWork.setUrl(Keyword.FLAGUPCAR, url, UpDownCar.class);
+        upCarNetWork.setUrl(Keyword.FLAGUPCAR, XiacheUrl, UpDownCar.class);
     }
 
     private void shangchefenzu(boolean b, Intent data, ChildBean.RerurnValueBean valueBean) {
@@ -196,7 +201,7 @@ public class SongChildListActivity2 extends NFCBaseActivity implements JieChildL
         /**
          * 字段：派车单号、幼儿编号、站点、时间、状态、kgid、上下车类型（1、上车；2、下车）
          */
-        String url = String.format(
+        ShangcheUrl = String.format(
                 HTTPURL.API_STUDENT_OPEN_DOWN,
                 sp.getInt(Keyword.SP_PAICHEDANHAO),
                 bean.getChildId(),
@@ -205,10 +210,10 @@ public class SongChildListActivity2 extends NFCBaseActivity implements JieChildL
                 childPosition,
                 SpLogin.getKgId(),
                 1);
-        LogUtils.d("上车接口-----：" + url);
+        LogUtils.d("上车接口-----：" + ShangcheUrl);
         DownCarNetWork downCarNetWork = DownCarNetWork.newInstance(this);
         downCarNetWork.setNetWorkListener(this);
-        downCarNetWork.setUrl(Keyword.FLAGDOWNCAR, url, UpDownCar.class);
+        downCarNetWork.setUrl(Keyword.FLAGDOWNCAR, ShangcheUrl, UpDownCar.class);
 
     }
 
@@ -230,7 +235,7 @@ public class SongChildListActivity2 extends NFCBaseActivity implements JieChildL
                 ToastUtil.show("车上还有幼儿，请仔细检查");
             }
         } else {
-            if (SurplusShangcheName() + SurplusXiacheName() != 0){
+            if (SurplusShangcheName() + SurplusXiacheName() != 0) {
                 //有未上车或者未下车
                 AlertDialog.Builder builder = new AlertDialog.Builder(this);
                 builder.setCancelable(false);
@@ -257,14 +262,14 @@ public class SongChildListActivity2 extends NFCBaseActivity implements JieChildL
 
     }
 
-    private void facheUrl(){
+    private void facheUrl() {
         showDialog();
-        String url = String.format(HTTPURL.API_PROCESS, SpLogin.getKgId(), stationlist.get(position).getStationId(),
+        FacheUrl = String.format(HTTPURL.API_PROCESS, SpLogin.getKgId(), stationlist.get(position).getStationId(),
                 sp.getInt(Keyword.SP_PAICHEDANHAO), 2, GetDateTime.getdatetime());
-        LogUtils.d("发车URL：" + url);
+        LogUtils.d("发车URL：" + FacheUrl);
         CarDZNetWork carDZNetWork = CarDZNetWork.newInstance(SongChildListActivity2.this);
         carDZNetWork.setNetWorkListener(SongChildListActivity2.this);
-        carDZNetWork.setUrl(Keyword.FLAGDAOZHAN, url, StationFADAOBean.class);
+        carDZNetWork.setUrl(Keyword.FLAGDAOZHAN, FacheUrl, StationFADAOBean.class);
     }
 
     @Override
@@ -287,7 +292,33 @@ public class SongChildListActivity2 extends NFCBaseActivity implements JieChildL
 
     @Override
     public void NetWorkError(int Flag) {
-
+        switch (Flag) {
+            case Keyword.FLAGDAOZHANERROR:
+                List<String> url = (List<String>) sp.queryForSharedToObject(Keyword.LIXIANFASONGCARURL);
+                if (url == null) {
+                    url = new ArrayList<>();
+                }
+                url.add(FacheUrl);
+                sp.saveToShared(Keyword.LIXIANFASONGCARURL, url);
+                handler.sendEmptyMessage(Keyword.FLAGDAOZHAN);
+                break;
+            case Keyword.XiaURL:
+                List<String> url2 = (List<String>) sp.queryForSharedToObject(Keyword.LIXIANSHANGXIAURL);
+                if (url2 == null) {
+                    url2 = new ArrayList<>();
+                }
+                url2.add(XiacheUrl);
+                sp.saveToShared(Keyword.LIXIANSHANGXIAURL, url2);
+                break;
+            case Keyword.ShangURL:
+                List<String> url3 = (List<String>) sp.queryForSharedToObject(Keyword.LIXIANSHANGXIAURL);
+                if (url3 == null) {
+                    url3 = new ArrayList<>();
+                }
+                url3.add(ShangcheUrl);
+                sp.saveToShared(Keyword.LIXIANSHANGXIAURL, url3);
+                break;
+        }
     }
 
     private Handler handler = new Handler() {
@@ -375,7 +406,8 @@ public class SongChildListActivity2 extends NFCBaseActivity implements JieChildL
             ToastUtil.show("当前站没有此学生");
         }
     }
-    private int SurplusShangcheName(){
+
+    private int SurplusShangcheName() {
         if (map == null) {
             map = (Map<String, List<ChildBean.RerurnValueBean>>) sp.queryForSharedToObject(Keyword.MAPLIST);
         }
@@ -390,7 +422,8 @@ public class SongChildListActivity2 extends NFCBaseActivity implements JieChildL
         }
         return number;
     }
-    private int SurplusXiacheName(){
+
+    private int SurplusXiacheName() {
         if (map == null) {
             map = (Map<String, List<ChildBean.RerurnValueBean>>) sp.queryForSharedToObject(Keyword.MAPLIST);
         }

@@ -38,6 +38,7 @@ import com.fwk.school4.utils.SharedPreferencesUtils;
 import com.fwk.school4.utils.ToastUtil;
 import com.fwk.school4.weight.MainDialog;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -62,7 +63,6 @@ public class JieChildListActivity2 extends NFCBaseActivity implements JieChildLi
     private LinearLayoutManager manager;
     private JieChildListAdapter2 adapter;
     private SharedPreferencesUtils sp = new SharedPreferencesUtils();
-//    private SharedPreferencesUtils2 sp = new SharedPreferencesUtils2();
     private Map<String, List<ChildBean.RerurnValueBean>> map;//幼儿map
     private StaBean staBean;//选中幼儿所在的站点
     private int mItem;//站点中幼儿的位置数
@@ -72,6 +72,10 @@ public class JieChildListActivity2 extends NFCBaseActivity implements JieChildLi
     private List<StationBean.RerurnValueBean> stationlist;
     private boolean isJieShu = false;
     private int selStationID;
+
+    private String FacheUrl;
+    private String ShangcheUrl;
+    private String XiacheUrl;
 
     public JieChildListActivity2() {
 
@@ -162,7 +166,7 @@ public class JieChildListActivity2 extends NFCBaseActivity implements JieChildLi
         /**
          * 字段：派车单号、幼儿编号、站点、时间、状态、kgid、上下车类型（1、上车；2、下车）
          */
-        String url = String.format(
+        XiacheUrl = String.format(
                 HTTPURL.API_STUDENT_OPEN_DOWN,
                 sp.getInt(Keyword.SP_PAICHEDANHAO),
                 bean.getChildId(),
@@ -171,10 +175,10 @@ public class JieChildListActivity2 extends NFCBaseActivity implements JieChildLi
                 childPosition,
                 SpLogin.getKgId(),
                 2);
-        LogUtils.d("下车接口：" + url);
+        LogUtils.d("下车接口：" + XiacheUrl);
         UpCarNetWork upCarNetWork = UpCarNetWork.newInstance(this);
         upCarNetWork.setNetWorkListener(this);
-        upCarNetWork.setUrl(Keyword.FLAGUPCAR, url, UpDownCar.class);
+        upCarNetWork.setUrl(Keyword.FLAGUPCAR, XiacheUrl, UpDownCar.class);
     }
 
     private void shangchefenzu(boolean b, Intent data) {
@@ -191,7 +195,7 @@ public class JieChildListActivity2 extends NFCBaseActivity implements JieChildLi
             /**
              * 字段：派车单号、幼儿编号、站点、时间、状态、kgid、上下车类型（1、上车；2、下车）
              */
-            String url = String.format(
+            ShangcheUrl = String.format(
                     HTTPURL.API_STUDENT_OPEN_DOWN,
                     sp.getInt(Keyword.SP_PAICHEDANHAO),
                     bean.getChildId(),
@@ -200,10 +204,10 @@ public class JieChildListActivity2 extends NFCBaseActivity implements JieChildLi
                     childPosition,
                     SpLogin.getKgId(),
                     1);
-            LogUtils.d("上车接口-----：" + url);
+            LogUtils.d("上车接口-----：" + ShangcheUrl);
             DownCarNetWork downCarNetWork = DownCarNetWork.newInstance(this);
             downCarNetWork.setNetWorkListener(this);
-            downCarNetWork.setUrl(Keyword.FLAGDOWNCAR, url, UpDownCar.class);
+            downCarNetWork.setUrl(Keyword.FLAGDOWNCAR, ShangcheUrl, UpDownCar.class);
         }
     }
 
@@ -253,12 +257,12 @@ public class JieChildListActivity2 extends NFCBaseActivity implements JieChildLi
 
     private void facheUrl(){
         showDialog();
-        String url = String.format(HTTPURL.API_PROCESS, SpLogin.getKgId(), stationlist.get(stationPosition).getStationId(),
+        FacheUrl = String.format(HTTPURL.API_PROCESS, SpLogin.getKgId(), stationlist.get(stationPosition).getStationId(),
                 sp.getInt(Keyword.SP_PAICHEDANHAO), 2, GetDateTime.getdatetime());
-        LogUtils.d("发车URL：" + url);
+        LogUtils.d("发车URL：" + FacheUrl);
         CarDZNetWork carDZNetWork = CarDZNetWork.newInstance(JieChildListActivity2.this);
         carDZNetWork.setNetWorkListener(JieChildListActivity2.this);
-        carDZNetWork.setUrl(Keyword.FLAGDAOZHAN, url, StationFADAOBean.class);
+        carDZNetWork.setUrl(Keyword.FLAGDAOZHAN, FacheUrl, StationFADAOBean.class);
     }
 
     @Override
@@ -281,7 +285,35 @@ public class JieChildListActivity2 extends NFCBaseActivity implements JieChildLi
 
     @Override
     public void NetWorkError(int Flag) {
-
+        switch (Flag) {
+            case Keyword.FLAGDAOZHANERROR:
+                List<String> url = (List<String>) sp.queryForSharedToObject(Keyword.LIXIANFASONGCARURL);
+                if (url == null) {
+                    url = new ArrayList<>();
+                }
+                url.add(FacheUrl);
+                sp.saveToShared(Keyword.LIXIANFASONGCARURL, url);
+                handler.sendEmptyMessage(Keyword.FLAGDAOZHAN);
+                break;
+            case Keyword.XiaURL:
+                List<String> url2 = (List<String>) sp.queryForSharedToObject(Keyword.LIXIANSHANGXIAURL);
+                if (url2 == null) {
+                    url2 = new ArrayList<>();
+                }
+                url2.add(XiacheUrl);
+                sp.saveToShared(Keyword.LIXIANSHANGXIAURL, url2);
+                handler.sendEmptyMessage(Keyword.FLAGUPCAR);
+                break;
+            case Keyword.ShangURL:
+                List<String> url3 = (List<String>) sp.queryForSharedToObject(Keyword.LIXIANSHANGXIAURL);
+                if (url3 == null) {
+                    url3 = new ArrayList<>();
+                }
+                url3.add(ShangcheUrl);
+                sp.saveToShared(Keyword.LIXIANSHANGXIAURL, url3);
+                handler.sendEmptyMessage(Keyword.FLAGDOWNCAR);
+                break;
+        }
     }
 
     private Handler handler = new Handler() {

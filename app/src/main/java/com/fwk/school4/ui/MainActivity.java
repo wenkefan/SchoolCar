@@ -6,6 +6,7 @@ import android.os.Message;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.fwk.school4.R;
 import com.fwk.school4.constant.Keyword;
@@ -29,9 +30,11 @@ import com.fwk.school4.utils.SharedPreferencesUtils2;
 import com.fwk.school4.utils.ToastUtil;
 import com.fwk.school4.weight.MainDialog;
 
+import java.io.IOException;
 import java.util.List;
 
 import butterknife.InjectView;
+import testlibrary.hylk.com.loginlibrary.okhttp.LK_OkHttpUtil;
 
 /**
  * Created by fanwenke on 16/12/5.
@@ -122,7 +125,6 @@ public class MainActivity extends BaseActivity implements NetWorkListener, BaseR
         switch (Flag){
             case Keyword.FLAGFIRSTFACHEError:
                 //第一次发车失败
-                mHandler.sendEmptyMessage(Keyword.FLAGFIRSTFACHE);
                 break;
         }
     }

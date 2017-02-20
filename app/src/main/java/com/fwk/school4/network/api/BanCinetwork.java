@@ -2,19 +2,26 @@ package com.fwk.school4.network.api;
 
 
 import android.app.Activity;
+import android.widget.Toast;
 
 
 import com.fwk.school4.constant.Keyword;
 import com.fwk.school4.constant.SpLogin;
 import com.fwk.school4.model.BanciBean;
 import com.fwk.school4.listener.NetWorkListener;
+import com.fwk.school4.ui.MainActivity;
 import com.fwk.school4.utils.GetDateTime;
+import com.fwk.school4.utils.SharedPreferencesUtils;
+import com.fwk.school4.utils.SharedPreferencesUtils2;
 import com.fwk.school4.utils.ToastUtil;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+
+import testlibrary.hylk.com.loginlibrary.okhttp.LK_OkHttpUtil;
 
 import static android.icu.lang.UCharacter.GraphemeClusterBreak.T;
 
@@ -41,79 +48,67 @@ public class BanCinetwork extends BaseNetWork {
         initURL();
     }
 
-
-    @Override
     public void setNetWorkListener(NetWorkListener listener) {
         this.listener = listener;
     }
 
-    @Override
-    public void setUrl(int Flag, String url, Class cla) {
-        okHttp.request(Flag, url, cla);
-    }
 
     @Override
-    public <T> void OnSucceed(int flag, T cla, final String message) {
+    public void onSuccess(Object cla, int flag) {
+
         if (flag == Keyword.FLAGBANCI) {
+            BanciBean bean = (BanciBean) cla;
+            try {
+                for (BanciBean.RerurnValueBean valueBean : bean.getRerurnValue()) {
 
-            if (cla != null) {
-
-                BanciBean bean = (BanciBean) cla;
-
-                try {
-
-                    for (BanciBean.RerurnValueBean valueBean : bean.getRerurnValue()) {
-
-                        if (valueBean.getTeacherId() == SpLogin.getWorkerExtensionId()) {
-                            //表示为用户的班次
-                            valueBean.setOriginal(true);
-                            list1.add(0, valueBean);
-                        } else {
-                            //表示为非用户的班次
-                            valueBean.setOriginal(false);
-                            list.add(valueBean);
-                        }
+                    if (valueBean.getTeacherId() == SpLogin.getWorkerExtensionId()) {
+                        //表示为用户的班次
+                        valueBean.setOriginal(true);
+                        list1.add(0, valueBean);
+                    } else {
+                        //表示为非用户的班次
+                        valueBean.setOriginal(false);
+                        list.add(valueBean);
                     }
-
-                } catch (Exception o) {
-
-                    final BanciBean finalBean = bean;
-                    mActivity.runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            ToastUtil.show(finalBean.getMessage());
-                        }
-                    });
-                    return;
-
                 }
-                //排序
-                sortList(list1);
-                sortList(list);
-                for (int i = 0; i < list1.size(); i++){
-                    list.add(i,list1.get(i));
-                }
-//                sp.saveToShared(Keyword.SP_BANCI, bean);
-                spData.saveToShared(Keyword.SP_BANCI_LIST, list);
-                bean = null;
-                list = null;
+            } catch (Exception o) {
 
-                listener.NetWorkSuccess(Keyword.FLAGBANCI);
-
-            } else {
-
+                final BanciBean finalBean = bean;
                 mActivity.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        ToastUtil.show(message);
-                        return;
+                        ToastUtil.show(finalBean.getMessage());
                     }
                 });
-
+                return;
             }
+            //排序
+            sortList(list1);
+            sortList(list);
+            for (int i = 0; i < list1.size(); i++) {
+                list.add(i, list1.get(i));
+            }
+//                sp.saveToShared(Keyword.SP_BANCI, bean);
+            spData.saveToShared(Keyword.SP_BANCI_LIST, list);
+            bean = null;
+            list = null;
+
+            listener.NetWorkSuccess(Keyword.FLAGBANCI);
 
         }
+    }
 
+
+    NetWorkListener listener;
+
+    @Override
+    public void onFailure(IOException e) {
+        mActivity.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                ToastUtil.show("网络错误");
+            }
+        });
     }
 
     private void sortList(List<BanciBean.RerurnValueBean> list) {
@@ -123,16 +118,6 @@ public class BanCinetwork extends BaseNetWork {
                 Double d = Double.parseDouble(GetDateTime.getHM2(o1.getSendStartTime()));
                 Double d2 = Double.parseDouble(GetDateTime.getHM2(o2.getSendStartTime()));
                 return d.compareTo(d2);
-            }
-        });
-    }
-
-    @Override
-    public void Error() {
-        mActivity.runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                ToastUtil.show("网络错误");
             }
         });
     }

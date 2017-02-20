@@ -6,6 +6,8 @@ import com.fwk.school4.constant.Keyword;
 import com.fwk.school4.listener.NetWorkListener;
 import com.fwk.school4.utils.ToastUtil;
 
+import java.io.IOException;
+
 
 /**
  * Created by fanwenke on 16/11/22.
@@ -16,12 +18,12 @@ public class EndNetWork extends BaseNetWork {
 
     private static Activity mActivity;
 
-    public static EndNetWork newInstance(Activity activity){
+    public static EndNetWork newInstance(Activity activity) {
         mActivity = activity;
         return new EndNetWork();
     }
 
-    private EndNetWork(){
+    private EndNetWork() {
         initURL();
     }
 
@@ -30,33 +32,20 @@ public class EndNetWork extends BaseNetWork {
         this.listener = listener;
     }
 
-
     @Override
-    public <T> void OnSucceed(int flag, T cla, final String message) {
+    public void onSuccess(Object cla, int flag) {
+        if (flag == Keyword.FLAGENDDAOZHAN) {
 
-        if (flag == Keyword.FLAGENDDAOZHAN){
-
-            if (cla != null){
+            if (cla != null) {
 
                 listener.NetWorkSuccess(Keyword.FLAGENDDAOZHAN);
 
-            } else {
-                mActivity.runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        ToastUtil.show(message);
-                    }
-                });
             }
-
-
-
         }
-
     }
 
     @Override
-    public void Error() {
+    public void onFailure(IOException e) {
         mActivity.runOnUiThread(new Runnable() {
             @Override
             public void run() {
@@ -64,4 +53,5 @@ public class EndNetWork extends BaseNetWork {
             }
         });
     }
+
 }

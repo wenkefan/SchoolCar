@@ -26,7 +26,8 @@ public class OKHttp {
     public Gson gson = new Gson();
     private static final OkHttpClient client = new OkHttpClient();
     private static final OKHttp OK_HTTP = new OKHttp();
-    public static OKHttp getInstance(){
+
+    public static OKHttp getInstance() {
         return OK_HTTP;
     }
 
@@ -46,12 +47,12 @@ public class OKHttp {
             public void onResponse(Call call, Response response) throws IOException {
                 String json = response.body().string();
                 JSONObject jsonObject = null;
-                    try {
-                        jsonObject = new JSONObject(json);
-                        if (jsonObject.getInt("Success") == 10000) {
-                            LogUtils.d("---json"+json + "");
-                            Gson gson = new Gson();
-                            listener.OnSucceed(flag, gson.fromJson(json, clas), null);
+                try {
+                    jsonObject = new JSONObject(json);
+                    if (jsonObject.getInt("Success") == 10000) {
+                        LogUtils.d("---json" + json + "");
+                        Gson gson = new Gson();
+                        listener.OnSucceed(flag, gson.fromJson(json, clas), null);
                     } else {
                         String message = (String) jsonObject.get("Message");
                         listener.OnSucceed(flag, null, message);

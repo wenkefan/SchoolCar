@@ -24,7 +24,7 @@ import android.widget.Toast;
 public class NetStateReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
-
+        Line line = new Line();
 
         boolean success = false;
         //获得网络连接服务
@@ -34,8 +34,8 @@ public class NetStateReceiver extends BroadcastReceiver {
         if (State.CONNECTED == state) { // 判断是否正在使用WIFI网络
             success = true;
             System.out.println("wzz--------:您的网络已连接到wifi");
-            Toast.makeText(context, "您已连接到wifi", Toast.LENGTH_SHORT).show();
-
+//            Toast.makeText(context, "您已连接到wifi", Toast.LENGTH_SHORT).show();
+            line.initData();
 
             return;
         }
@@ -43,13 +43,12 @@ public class NetStateReceiver extends BroadcastReceiver {
         if (State.CONNECTED == state1) { // 判断是否正在使用GPRS网络
             success = true;
             System.out.println("wzz--------:您的网络已连接到net");
-            Toast.makeText(context, "您已连接到2G/3G/4G网络", Toast.LENGTH_SHORT).show();
-
-
+//            Toast.makeText(context, "您已连接到2G/3G/4G网络", Toast.LENGTH_SHORT).show();
+            line.initData();
             return;
         }
         if (!success) {
-            Toast.makeText(context, "您的网络连接已中断", Toast.LENGTH_SHORT).show();
+//            Toast.makeText(context, "您的网络连接已中断", Toast.LENGTH_SHORT).show();
         }
 
     }

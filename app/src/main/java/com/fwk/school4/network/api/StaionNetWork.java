@@ -11,6 +11,7 @@ import com.fwk.school4.listener.NetWorkListener;
 import com.fwk.school4.utils.StationMode;
 import com.fwk.school4.utils.ToastUtil;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -41,7 +42,7 @@ public class StaionNetWork extends BaseNetWork {
     }
 
     @Override
-    public <T> void OnSucceed(int flag, T cla, final String message) {
+    public void onSuccess(Object cla, int flag) {
         if (flag == Keyword.FLAGSTATION) {
 
             if (cla != null) {
@@ -93,22 +94,13 @@ public class StaionNetWork extends BaseNetWork {
                 listener.NetWorkSuccess(Keyword.FLAGSTATION);
                 bean = null;
 
-            } else {
-
-                mActivity.runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        ToastUtil.show(message);
-                    }
-                });
-
             }
 
         }
     }
 
     @Override
-    public void Error() {
+    public void onFailure(IOException e) {
         mActivity.runOnUiThread(new Runnable() {
             @Override
             public void run() {
@@ -116,4 +108,5 @@ public class StaionNetWork extends BaseNetWork {
             }
         });
     }
+
 }

@@ -78,7 +78,6 @@ public class JieStationMapActivity extends BaseActivity implements NetWorkListen
     private MapRecyclerViewAdapter adapter;
 
     private SharedPreferencesUtils sp;
-//    private SharedPreferencesUtils2 sp;
 
 
     private DisplayMetrics display;
@@ -88,6 +87,12 @@ public class JieStationMapActivity extends BaseActivity implements NetWorkListen
     private int stationPosition = 0;
 
     private List<String> times;
+
+    private String DaozhanUrl;
+    private String FacheUrl;
+
+    private String shangUrl;
+    private String xiaUrl;
 
     @Override
     public int getLayoutId() {
@@ -202,7 +207,36 @@ public class JieStationMapActivity extends BaseActivity implements NetWorkListen
 
     @Override
     public void NetWorkError(int Flag) {
+        switch (Flag){
+            case Keyword.FLAGDAOZHANERROR:
+                List<String> url = (List<String>) sp.queryForSharedToObject(Keyword.LIXIANFASONGCARURL);
+                if (url == null){
+                    url = new ArrayList<>();
+                }
+                url.add(FacheUrl);
+                sp.saveToShared(Keyword.LIXIANFASONGCARURL,url);
+                handler.sendEmptyMessage(Keyword.FLAGDAOZHAN);
+                break;
+            case Keyword.FLAGFACHEERROR:
+                List<String> url1 = (List<String>) sp.queryForSharedToObject(Keyword.LIXIANFASONGCARURL);
+                if (url1 == null){
+                    url1 = new ArrayList<>();
+                }
+                url1.add(DaozhanUrl);
+                sp.saveToShared(Keyword.LIXIANFASONGCARURL,url1);
+                handler.sendEmptyMessage(Keyword.FLAGFACHE);
+                break;
+            case Keyword.FLAGFACHEERROR1:
+                List<String> url2 = (List<String>) sp.queryForSharedToObject(Keyword.LIXIANFASONGCARURL);
+                if (url2 == null){
+                    url2 = new ArrayList<>();
+                }
+                url2.add(DaozhanUrl);
+                sp.saveToShared(Keyword.LIXIANFASONGCARURL,url2);
+                handler.sendEmptyMessage(Keyword.FLAGFACHE1);
+                break;
 
+        }
     }
 
     private Handler handler = new Handler() {
@@ -245,11 +279,11 @@ public class JieStationMapActivity extends BaseActivity implements NetWorkListen
                 case Keyword.FLAGFACHE1:
                     setSJTime();
                     List<StationBean.RerurnValueBean> stationList = (List<StationBean.RerurnValueBean>) sp.queryForSharedToObject(Keyword.SP_STATION_LIST);
-                    String url1 = String.format(HTTPURL.API_PROCESS, SpLogin.getKgId(), stationList.get(stationPosition).getStationId(), sp.getInt(Keyword.SP_PAICHEDANHAO), 2, GetDateTime.getdatetime());
-                    LogUtils.d("--发车URL：" + url1);
+                    FacheUrl = String.format(HTTPURL.API_PROCESS, SpLogin.getKgId(), stationList.get(stationPosition).getStationId(), sp.getInt(Keyword.SP_PAICHEDANHAO), 2, GetDateTime.getdatetime());
+                    LogUtils.d("--发车URL：" + FacheUrl);
                     CarDZNetWork carDZNetWork = CarDZNetWork.newInstance(JieStationMapActivity.this);
                     carDZNetWork.setNetWorkListener(JieStationMapActivity.this);
-                    carDZNetWork.setUrl(Keyword.FLAGDAOZHAN, url1, StationFADAOBean.class);
+                    carDZNetWork.setUrl(Keyword.FLAGDAOZHAN, FacheUrl, StationFADAOBean.class);
                     break;
                 case Keyword.FLAGDAOZHAN:
                     closeDialog();
@@ -299,16 +333,17 @@ public class JieStationMapActivity extends BaseActivity implements NetWorkListen
         List<StationBean.RerurnValueBean> stationList = (List<StationBean.RerurnValueBean>) sp.queryForSharedToObject(Keyword.SP_STATION_LIST);
         this.Position = position;
         this.stationSelId = stationList.get(position).getStationId();
-        String url = String.format(HTTPURL.API_PROCESS, SpLogin.getKgId(), stationList.get(position).getStationId(), sp.getInt(Keyword.SP_PAICHEDANHAO), 1, GetDateTime.getdatetime());
-        LogUtils.d("到站URL：" + url);
+        DaozhanUrl = String.format(HTTPURL.API_PROCESS, SpLogin.getKgId(), stationList.get(position).getStationId(), sp.getInt(Keyword.SP_PAICHEDANHAO), 1, GetDateTime.getdatetime());
+        LogUtils.d("到站URL：" + DaozhanUrl);
         CarFCNetWork carFCNetWork = CarFCNetWork.newInstance(this);
         carFCNetWork.setNetWorkListener(this);
         if (getShangChenumber(stationSelId) + getXiaCheNumber(stationSelId) > 0) {
-            carFCNetWork.setUrl(Keyword.FLAGFACHE, url, StationFADAOBean.class);
+            carFCNetWork.getFlag(Keyword.FLAGFACHE);
+            carFCNetWork.setUrl(Keyword.FLAGFACHE, DaozhanUrl, StationFADAOBean.class);
         } else {
             showDialog();
             if (position != stationList.size() - 1) {
-                carFCNetWork.setUrl(Keyword.FLAGFACHE1, url, StationFADAOBean.class);
+                carFCNetWork.setUrl(Keyword.FLAGFACHE1, DaozhanUrl, StationFADAOBean.class);
             } else {
 
                 int child = sp.getInt(Keyword.CARNUMBER);
