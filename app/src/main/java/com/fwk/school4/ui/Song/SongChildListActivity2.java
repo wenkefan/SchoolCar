@@ -309,6 +309,7 @@ public class SongChildListActivity2 extends NFCBaseActivity implements JieChildL
                 }
                 url2.add(XiacheUrl);
                 sp.saveToShared(Keyword.LIXIANSHANGXIAURL, url2);
+                handler.sendEmptyMessage(Keyword.FLAGUPCAR);
                 break;
             case Keyword.ShangURL:
                 List<String> url3 = (List<String>) sp.queryForSharedToObject(Keyword.LIXIANSHANGXIAURL);
@@ -317,6 +318,7 @@ public class SongChildListActivity2 extends NFCBaseActivity implements JieChildL
                 }
                 url3.add(ShangcheUrl);
                 sp.saveToShared(Keyword.LIXIANSHANGXIAURL, url3);
+                handler.sendEmptyMessage(Keyword.FLAGDOWNCAR);
                 break;
         }
     }

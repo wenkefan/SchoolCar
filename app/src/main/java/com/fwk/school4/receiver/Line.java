@@ -37,7 +37,7 @@ public class Line implements NetWorkListener {
     @Override
     public void NetWorkSuccess(int Flag) {
         switch (Flag) {
-            case Keyword.FLAGFIRSTFACHEError:
+            case Keyword.ShangURL:
                 list.remove(0);
                 sp.saveToShared(Keyword.LIXIANFASONGCARURL,list);
                 handler.sendEmptyMessage(Keyword.FLAGFIRSTFACHEError);
@@ -80,6 +80,9 @@ public class Line implements NetWorkListener {
 
     private void shangxiacheData(){
         list2 = (List<String>) sp.queryForSharedToObject(Keyword.LIXIANSHANGXIAURL);
+        if (list2 == null){
+            return;
+        }
         LogUtils.d(list2.size() + "------size");
         if (list2 != null && list2.size() > 0){
             shangxiaURL(list2.get(0));

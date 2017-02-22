@@ -338,10 +338,12 @@ public class SongStationMapActivity extends BaseActivity implements NetWorkListe
         CarFCNetWork carFCNetWork = CarFCNetWork.newInstance(this);
         carFCNetWork.setNetWorkListener(this);
         if (getShangChenumber(stationSelId) + getXiaCheNumber(stationSelId) > 0) {
+            carFCNetWork.getFlag(Keyword.FLAGFACHE);
             carFCNetWork.setUrl(Keyword.FLAGFACHE, DaozhanUrl, StationFADAOBean.class);
         } else {
             showDialog();
             if (position != stationList.size() - 1) {
+                carFCNetWork.getFlag(Keyword.FLAGFACHE1);
                 carFCNetWork.setUrl(Keyword.FLAGFACHE1, DaozhanUrl, StationFADAOBean.class);
             } else {
 

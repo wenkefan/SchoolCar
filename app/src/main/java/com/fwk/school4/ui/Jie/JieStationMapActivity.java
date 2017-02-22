@@ -370,6 +370,7 @@ public class JieStationMapActivity extends BaseActivity implements NetWorkListen
         } else {
             showDialog();
             if (position != stationList.size() - 1) {
+                carFCNetWork.getFlag(Keyword.FLAGFACHE1);
                 carFCNetWork.setUrl(Keyword.FLAGFACHE1, DaozhanUrl, StationFADAOBean.class);
             } else {
 
