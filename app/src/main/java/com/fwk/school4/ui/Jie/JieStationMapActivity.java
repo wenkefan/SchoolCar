@@ -6,6 +6,8 @@ import android.os.Message;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.DisplayMetrics;
+import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.fwk.school4.R;
@@ -45,6 +47,7 @@ import java.util.List;
 import java.util.Map;
 
 import butterknife.InjectView;
+import butterknife.OnClick;
 
 /**
  * Created by fanwenke on 16/12/7.
@@ -79,6 +82,8 @@ public class JieStationMapActivity extends BaseActivity implements NetWorkListen
     TextView renshu;
     @InjectView(R.id.tv_count)
     TextView mCount;
+    @InjectView(R.id.title_right_iv)
+    ImageView zf;
     private MapRecyclerViewAdapter adapter;
 
     private SharedPreferencesUtils sp;
@@ -124,6 +129,7 @@ public class JieStationMapActivity extends BaseActivity implements NetWorkListen
 
     @Override
     public void init() {
+        zf.setVisibility(View.VISIBLE);
         sp = new SharedPreferencesUtils();
         Intent intent = getIntent();
         if (bean == null) {
@@ -184,6 +190,13 @@ public class JieStationMapActivity extends BaseActivity implements NetWorkListen
         LogUtils.d("zouzhele--" + stationPosition);
     }
 
+
+    @OnClick(R.id.title_right_iv)
+    public void onClick(View view){
+        ZuofeiNetWork work = ZuofeiNetWork.newInstance(this);
+        work.setNetWorkListener(this);
+        MainDialog.ZF(this, work);
+    }
 
     @Override
     public void NetWorkSuccess(int Flag) {
