@@ -34,6 +34,7 @@ public class JieChildListAdapter2 extends BaseRecyclerAdapter {
     private ChildRecyAdapter adapter;
     private List<ChildBean.RerurnValueBean> list;
     private int selStationID;
+    private boolean bool;
 
     public void getData(int selStationID) {
         this.selStationID = selStationID;
@@ -66,6 +67,7 @@ public class JieChildListAdapter2 extends BaseRecyclerAdapter {
             if (list != null && list.size() != 0) {
                 adapter = new ChildRecyAdapter(list);
                 viewHolde.rv.setAdapter(adapter);
+                adapter.setBool(bool);
                 adapter.setOnItemListener(new OnItemListener() {
                     @Override
                     public void setOnItemListener(int itme, ClickableViewHolder holder) {
@@ -118,5 +120,10 @@ public class JieChildListAdapter2 extends BaseRecyclerAdapter {
 
     public void setOnItemAdapterListener(OnItemAdapterListener onItemAdapterListener) {
         this.onItemAdapterListener = onItemAdapterListener;
+    }
+
+    public void setBool(boolean bool){
+        this.bool = bool;
+        notifyDataSetChanged();
     }
 }

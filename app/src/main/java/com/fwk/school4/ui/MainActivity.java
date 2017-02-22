@@ -26,7 +26,6 @@ import com.fwk.school4.ui.adapter.MainRecyclerViewAdapter;
 import com.fwk.school4.utils.GetDateTime;
 import com.fwk.school4.utils.LogUtils;
 import com.fwk.school4.utils.SharedPreferencesUtils;
-import com.fwk.school4.utils.SharedPreferencesUtils2;
 import com.fwk.school4.utils.ToastUtil;
 import com.fwk.school4.weight.MainDialog;
 
@@ -43,7 +42,7 @@ import testlibrary.hylk.com.loginlibrary.okhttp.LK_OkHttpUtil;
 /**
  * 主页逻辑
  * 1.判断用户之前是否有未到站班次，如果有，弹出继续或者返回列表对话框，如果没有，请求班次列表
- *          （未实现）保存所有的发送的班次缓存
+ * （未实现）保存所有的发送的班次缓存
  * 2.判断选择的班次是否为用户班次
  * 3.判断班次的状态：1.未发车；2已发车；3已结束。未发车的班次随时可发车，已发车的班次只有发送这个班次用户进入，已结束的都不能进入
  */
@@ -52,7 +51,7 @@ public class MainActivity extends BaseActivity implements NetWorkListener, BaseR
     private MainRecyclerViewAdapter adapter;
     private LinearLayoutManager linearLayoutManager;
     private SharedPreferencesUtils sp;
-    private SharedPreferencesUtils2 spData;
+//    private SharedPreferencesUtils2 spData;
     private String FristURL;
     private List<BanciBean.RerurnValueBean> banciData;
 
@@ -70,13 +69,11 @@ public class MainActivity extends BaseActivity implements NetWorkListener, BaseR
     @Override
     public void init() {
         title.setText(SpLogin.getKgName());
-        spData = new SharedPreferencesUtils2();
+        sp = new SharedPreferencesUtils();
+//        spData = new SharedPreferencesUtils2();
         //判断是否在运行中
-        if (spData.getBoolean(Keyword.BEGIN)) {
+        if (sp.getBoolean(Keyword.BEGIN)) {
             //在运行中，弹出对话框
-            if (sp == null){
-                sp = new SharedPreferencesUtils();
-            }
             MainDialog.Beagin(this, (BanciBean.RerurnValueBean) sp.queryForSharedToObject(Keyword.SELECTBANCI));
         } else {
             //请求班次接口
@@ -119,10 +116,11 @@ public class MainActivity extends BaseActivity implements NetWorkListener, BaseR
                 break;
         }
     }
+
     //网络连接失败时
     @Override
     public void NetWorkError(int Flag) {
-        switch (Flag){
+        switch (Flag) {
             case Keyword.FLAGFIRSTFACHEError:
                 //第一次发车失败
                 break;
@@ -136,12 +134,12 @@ public class MainActivity extends BaseActivity implements NetWorkListener, BaseR
                 case Keyword.FLAGBANCI:
                     //请求成功加载班次列表
                     recyclerView();
-                    banciData = (List<BanciBean.RerurnValueBean>) spData.queryForSharedToObject(Keyword.SP_BANCI_LIST);
+                    banciData = (List<BanciBean.RerurnValueBean>) sp.queryForSharedToObject(Keyword.SP_BANCI_LIST);
                     break;
                 case Keyword.FLAGFIRSTFACHE:
                     sp = new SharedPreferencesUtils();
                     sp.saveToShared(Keyword.SELECTBANCI, bean);
-                    spData.setboolean(Keyword.BEGIN, true);
+                    sp.setboolean(Keyword.BEGIN, true);
                     startActivity(intent);
                     finish();
                     break;
@@ -172,6 +170,32 @@ public class MainActivity extends BaseActivity implements NetWorkListener, BaseR
 
         BanciBean.RerurnValueBean bean = banciData.get(position);
         this.bean = bean;
+
+        if (sp.getBoolean(Keyword.BEGIN)) {
+            switch (bean.getStatus()){
+                case 0:
+                    MainDialog.YYX(this,(BanciBean.RerurnValueBean) sp.queryForSharedToObject(Keyword.SELECTBANCI));
+                    break;
+                case 1:
+                    if (bean.getModifierId() == SpLogin.getWorkerExtensionId()) {
+                        if (bean.getAttendanceDirections() == 1) {
+                            mHandler.sendEmptyMessage(0x01);
+                            //接幼儿
+                        } else {
+                            mHandler.sendEmptyMessage(0x02);
+                            //送幼儿
+                        }
+                    } else {
+                        ToastUtil.show("本班次正在运行中...");
+                    }
+                    break;
+                case 2:
+                    ToastUtil.show("本班次今日已结束");
+                    return;
+            }
+            return;
+        }
+
         switch (bean.getStatus()) {
             case 0:
                 //判断是否为用户的班次，弹出不同对话框

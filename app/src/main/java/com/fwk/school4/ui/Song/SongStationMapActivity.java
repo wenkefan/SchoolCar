@@ -27,7 +27,9 @@ import com.fwk.school4.network.api.CarFCNetWork;
 import com.fwk.school4.network.api.ChildNetWork;
 import com.fwk.school4.network.api.EndNetWork;
 import com.fwk.school4.network.api.StaionNetWork;
+import com.fwk.school4.network.api.ZuofeiNetWork;
 import com.fwk.school4.ui.BaseActivity;
+import com.fwk.school4.ui.MainActivity;
 import com.fwk.school4.ui.ResidueActivity;
 import com.fwk.school4.ui.adapter.BaseRecyclerAdapter;
 import com.fwk.school4.ui.adapter.MapRecyclerViewAdapter;
@@ -35,6 +37,7 @@ import com.fwk.school4.utils.GetDateTime;
 import com.fwk.school4.utils.LogUtils;
 import com.fwk.school4.utils.SharedPreferencesUtils;
 import com.fwk.school4.utils.ToastUtil;
+import com.fwk.school4.weight.MainDialog;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -100,6 +103,12 @@ public class SongStationMapActivity extends BaseActivity implements NetWorkListe
         }
 
         title.setText(bean.getBusScheduleName());
+
+        if (intent.getBooleanExtra(Keyword.SELECTZUOFEI, false)) {
+            ZuofeiNetWork work = ZuofeiNetWork.newInstance(this);
+            work.setNetWorkListener(this);
+            MainDialog.ZF(this, work);
+        }
     }
 
     @Override
@@ -180,38 +189,44 @@ public class SongStationMapActivity extends BaseActivity implements NetWorkListe
             case Keyword.FLAGENDDAOZHAN:
                 handler.sendEmptyMessage(Keyword.FLAGENDDAOZHAN);
                 break;
+            case Keyword.ZUOFEI:
+                sp.removData();
+                startActivity(new Intent(SongStationMapActivity.this, MainActivity.class));
+                SongStationMapActivity.this.finish();
+                break;
         }
     }
 
     @Override
     public void NetWorkError(int Flag) {
-        switch (Flag){
+        switch (Flag) {
             case Keyword.FLAGDAOZHANERROR:
                 List<String> url = (List<String>) sp.queryForSharedToObject(Keyword.LIXIANFASONGCARURL);
-                if (url == null){
+                if (url == null) {
                     url = new ArrayList<>();
                 }
                 url.add(FacheUrl);
-                sp.saveToShared(Keyword.LIXIANFASONGCARURL,url);
+                sp.saveToShared(Keyword.LIXIANFASONGCARURL, url);
                 handler.sendEmptyMessage(Keyword.FLAGDAOZHAN);
                 break;
             case Keyword.FLAGFACHEERROR:
                 List<String> url1 = (List<String>) sp.queryForSharedToObject(Keyword.LIXIANFASONGCARURL);
-                if (url1 == null){
+                if (url1 == null) {
                     url1 = new ArrayList<>();
                 }
                 url1.add(DaozhanUrl);
-                sp.saveToShared(Keyword.LIXIANFASONGCARURL,url1);
+                sp.saveToShared(Keyword.LIXIANFASONGCARURL, url1);
                 handler.sendEmptyMessage(Keyword.FLAGFACHE);
             case Keyword.FLAGFACHEERROR1:
                 List<String> url2 = (List<String>) sp.queryForSharedToObject(Keyword.LIXIANFASONGCARURL);
-                if (url2 == null){
+                if (url2 == null) {
                     url2 = new ArrayList<>();
                 }
                 url2.add(DaozhanUrl);
-                sp.saveToShared(Keyword.LIXIANFASONGCARURL,url2);
+                sp.saveToShared(Keyword.LIXIANFASONGCARURL, url2);
                 handler.sendEmptyMessage(Keyword.FLAGFACHE1);
                 break;
+
         }
 
     }
@@ -328,7 +343,7 @@ public class SongStationMapActivity extends BaseActivity implements NetWorkListe
                     endNetWork.setUrl(Keyword.FLAGENDDAOZHAN, url1, FristFaChe.class);
                 } else {
                     Intent intent = new Intent(SongStationMapActivity.this, ResidueActivity.class);
-                    intent.putExtra(Keyword.SELECTITME, stationList.get(stationList.size() -1).getStationId());
+                    intent.putExtra(Keyword.SELECTITME, stationList.get(stationList.size() - 1).getStationId());
                     startActivity(intent);
                     SongStationMapActivity.this.finish();
                 }

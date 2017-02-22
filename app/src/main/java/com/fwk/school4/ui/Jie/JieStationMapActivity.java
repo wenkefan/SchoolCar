@@ -27,14 +27,18 @@ import com.fwk.school4.network.api.CarFCNetWork;
 import com.fwk.school4.network.api.ChildNetWork;
 import com.fwk.school4.network.api.EndNetWork;
 import com.fwk.school4.network.api.StaionNetWork;
+import com.fwk.school4.network.api.ZuofeiNetWork;
 import com.fwk.school4.ui.BaseActivity;
+import com.fwk.school4.ui.MainActivity;
 import com.fwk.school4.ui.ResidueActivity;
+import com.fwk.school4.ui.Song.SongStationMapActivity;
 import com.fwk.school4.ui.adapter.BaseRecyclerAdapter;
 import com.fwk.school4.ui.adapter.MapRecyclerViewAdapter;
 import com.fwk.school4.utils.GetDateTime;
 import com.fwk.school4.utils.LogUtils;
 import com.fwk.school4.utils.SharedPreferencesUtils;
 import com.fwk.school4.utils.ToastUtil;
+import com.fwk.school4.weight.MainDialog;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -91,9 +95,6 @@ public class JieStationMapActivity extends BaseActivity implements NetWorkListen
     private String DaozhanUrl;
     private String FacheUrl;
 
-    private String shangUrl;
-    private String xiaUrl;
-
     @Override
     public int getLayoutId() {
         return R.layout.station_map_activity2;
@@ -124,7 +125,6 @@ public class JieStationMapActivity extends BaseActivity implements NetWorkListen
     @Override
     public void init() {
         sp = new SharedPreferencesUtils();
-//        sp = new SharedPreferencesUtils2();
         Intent intent = getIntent();
         if (bean == null) {
             bean = (BanciBean.RerurnValueBean) sp.queryForSharedToObject(Keyword.SELECTBANCI);
@@ -136,6 +136,12 @@ public class JieStationMapActivity extends BaseActivity implements NetWorkListen
         }
 
         title.setText(bean.getBusScheduleName());
+
+        if (intent.getBooleanExtra(Keyword.SELECTZUOFEI, false)) {
+            ZuofeiNetWork work = ZuofeiNetWork.newInstance(this);
+            work.setNetWorkListener(this);
+            MainDialog.ZF(this, work);
+        }
 
     }
 
@@ -202,37 +208,40 @@ public class JieStationMapActivity extends BaseActivity implements NetWorkListen
             case Keyword.FLAGENDDAOZHAN:
                 handler.sendEmptyMessage(Keyword.FLAGENDDAOZHAN);
                 break;
+            case Keyword.ZUOFEI:
+                handler.sendEmptyMessage(Keyword.ZUOFEI);
+                break;
         }
     }
 
     @Override
     public void NetWorkError(int Flag) {
-        switch (Flag){
+        switch (Flag) {
             case Keyword.FLAGDAOZHANERROR:
                 List<String> url = (List<String>) sp.queryForSharedToObject(Keyword.LIXIANFASONGCARURL);
-                if (url == null){
+                if (url == null) {
                     url = new ArrayList<>();
                 }
                 url.add(FacheUrl);
-                sp.saveToShared(Keyword.LIXIANFASONGCARURL,url);
+                sp.saveToShared(Keyword.LIXIANFASONGCARURL, url);
                 handler.sendEmptyMessage(Keyword.FLAGDAOZHAN);
                 break;
             case Keyword.FLAGFACHEERROR:
                 List<String> url1 = (List<String>) sp.queryForSharedToObject(Keyword.LIXIANFASONGCARURL);
-                if (url1 == null){
+                if (url1 == null) {
                     url1 = new ArrayList<>();
                 }
                 url1.add(DaozhanUrl);
-                sp.saveToShared(Keyword.LIXIANFASONGCARURL,url1);
+                sp.saveToShared(Keyword.LIXIANFASONGCARURL, url1);
                 handler.sendEmptyMessage(Keyword.FLAGFACHE);
                 break;
             case Keyword.FLAGFACHEERROR1:
                 List<String> url2 = (List<String>) sp.queryForSharedToObject(Keyword.LIXIANFASONGCARURL);
-                if (url2 == null){
+                if (url2 == null) {
                     url2 = new ArrayList<>();
                 }
                 url2.add(DaozhanUrl);
-                sp.saveToShared(Keyword.LIXIANFASONGCARURL,url2);
+                sp.saveToShared(Keyword.LIXIANFASONGCARURL, url2);
                 handler.sendEmptyMessage(Keyword.FLAGFACHE1);
                 break;
 
@@ -272,7 +281,7 @@ public class JieStationMapActivity extends BaseActivity implements NetWorkListen
                     intent.putExtra(Keyword.JUMPPOSITION, true);
                     intent.putExtra(Keyword.STATIONPOSITION, Position);
                     intent.putExtra(Keyword.SELECTSTATIONID, stationSelId);
-                    intent.putExtra(Keyword.DINGWEI,getPoistion());
+                    intent.putExtra(Keyword.DINGWEI, getPoistion());
                     startActivity(intent);
                     finish();
                     break;
@@ -299,6 +308,11 @@ public class JieStationMapActivity extends BaseActivity implements NetWorkListen
                     ToastUtil.show("结束了");
                     sp.removData();
                     finish();
+                    break;
+                case Keyword.ZUOFEI:
+                    sp.removData();
+                    startActivity(new Intent(JieStationMapActivity.this, MainActivity.class));
+                    JieStationMapActivity.this.finish();
                     break;
             }
         }
@@ -355,7 +369,7 @@ public class JieStationMapActivity extends BaseActivity implements NetWorkListen
                     endNetWork.setUrl(Keyword.FLAGENDDAOZHAN, url1, FristFaChe.class);
                 } else {
                     Intent intent = new Intent(JieStationMapActivity.this, ResidueActivity.class);
-                    intent.putExtra(Keyword.SELECTITME, stationList.get(stationList.size() -1).getStationId());
+                    intent.putExtra(Keyword.SELECTITME, stationList.get(stationList.size() - 1).getStationId());
                     startActivity(intent);
                     JieStationMapActivity.this.finish();
                 }
@@ -407,10 +421,10 @@ public class JieStationMapActivity extends BaseActivity implements NetWorkListen
         return 0;
     }
 
-    private int getPoistion(){
+    private int getPoistion() {
         List<StaBean> staBeen = (List<StaBean>) sp.queryForSharedToObject(Keyword.SELECTSTA);
-        for (int i = 0; i < staBeen.size(); i++){
-            if (staBeen.get(i).getId() == stationSelId){
+        for (int i = 0; i < staBeen.size(); i++) {
+            if (staBeen.get(i).getId() == stationSelId) {
                 return i;
             }
         }

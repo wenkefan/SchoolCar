@@ -15,7 +15,6 @@ import com.fwk.school4.ui.BaseActivity;
 import com.fwk.school4.ui.ShangcheActivity;
 import com.fwk.school4.ui.adapter.JieChildListAdapter;
 import com.fwk.school4.utils.SharedPreferencesUtils;
-import com.fwk.school4.utils.SharedPreferencesUtils2;
 import com.fwk.school4.utils.ToastUtil;
 
 import java.util.List;
@@ -42,7 +41,7 @@ public class JieChildListActivity extends BaseActivity implements OnHeaderClickL
     private int position;
     private int jumpPosition;
     private SharedPreferencesUtils sp = new SharedPreferencesUtils();
-    private SharedPreferencesUtils2 spData = new SharedPreferencesUtils2();
+//    private SharedPreferencesUtils2 spData = new SharedPreferencesUtils2();
     private List<StationBean.RerurnValueBean> stationlist;
     private boolean isJieShu = false;
 
@@ -80,7 +79,7 @@ public class JieChildListActivity extends BaseActivity implements OnHeaderClickL
     public void fache(View view) {
         if (isJieShu){
             ToastUtil.show("结束了");
-            spData.setboolean(Keyword.BEGIN,false);
+            sp.setboolean(Keyword.BEGIN,false);
             sp.saveToShared(Keyword.GETSJTIME,null);
             this.finish();
         } else {

@@ -12,7 +12,6 @@ import com.fwk.school4.constant.Keyword;
 import com.fwk.school4.constant.SpLogin;
 import com.fwk.school4.model.BanciBean;
 import com.fwk.school4.utils.SharedPreferencesUtils;
-import com.fwk.school4.utils.SharedPreferencesUtils2;
 
 import java.util.List;
 
@@ -25,14 +24,14 @@ public class MainRecyclerViewAdapter extends BaseRecyclerAdapter {
 
 
     private SharedPreferencesUtils sp;
-    private SharedPreferencesUtils2 spData;
+//    private SharedPreferencesUtils2 spData;
     private List<BanciBean.RerurnValueBean> list;
     private Context mContext;
 
     public MainRecyclerViewAdapter() {
         sp = new SharedPreferencesUtils();
-        spData = new SharedPreferencesUtils2();
-        list = (List<BanciBean.RerurnValueBean>) spData.queryForSharedToObject(Keyword.SP_BANCI_LIST);
+//        spData = new SharedPreferencesUtils2();
+        list = (List<BanciBean.RerurnValueBean>) sp.queryForSharedToObject(Keyword.SP_BANCI_LIST);
     }
 
     @Override

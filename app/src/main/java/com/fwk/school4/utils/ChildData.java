@@ -287,7 +287,7 @@ public class ChildData {
         valueBean1.setConnectStation(valueBean.getConnectStation());
         valueBean1.setFatherName(valueBean.getFatherName());
         valueBean1.setFatherPhone(valueBean.getFatherPhone());
-        valueBean1.setIsDU(valueBean.getIsDU());
+        valueBean1.setIsDU(2);
         valueBean1.setMotherName(valueBean.getMotherName());
         valueBean1.setMotherPhone(valueBean.getMotherPhone());
         valueBean1.setOperation(valueBean.getisOperation());

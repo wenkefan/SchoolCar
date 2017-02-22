@@ -20,7 +20,7 @@ public class SharedPreferencesUtils {
     SharedPreferences sp;
     SharedPreferences.Editor editor;
     public SharedPreferencesUtils(){
-        sp = MyApp.getContext().getSharedPreferences(SpBanci.getBanciId() + Keyword.APPCONTEXT, MyApp.getContext().MODE_PRIVATE);
+        sp = MyApp.getContext().getSharedPreferences(Keyword.APPCONTEXT, MyApp.getContext().MODE_PRIVATE);
         editor = sp.edit();
     }
     public void saveToShared(String key, Object obj) {

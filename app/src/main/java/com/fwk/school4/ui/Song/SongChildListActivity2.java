@@ -62,7 +62,6 @@ public class SongChildListActivity2 extends NFCBaseActivity implements JieChildL
     private LinearLayoutManager manager;
     private JieChildListAdapter2 adapter;
     private SharedPreferencesUtils sp = new SharedPreferencesUtils();
-//    private SharedPreferencesUtils2 sp = new SharedPreferencesUtils2();
 
     private Map<String, List<ChildBean.RerurnValueBean>> map;//幼儿map
     private StaBean staBean;//选中幼儿所在的站点
@@ -232,6 +231,7 @@ public class SongChildListActivity2 extends NFCBaseActivity implements JieChildL
                 endNetWork.setNetWorkListener(this);
                 endNetWork.setUrl(Keyword.FLAGENDDAOZHAN, url, FristFaChe.class);
             } else {
+                adapter.setBool(true);
                 ToastUtil.show("车上还有幼儿，请仔细检查");
             }
         } else {

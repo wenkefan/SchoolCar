@@ -5,9 +5,9 @@ package com.fwk.school4.network;
  */
 public class HTTPURL {
     //private static final String API_URL = "http://192.168.1.168:8091/WebServices/MobileAttendanceService.ashx?Option=";
-    private static final String API_URL = "http://manage.youery.com/WebServices/MobileAttendanceService.ashx?";
+//    private static final String API_URL = "http://manage.youery.com/WebServices/MobileAttendanceService.ashx?";
     //    private static final String API_URL = "http://192.168.1.116:8083/WebServices/MobileAttendanceService.ashx?";
-//    private static final String API_URL = "http://192.168.1.142:8081/WebServices/MobileAttendanceService.ashx?";
+    private static final String API_URL = "http://192.168.1.142:8081/WebServices/MobileAttendanceService.ashx?";
 
     /**
      * 获取基础信息（线路列表、巴士列表、司机列表）
@@ -57,7 +57,6 @@ public class HTTPURL {
     // 54.根据班次获取幼儿
     public static final String API_CHILD = API_URL + "Option=GetChildsByBusScheduleId&Id=%1$s&BusScheduleId=%2$s&shuttleType=%3$s";//&BusScheduleId=4&shuttleType=2（接送）
 
-
     //发车、结束
     /**
      * 发车字段为：班次编号、kgid、发车时间、类型(1发车、2停车)
@@ -76,5 +75,10 @@ public class HTTPURL {
      * 字段：派车单号、幼儿编号、站点、时间、状态、kgid、上下车类型（1、上车；2、下车）
      */
     public static final String API_STUDENT_OPEN_DOWN = API_URL + "Option=GetChildsSwipeCardRecord&busOrderId=%1$s&childId=%2$s&stationNum=%3$s&takeTime=%4$s&status=%5$s&orgId=%6$s&takeType=%7$s";
+
+    /**
+     * 作废发车单号
+     */
+    public static final String API_ZUO_FEI = API_URL + "Option=InvalidBusOrderById&BusOrderId=";
 
 }

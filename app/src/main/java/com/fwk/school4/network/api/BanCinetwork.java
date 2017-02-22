@@ -2,17 +2,13 @@ package com.fwk.school4.network.api;
 
 
 import android.app.Activity;
-import android.widget.Toast;
 
 
 import com.fwk.school4.constant.Keyword;
 import com.fwk.school4.constant.SpLogin;
 import com.fwk.school4.model.BanciBean;
 import com.fwk.school4.listener.NetWorkListener;
-import com.fwk.school4.ui.MainActivity;
 import com.fwk.school4.utils.GetDateTime;
-import com.fwk.school4.utils.SharedPreferencesUtils;
-import com.fwk.school4.utils.SharedPreferencesUtils2;
 import com.fwk.school4.utils.ToastUtil;
 
 import java.io.IOException;
@@ -21,9 +17,6 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import testlibrary.hylk.com.loginlibrary.okhttp.LK_OkHttpUtil;
-
-import static android.icu.lang.UCharacter.GraphemeClusterBreak.T;
 
 /**
  * Created by fanwenke on 16/11/21.
@@ -89,7 +82,7 @@ public class BanCinetwork extends BaseNetWork {
                 list.add(i, list1.get(i));
             }
 //                sp.saveToShared(Keyword.SP_BANCI, bean);
-            spData.saveToShared(Keyword.SP_BANCI_LIST, list);
+            sp.saveToShared(Keyword.SP_BANCI_LIST, list);
             bean = null;
             list = null;
 

@@ -226,6 +226,7 @@ public class JieChildListActivity2 extends NFCBaseActivity implements JieChildLi
                 endNetWork.setNetWorkListener(this);
                 endNetWork.setUrl(Keyword.FLAGENDDAOZHAN, url, FristFaChe.class);
             } else {
+                adapter.setBool(true);
                 ToastUtil.show("车上还有幼儿，请仔细检查");
             }
         } else {

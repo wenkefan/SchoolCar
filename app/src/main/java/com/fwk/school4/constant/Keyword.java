@@ -72,7 +72,7 @@ public class Keyword {
     public static final String SELECTCHILD = "SELECTCHILD";//选择中的幼儿
 
 
-
+    public static final String SELECTZUOFEI = "SELECTZUOFEI";//引导作废
 
     public static final String GETSJTIME = "GETSJTIME";//实际到站时间
     /**
@@ -147,4 +147,6 @@ public class Keyword {
     public static final String LIXIANSHANGXIAURL = "LIXIANSHANGXIAURL";
     public static final int ShangURL = 20000;
 
+
+    public static final int ZUOFEI = 801;//作废
 }

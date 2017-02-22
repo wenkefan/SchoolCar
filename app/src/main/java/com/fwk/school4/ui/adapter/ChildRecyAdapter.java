@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.fwk.school4.R;
 import com.fwk.school4.model.ChildBean;
+import com.fwk.school4.utils.LogUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,6 +24,7 @@ public class ChildRecyAdapter extends BaseRecyclerAdapter {
     private Context context;
     private List<ChildBean.RerurnValueBean> list = new ArrayList<>();
     private boolean color;
+    private boolean bool;
 
     public ChildRecyAdapter(List<ChildBean.RerurnValueBean> list) {
         this.list = list;
@@ -69,6 +71,12 @@ public class ChildRecyAdapter extends BaseRecyclerAdapter {
                     holde.tv.setTextColor(context.getResources().getColor(R.color.black));
                 }
             }
+            if (bool){
+                if (list.get(position).getIsDU() == 2 && list.get(position).getSelectid() == 0){
+                    holde.claNa.setTextColor(context.getResources().getColor(R.color.black));
+                    holde.tv.setTextColor(context.getResources().getColor(R.color.black));
+                }
+            }
         }
         super.onBindViewHolder(holder, position);
     }
@@ -93,5 +101,9 @@ public class ChildRecyAdapter extends BaseRecyclerAdapter {
             iv = $(R.id.iv_type_select);
             claNa = $(R.id.tv_child_class_name);
         }
+    }
+    public void setBool(boolean bool){
+        this.bool = bool;
+        notifyDataSetChanged();
     }
 }
