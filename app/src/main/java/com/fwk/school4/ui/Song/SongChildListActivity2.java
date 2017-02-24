@@ -200,6 +200,7 @@ public class SongChildListActivity2 extends NFCBaseActivity implements JieChildL
         /**
          * 字段：派车单号、幼儿编号、站点、时间、状态、kgid、上下车类型（1、上车；2、下车）
          */
+        LogUtils.d("bean.getname--" + bean.getChildId());
         ShangcheUrl = String.format(
                 HTTPURL.API_STUDENT_OPEN_DOWN,
                 sp.getInt(Keyword.SP_PAICHEDANHAO),
@@ -384,9 +385,12 @@ public class SongChildListActivity2 extends NFCBaseActivity implements JieChildL
         boolean isCan = false;
         if (shanglist != null) {
             for (int i = 0; i < shanglist.size(); i++) {
+                LogUtils.d("if之前list.gitname--" + shanglist.get(i).getChildName());
                 if (CarId.equals(shanglist.get(i).getSACardNo())) {
+                    LogUtils.d("if之后list.gitname--" + shanglist.get(i).getChildName());
                     //请求操作接口
                     childPosition = 1;
+                    mItem = i;
                     shangchefenzu(false, null, shanglist.get(i));
                     isCan = true;
                     break;
@@ -398,6 +402,7 @@ public class SongChildListActivity2 extends NFCBaseActivity implements JieChildL
                 if (CarId.equals(xialist.get(i).getSACardNo())) {
                     //请求操作接口
                     childPosition = 5;
+                    mItem = i;
                     xiachefenzu(false, null, xialist.get(i));
                     isCan = true;
                     break;

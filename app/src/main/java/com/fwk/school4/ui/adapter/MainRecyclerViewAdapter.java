@@ -6,7 +6,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.fwk.school4.MyApp;
 import com.fwk.school4.R;
 import com.fwk.school4.constant.Keyword;
 import com.fwk.school4.constant.SpLogin;
@@ -51,6 +50,13 @@ public class MainRecyclerViewAdapter extends BaseRecyclerAdapter {
             banciHolder.mBanciTime.setText("时间："+ times[0] + ":" + times[1]);
             banciHolder.mBanciTeacher.setText("老师：" + list.get(position).getTeacherName());
             banciHolder.mBanciSj.setText("司机：" + list.get(position).getDriverName());
+
+            banciHolder.mBanciLuxian.setTextColor(mContext.getResources().getColor(R.color.darker_gray));
+            banciHolder.mBanciName.setTextColor(mContext.getResources().getColor(R.color.darker_gray));
+            banciHolder.mBanciTime.setTextColor(mContext.getResources().getColor(R.color.darker_gray));
+            banciHolder.mBanciTeacher.setTextColor(mContext.getResources().getColor(R.color.darker_gray));
+            banciHolder.mBanciSj.setTextColor(mContext.getResources().getColor(R.color.darker_gray));
+            banciHolder.zt.setTextColor(mContext.getResources().getColor(R.color.darker_gray));
             if (list.get(position).getTeacherId() == SpLogin.getWorkerExtensionId()) {
                 banciHolder.mBanciLuxian.setTextColor(mContext.getResources().getColor(R.color.black));
                 banciHolder.mBanciName.setTextColor(mContext.getResources().getColor(R.color.black));

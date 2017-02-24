@@ -39,7 +39,6 @@ public class ChildData {
         List<StaBean> stationlist = (List<StaBean>) sp.queryForSharedToObject(Keyword.STAIDLIST);
         List<StaBean> bean = (List<StaBean>) sp.queryForSharedToObject(Keyword.SELECTSTA);
         StationComparator comparator = new StationComparator();
-        boolean flag = false;
         if (position == 1) {
             int stationId = map.get(staBean.getStrid()).get(mItem).getSendStation();//下车站点ID
             LogUtils.d("staid--" + stationId);

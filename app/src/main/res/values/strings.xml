@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">乐康校车4</string>
+    <string name="app_name">乐康校车</string>
 
     <!-- LoginActivity -->
     <string name="login_activity_hint_user_name">请输入用户名</string>
