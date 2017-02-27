@@ -376,18 +376,27 @@ public class SongChildListActivity2 extends NFCBaseActivity implements JieChildL
         super.onNewIntent(intent);
         String CarId = readICCardNo(intent);
         LogUtils.d("CarId:" + CarId);
-        staBean = ((List<StaBean>) sp.queryForSharedToObject(Keyword.SELECTSTA)).get(position);
+        LogUtils.d("选择的position" + position);
         if (map == null) {
             map = (Map<String, List<ChildBean.RerurnValueBean>>) sp.queryForSharedToObject(Keyword.MAPLIST);
         }
+        List<StaBean> staBeanList = (List<StaBean>) sp.queryForSharedToObject(Keyword.SELECTSTA);
         List<ChildBean.RerurnValueBean> shanglist = map.get(stationlist.get(position).getStationId() + "01");
         List<ChildBean.RerurnValueBean> xialist = map.get(stationlist.get(position).getStationId() + "02");
+        StaBean staBeanShang = new StaBean();
+        StaBean staBeanXia = new StaBean();
+        for (StaBean bean : staBeanList){
+            if (bean.getStrid().equals(stationlist.get(position).getStationId() + "01")){
+                staBeanShang = bean;
+            }if (bean.getStrid().equals(stationlist.get(position).getStationId() + "02")){
+                staBeanXia = bean;
+            }
+        }
         boolean isCan = false;
         if (shanglist != null) {
             for (int i = 0; i < shanglist.size(); i++) {
-                LogUtils.d("if之前list.gitname--" + shanglist.get(i).getChildName());
                 if (CarId.equals(shanglist.get(i).getSACardNo())) {
-                    LogUtils.d("if之后list.gitname--" + shanglist.get(i).getChildName());
+                    staBean = staBeanShang;
                     //请求操作接口
                     childPosition = 1;
                     mItem = i;
@@ -401,6 +410,7 @@ public class SongChildListActivity2 extends NFCBaseActivity implements JieChildL
             for (int i = 0; i < xialist.size(); i++) {
                 if (CarId.equals(xialist.get(i).getSACardNo())) {
                     //请求操作接口
+                    staBean = staBeanXia;
                     childPosition = 5;
                     mItem = i;
                     xiachefenzu(false, null, xialist.get(i));
