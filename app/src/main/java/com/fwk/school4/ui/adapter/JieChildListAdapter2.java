@@ -2,6 +2,7 @@ package com.fwk.school4.ui.adapter;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -28,13 +29,14 @@ public class JieChildListAdapter2 extends BaseRecyclerAdapter {
     private Context context;
     private Map<String, List<ChildBean.RerurnValueBean>> map;
     private SharedPreferencesUtils sp = new SharedPreferencesUtils();
-//    private SharedPreferencesUtils2 spData = new SharedPreferencesUtils2();
+    //    private SharedPreferencesUtils2 spData = new SharedPreferencesUtils2();
     private List<StaBean> staBeen;
     private LinearLayoutManager manager;
     private ChildRecyAdapter adapter;
     private List<ChildBean.RerurnValueBean> list;
     private int selStationID;
     private boolean bool;
+    private int itmePosition = 0;
 
     public void getData(int selStationID) {
         this.selStationID = selStationID;
@@ -88,6 +90,11 @@ public class JieChildListAdapter2 extends BaseRecyclerAdapter {
                 viewHolde.tv.setCompoundDrawables(drawable, null, null, null);
                 viewHolde.tv.setTextColor(context.getResources().getColor(R.color.black));
                 viewHolde.tishi.setVisibility(View.VISIBLE);
+                viewHolde.cardView.setCardElevation(context.getResources().getDimension(R.dimen.cardview));
+                itmePosition = position;
+            }
+            if (position < itmePosition) {
+                viewHolde.cardView.setCardBackgroundColor(context.getResources().getColor(R.color.bg));
             }
         }
         super.onBindViewHolder(holder, position);
@@ -103,12 +110,14 @@ public class JieChildListAdapter2 extends BaseRecyclerAdapter {
 
         private TextView tv, tishi;
         private RecyclerView rv;
+        private CardView cardView;
 
         public ViewHolde(View itemView) {
             super(itemView);
             tv = $(R.id.tv_station);
             tishi = $(R.id.tv_daozhantishi);
             rv = $(R.id.rv_childlist);
+            cardView = $(R.id.cardview);
         }
     }
 
@@ -122,7 +131,7 @@ public class JieChildListAdapter2 extends BaseRecyclerAdapter {
         this.onItemAdapterListener = onItemAdapterListener;
     }
 
-    public void setBool(boolean bool){
+    public void setBool(boolean bool) {
         this.bool = bool;
         notifyDataSetChanged();
     }

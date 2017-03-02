@@ -69,7 +69,7 @@ public class MainDialog {
      */
     public static void ShowDLBanci(final Activity context, String name, String teachername, final int fangxiang, final int position) {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        builder.setTitle("警告").setMessage(name + "的随车老师是：" + teachername + "\n" + "是否代理发车");
+        builder.setTitle("警告").setMessage("\"" + name + "的随车老师是：" + teachername + "\n" + "是否代理发车");
         builder.setNegativeButton("否", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
@@ -171,7 +171,7 @@ public class MainDialog {
         final int fangxiang = bean.getAttendanceDirections();
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setCancelable(false);
-        builder.setTitle("警告").setMessage("已有班次：" + name + "正在运行中。" + "\n继续进行请注销班次：" + name);
+        builder.setTitle("提示").setMessage("\"" + name + "\"" + "正在运行中。" + "\n继续进行请注销班次：" + name);
         builder.setNegativeButton("前往注销", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
@@ -204,7 +204,7 @@ public class MainDialog {
     public static void ZF(final Activity context, final ZuofeiNetWork work) {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setCancelable(false);
-        builder.setTitle("警告").setMessage("确定注销本此记录？");
+        builder.setTitle("警告").setMessage("注销本次记录？");
         builder.setNegativeButton("注销", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {

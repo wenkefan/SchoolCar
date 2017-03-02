@@ -11,4 +11,5 @@
 
     <dimen name="margin_big">15dp</dimen>
     <dimen name="margin_larger">20dp</dimen>
+    <dimen name="cardview">4dp</dimen>
 </resources>

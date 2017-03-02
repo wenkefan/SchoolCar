@@ -1,8 +1,6 @@
 package com.fwk.school4.ui.adapter;
 
 import android.content.Context;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,7 +9,6 @@ import android.widget.TextView;
 
 import com.fwk.school4.R;
 import com.fwk.school4.model.ChildBean;
-import com.fwk.school4.utils.LogUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -70,6 +67,10 @@ public class ChildRecyAdapter extends BaseRecyclerAdapter {
                     holde.claNa.setTextColor(context.getResources().getColor(R.color.black));
                     holde.tv.setTextColor(context.getResources().getColor(R.color.black));
                 }
+            }
+            if (list.get(position).getSelectid() != 0) {
+                holde.claNa.setTextColor(context.getResources().getColor(R.color.caozuohou));
+                holde.tv.setTextColor(context.getResources().getColor(R.color.caozuohou));
             }
             if (bool){
                 if (list.get(position).getIsDU() == 2 && list.get(position).getSelectid() == 0){

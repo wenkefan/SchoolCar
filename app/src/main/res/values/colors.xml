@@ -32,4 +32,7 @@
 
     <color name="darker_gray1">#eee</color>
 
+    <color name="bg">#f0f8f5</color>
+
+    <color name="caozuohou">#888888</color>
 </resources>
