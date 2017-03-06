@@ -16,6 +16,7 @@ import com.fwk.school4.R;
 import com.fwk.school4.constant.Keyword;
 import com.fwk.school4.constant.SpLogin;
 import com.fwk.school4.listener.NetWorkListener;
+import com.fwk.school4.model.BanciBean;
 import com.fwk.school4.model.ChildBean;
 import com.fwk.school4.model.FristFaChe;
 import com.fwk.school4.model.StaBean;
@@ -27,7 +28,6 @@ import com.fwk.school4.network.api.CarDZNetWork;
 import com.fwk.school4.network.api.DownCarNetWork;
 import com.fwk.school4.network.api.EndNetWork;
 import com.fwk.school4.network.api.UpCarNetWork;
-import com.fwk.school4.ui.Jie.JieChildListActivity2;
 import com.fwk.school4.ui.NFCBaseActivity;
 import com.fwk.school4.ui.ShangcheActivity;
 import com.fwk.school4.ui.XiacheActivity;
@@ -76,6 +76,7 @@ public class SongChildListActivity2 extends NFCBaseActivity implements JieChildL
     private String FacheUrl;
     private String ShangcheUrl;
     private String XiacheUrl;
+    private BanciBean.RerurnValueBean bean;
 
     public SongChildListActivity2() {
 
@@ -339,10 +340,10 @@ public class SongChildListActivity2 extends NFCBaseActivity implements JieChildL
                     finish();
                     break;
                 case Keyword.FLAGENDDAOZHAN:
-                    ToastUtil.show("结束了");
-                    sp.removData();
-                    sp.removData();
-                    finish();
+//                    startActivity(new Intent(SongChildListActivity2.this, FinishActivity.class));
+//                    finish();
+                    bean = (BanciBean.RerurnValueBean) sp.queryForSharedToObject(Keyword.SELECTBANCI);
+                    MainDialog.DaoZhan(SongChildListActivity2.this,bean.getBusScheduleName(),sp);
                     break;
                 case Keyword.FLAGDOWNCAR:
                     ChildData.setSongData(map, staBean, mItem, childPosition);

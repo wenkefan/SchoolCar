@@ -33,7 +33,6 @@ import com.fwk.school4.network.api.ZuofeiNetWork;
 import com.fwk.school4.ui.BaseActivity;
 import com.fwk.school4.ui.MainActivity;
 import com.fwk.school4.ui.ResidueActivity;
-import com.fwk.school4.ui.Song.SongStationMapActivity;
 import com.fwk.school4.ui.adapter.BaseRecyclerAdapter;
 import com.fwk.school4.ui.adapter.MapRecyclerViewAdapter;
 import com.fwk.school4.utils.GetDateTime;
@@ -318,9 +317,9 @@ public class JieStationMapActivity extends BaseActivity implements NetWorkListen
                     ToastUtil.show("本站无上下车学生，已直接过站...");
                     break;
                 case Keyword.FLAGENDDAOZHAN:
-                    ToastUtil.show("结束了");
-                    sp.removData();
-                    finish();
+//                    startActivity(new Intent(JieStationMapActivity.this, FinishActivity.class));
+//                    finish();
+                    MainDialog.DaoZhan(JieStationMapActivity.this,bean.getBusScheduleName(),sp);
                     break;
                 case Keyword.ZUOFEI:
                     sp.removData();

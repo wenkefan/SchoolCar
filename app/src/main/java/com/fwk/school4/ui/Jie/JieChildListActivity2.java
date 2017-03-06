@@ -16,6 +16,7 @@ import com.fwk.school4.R;
 import com.fwk.school4.constant.Keyword;
 import com.fwk.school4.constant.SpLogin;
 import com.fwk.school4.listener.NetWorkListener;
+import com.fwk.school4.model.BanciBean;
 import com.fwk.school4.model.ChildBean;
 import com.fwk.school4.model.FristFaChe;
 import com.fwk.school4.model.StaBean;
@@ -76,6 +77,8 @@ public class JieChildListActivity2 extends NFCBaseActivity implements JieChildLi
     private String FacheUrl;
     private String ShangcheUrl;
     private String XiacheUrl;
+
+    private BanciBean.RerurnValueBean bean;
 
     public JieChildListActivity2() {
 
@@ -234,7 +237,7 @@ public class JieChildListActivity2 extends NFCBaseActivity implements JieChildLi
                 //有未上车或者未下车
                 AlertDialog.Builder builder = new AlertDialog.Builder(this);
                 builder.setCancelable(false);
-                builder.setTitle("警告").setMessage("还有学生没有上下车，是否发车？");
+                builder.setTitle("提示").setMessage("还有学生没有上下车，是否发车？");
                 builder.setNegativeButton("否", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
@@ -332,10 +335,11 @@ public class JieChildListActivity2 extends NFCBaseActivity implements JieChildLi
                     finish();
                     break;
                 case Keyword.FLAGENDDAOZHAN:
-                    ToastUtil.show("结束了");
-                    sp.removData();
-                    sp.removData();
-                    finish();
+//                    startActivity(new Intent(JieChildListActivity2.this, FinishActivity.class));
+//                    finish();
+
+                    bean = (BanciBean.RerurnValueBean) sp.queryForSharedToObject(Keyword.SELECTBANCI);
+                    MainDialog.DaoZhan(JieChildListActivity2.this,bean.getBusScheduleName(),sp);
                     break;
                 case Keyword.FLAGDOWNCAR:
                     ChildData.setJieData(map, staBean, mItem, childPosition);

@@ -11,7 +11,7 @@ public class StaBean implements Serializable {
     private String strid;
     private String name;
     private int type;
-    private int order;
+    private int order;//排序
 
     public int getOrder() {
         return order;

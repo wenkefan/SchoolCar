@@ -105,7 +105,7 @@ public class MainDialog {
         final int fangxiang = bean.getAttendanceDirections();
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setCancelable(false);
-        builder.setTitle("警告").setMessage(name + "正在运行中...");
+        builder.setTitle("提示：").setMessage(name + "正在运行中...");
         builder.setNegativeButton("返回列表", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
@@ -142,7 +142,7 @@ public class MainDialog {
     public static void Shangxiac(final Activity context) {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setCancelable(false);
-        builder.setTitle("警告").setMessage("还有学生没有上下车，是否发车？");
+        builder.setTitle("警告：").setMessage("还有学生没有上下车，是否发车？");
         builder.setNegativeButton("否", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
@@ -171,7 +171,7 @@ public class MainDialog {
         final int fangxiang = bean.getAttendanceDirections();
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setCancelable(false);
-        builder.setTitle("提示").setMessage("\"" + name + "\"" + "正在运行中。" + "\n继续进行请注销班次：" + name);
+        builder.setTitle("提示：").setMessage("\"" + name + "\"" + "正在运行中。" + "继续进行请注销\"" + name + "\"。");
         builder.setNegativeButton("前往注销", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
@@ -204,7 +204,7 @@ public class MainDialog {
     public static void ZF(final Activity context, final ZuofeiNetWork work) {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setCancelable(false);
-        builder.setTitle("警告").setMessage("注销本次记录？");
+        builder.setTitle("警告：").setMessage("注销本次记录？");
         builder.setNegativeButton("注销", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
@@ -218,6 +218,30 @@ public class MainDialog {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
 
+                dialogInterface.dismiss();
+            }
+        });
+        builder.show();
+    }
+    public static void DaoZhan(final Activity context, String name, final SharedPreferencesUtils sp) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setCancelable(false);
+        builder.setTitle("提示：").setMessage("\"" + name + "\"" +"已结束！");
+//        builder.setNegativeButton("返回列表", new DialogInterface.OnClickListener() {
+//            @Override
+//            public void onClick(DialogInterface dialogInterface, int i) {
+//                SharedPreferencesUtils sp = new SharedPreferencesUtils();
+//
+////                work.setUrl(Keyword.ZUOFEI,HTTPURL.API_ZUO_FEI + sp.getInt(Keyword.SP_PAICHEDANHAO), ZuofeiBean.class);
+//                dialogInterface.dismiss();
+//            }
+//        });
+        builder.setPositiveButton("返回列表", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                context.startActivity(new Intent(context,MainActivity.class));
+                context.finish();
+                sp.removData();
                 dialogInterface.dismiss();
             }
         });

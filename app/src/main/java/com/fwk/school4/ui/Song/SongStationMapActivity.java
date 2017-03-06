@@ -299,9 +299,9 @@ public class SongStationMapActivity extends BaseActivity implements NetWorkListe
                     ToastUtil.show("本站无上下车学生，已直接过站...");
                     break;
                 case Keyword.FLAGENDDAOZHAN:
-                    ToastUtil.show("结束了");
-                    sp.removData();
-                    finish();
+//                    startActivity(new Intent(SongStationMapActivity.this, FinishActivity.class));
+//                    finish();
+                    MainDialog.DaoZhan(SongStationMapActivity.this,bean.getBusScheduleName(),sp);
                     break;
             }
         }

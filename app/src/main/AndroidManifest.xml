@@ -31,6 +31,7 @@
         <activity android:name=".ui.Jie.JieChildListActivity2" />
         <activity android:name=".ui.Song.SongChildListActivity2" />
         <activity android:name=".ui.ResidueActivity"/>
+        <activity android:name=".ui.FinishActivity"/>
         <receiver android:name=".receiver.NetStateReceiver">
             <intent-filter>
                 <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
