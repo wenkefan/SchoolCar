@@ -27,18 +27,19 @@
         <activity android:name=".ui.Song.SongStationMapActivity" />
         <activity android:name=".ui.Song.SongChildListActivity" />
         <activity android:name=".ui.ShangcheActivity" />
-        <activity android:name=".ui.XiacheActivity"/>
+        <activity android:name=".ui.XiacheActivity" />
         <activity android:name=".ui.Jie.JieChildListActivity2" />
         <activity android:name=".ui.Song.SongChildListActivity2" />
-        <activity android:name=".ui.ResidueActivity"/>
-        <activity android:name=".ui.FinishActivity"/>
+        <activity android:name=".ui.ResidueActivity" />
+        <activity android:name=".ui.FinishActivity" />
+
         <receiver android:name=".receiver.NetStateReceiver">
             <intent-filter>
                 <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
                 <action android:name="android.net.wifi.WIFI_STATE_CHANGED" />
                 <action android:name="android.net.wifi.STATE_CHANGE" />
             </intent-filter>
-            </receiver>
+        </receiver>
     </application>
 
 </manifest>

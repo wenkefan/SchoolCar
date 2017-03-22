@@ -79,8 +79,8 @@ public class JieStationMapActivity extends BaseActivity implements NetWorkListen
     TextView yjTime;
     @InjectView(R.id.tv_count)
     TextView renshu;
-    @InjectView(R.id.tv_count)
-    TextView mCount;
+//    @InjectView(R.id.tv_count)
+//    TextView mCount;
     @InjectView(R.id.title_right_iv)
     ImageView zf;
     private MapRecyclerViewAdapter adapter;
@@ -161,7 +161,7 @@ public class JieStationMapActivity extends BaseActivity implements NetWorkListen
     }
 
     private void setData() {//继续运行加载数据
-        mCount.setText(sp.getInt(Keyword.CARNUMBER) + "");
+        renshu.setText(sp.getInt(Keyword.CARNUMBER) + "");
         stationPosition = sp.getInt(Keyword.THISSATION);
         nextName.setText(sp.getString(Keyword.NEXTSTANAME));
         yjTime.setText(sp.getString(Keyword.NEXTTIME));
@@ -288,6 +288,7 @@ public class JieStationMapActivity extends BaseActivity implements NetWorkListen
                     stateStationBean.setDingwei(getPoistion());
                     sp.saveToShared(Keyword.STATESTATIONBEAN, stateStationBean);
                     sp.setboolean(Keyword.ISDAOZHAN, true);
+                    setTitleNemaTime();
                     setSJTime();
                     Intent intent = new Intent(JieStationMapActivity.this, JieChildListActivity2.class);
                     intent.putExtra(Keyword.JUMPPOSITION, true);
@@ -345,7 +346,7 @@ public class JieStationMapActivity extends BaseActivity implements NetWorkListen
                 (List<StationBean.RerurnValueBean>) sp.queryForSharedToObject(Keyword.SP_STATION_LIST);
         nextName.setText(stationList.get(stationPosition).getStationName());
         yjTime.setText(GetDateTime.getYJTime(stationList.get(stationPosition).getDuration()));
-        mCount.setText(sp.getInt(Keyword.CARNUMBER) + "");
+        renshu.setText(sp.getInt(Keyword.CARNUMBER) + "");
         sp.setString(Keyword.NEXTSTANAME, stationList.get(stationPosition).getStationName());
         sp.setString(Keyword.NEXTTIME, GetDateTime.getYJTime(stationList.get(stationPosition).getDuration()));
 

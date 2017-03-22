@@ -271,6 +271,7 @@ public class SongStationMapActivity extends BaseActivity implements NetWorkListe
                     sp.saveToShared(Keyword.STATESTATIONBEAN, stateStationBean);
                     sp.setboolean(Keyword.ISDAOZHAN, true);
                     setSJTime();
+                    setTitleNemaTime();
                     Intent intent = new Intent(SongStationMapActivity.this, SongChildListActivity2.class);
                     intent.putExtra(Keyword.JUMPPOSITION, true);
                     intent.putExtra(Keyword.STATIONPOSITION, Position);
